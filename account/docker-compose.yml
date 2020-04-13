@@ -1,0 +1,41 @@
+version: "3.7"
+services:
+  proxy:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    command: [nginx-debug, '-g', 'daemon off;']
+
+  gin-rest-cqrs-example:
+    image: kyhsa93/gin-rest-cqrs-example
+    restart: always
+    env_file:
+      - .env
+
+  redis-master:
+    image: kyhsa93/redis-master
+    restart: always
+
+  redis-slave:
+    image: kyhsa93/redis-slave
+    restart: always
+
+  database:
+    image: mongo
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ~/database/gin-rest-cqrs-example:/data/db
+
+  localstack:
+    image: localstack/localstack
+    ports:
+      - 4572:4572
+    environment:
+      - SERVICES=s3
+    volumes:
+      - ./.aws:/docker-entrypoint-initaws.d

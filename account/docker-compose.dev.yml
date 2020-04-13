@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - 6379:6379
+    
+  mongo:
+    image: mongo
+    restart: always
+    env_file: .env
+    ports:
+      - 27017:27017
+
+  localstack:
+    image: localstack/localstack
+    ports:
+      - 4572:4572
+    environment:
+      - SERVICES=s3
+    volumes:
+      - ./.aws:/docker-entrypoint-initaws.d
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    env_file: .env

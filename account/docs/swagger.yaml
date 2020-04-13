@@ -1,0 +1,364 @@
+definitions:
+  body.CreateAccount:
+    properties:
+      email:
+        example: test@gmail.com
+        type: string
+      fcmToken:
+        example: fcmToken
+        type: string
+      gender:
+        example: male
+        type: string
+      interestedField:
+        example: develop
+        type: string
+      interestedFieldDetail:
+        example:
+        - web
+        - server
+        items:
+          type: string
+        type: array
+      password:
+        example: password
+        type: string
+      provider:
+        example: gmail
+        type: string
+      socialId:
+        example: socialId
+        type: string
+    required:
+    - email
+    - provider
+    type: object
+  body.CreateProfile:
+    properties:
+      email:
+        example: test@gmail.com
+        type: string
+      gender:
+        example: male
+        type: string
+      interestedField:
+        example: develop
+        type: string
+      interestedFieldDetail:
+        example:
+        - web
+        - server
+        items:
+          type: string
+        type: array
+    type: object
+  body.UpdateAccount:
+    properties:
+      fcmToken:
+        example: fcmToken
+        type: string
+      password:
+        example: password
+        type: string
+    type: object
+  body.UpdateProfile:
+    properties:
+      fileId:
+        example: fileId
+        type: string
+      interestedField:
+        example: develop
+        type: string
+      interestedFieldDetail:
+        example:
+        - web
+        - server
+        items:
+          type: string
+        type: array
+    type: object
+  model.Account:
+    properties:
+      accessToken:
+        example: accesstoken
+        type: string
+      createdAt:
+        example: "2019-12-23 12:27:37"
+        type: string
+      email:
+        example: test@gmail.com
+        type: string
+      id:
+        example: accountId
+        type: string
+      provider:
+        type: string
+      updatedAt:
+        example: "2019-12-23 12:27:37"
+        type: string
+    type: object
+  model.File:
+    properties:
+      accountId:
+        example: 389df385-ccaa-49c1-aee2-698ba1191857
+        type: string
+      createdAt:
+        example: "2019-12-23 12:27:37"
+        type: string
+      id:
+        example: 389df385-ccaa-49c1-aee2-698ba1191857
+        type: string
+      imageUrl:
+        example: profile.image_url.com
+        type: string
+      usage:
+        example: profile
+        type: string
+    type: object
+  model.Profile:
+    properties:
+      accountId:
+        example: accountId
+        type: string
+      createdAt:
+        example: "2019-12-23 12:27:37"
+        type: string
+      gender:
+        type: string
+      id:
+        example: profileId
+        type: string
+      imageUrl:
+        example: profile.image_url.com
+        type: string
+      interestedField:
+        example: develop
+        type: string
+      interestedFieldDetail:
+        example:
+        - web
+        - server
+        items:
+          type: string
+        type: array
+      updatedAt:
+        example: "2019-12-23 12:27:37"
+        type: string
+    type: object
+info:
+  contact: {}
+  license: {}
+paths:
+  /accounts:
+    delete:
+      description: delete account
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Account'
+      security:
+      - AccessToken: []
+      tags:
+      - Account
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: account email
+        in: query
+        name: email
+        type: string
+      - description: account service provider
+        in: query
+        name: provider
+        type: string
+      - description: account password (email provider only)
+        in: query
+        name: password
+        type: string
+      - description: account social_id
+        in: query
+        name: social_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Account'
+      security:
+      - AccessToken: []
+      tags:
+      - Account
+    post:
+      consumes:
+      - application/json
+      description: create account
+      parameters:
+      - description: Create Account data
+        in: body
+        name: CreateAccount
+        required: true
+        schema:
+          $ref: '#/definitions/body.CreateAccount'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Account'
+      tags:
+      - Account
+    put:
+      consumes:
+      - application/json
+      description: update account
+      parameters:
+      - description: Update Account data
+        in: body
+        name: UpdateAccount
+        required: true
+        schema:
+          $ref: '#/definitions/body.UpdateAccount'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Account'
+      security:
+      - AccessToken: []
+      tags:
+      - Account
+  /files:
+    post:
+      consumes:
+      - multipart/form-data
+      description: create file
+      parameters:
+      - description: file usage
+        in: formData
+        name: usage
+        required: true
+        type: string
+      - description: Profile image file
+        in: formData
+        name: image
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201": {}
+      security:
+      - AccessToken: []
+      tags:
+      - Files
+  /files/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: file Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.File'
+      security:
+      - AccessToken: []
+      tags:
+      - Files
+  /profiles:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Profile'
+      security:
+      - AccessToken: []
+      tags:
+      - Profiles
+    post:
+      consumes:
+      - application/json
+      description: create profile
+      parameters:
+      - description: Create Profile data
+        in: body
+        name: CreateProfile
+        required: true
+        schema:
+          $ref: '#/definitions/body.CreateProfile'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Profile'
+      security:
+      - AccessToken: []
+      tags:
+      - Profiles
+    put:
+      consumes:
+      - application/json
+      description: update profile
+      parameters:
+      - description: update profile data
+        in: body
+        name: UpdateProfile
+        required: true
+        schema:
+          $ref: '#/definitions/body.UpdateProfile'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Profile'
+      security:
+      - AccessToken: []
+      tags:
+      - Profiles
+  /profiles/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: profile id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Profile'
+      tags:
+      - Profiles
+securityDefinitions:
+  AccessToken:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
