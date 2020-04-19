@@ -5,8 +5,6 @@ import (
 
 	"github.com/young-seung/msa-example/account/account"
 	"github.com/young-seung/msa-example/account/config"
-	"github.com/young-seung/msa-example/account/file"
-	"github.com/young-seung/msa-example/account/profile"
 	"github.com/young-seung/msa-example/account/util"
 
 	"github.com/gin-gonic/gin"
@@ -24,8 +22,6 @@ func main() {
 	gin.SetMode(config.Server().Mode())
 	route := gin.Default()
 	account.Initialize(route, config, util)
-	file.Initialize(route, config, util)
-	profile.Initialize(route, config, util)
 
 	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
