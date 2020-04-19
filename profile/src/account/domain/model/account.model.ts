@@ -1,7 +1,7 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import bcrypt from 'bcrypt-nodejs';
 import { HttpException, HttpStatus } from '@nestjs/common';
-import { ComparePasswordEvent } from '../../application/event/implements/account.event.compare-password';
+import ComparePasswordEvent from '../../application/event/implements/account.event.compare-password';
 
 export default class Account extends AggregateRoot {
   constructor(

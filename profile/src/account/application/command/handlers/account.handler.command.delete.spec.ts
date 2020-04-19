@@ -1,15 +1,15 @@
-import { TestingModule, Test } from "@nestjs/testing";
-import { CqrsModule, EventPublisher } from "@nestjs/cqrs";
-import { getRepositoryToken } from "@nestjs/typeorm";
-import AccountEntity from "../../../infrastructure/entity/account.entity";
-import { Repository, UpdateResult } from "typeorm";
-import { DeleteAccountCommandHandler } from './account.handler.command.delete';
-import AccountRepository from "../../../infrastructure/repository/account.repository";
-import Account from "../../../domain/model/account.model";
-import { DeleteAccountCommand } from "../implements/account.command.delete";
-import DeleteAccountDTO from "../../../interface/dto/account.dto.delete";
-import DeleteAccountParamDTO from "../../../interface/dto/account.dto.delete.param";
-import DeleteAccountBodyDTO from "../../../interface/dto/account.dto.delete.body";
+import { TestingModule, Test } from '@nestjs/testing';
+import { CqrsModule, EventPublisher } from '@nestjs/cqrs';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository, UpdateResult } from 'typeorm';
+import AccountEntity from '../../../infrastructure/entity/account.entity';
+import DeleteAccountCommandHandler from './account.handler.command.delete';
+import AccountRepository from '../../../infrastructure/repository/account.repository';
+import Account from '../../../domain/model/account.model';
+import DeleteAccountCommand from '../implements/account.command.delete';
+import DeleteAccountDTO from '../../../interface/dto/account.dto.delete';
+import DeleteAccountParamDTO from '../../../interface/dto/account.dto.delete.param';
+import DeleteAccountBodyDTO from '../../../interface/dto/account.dto.delete.body';
 
 describe('DeleteAccountCommandHandler', () => {
   let module: TestingModule;
@@ -37,14 +37,18 @@ describe('DeleteAccountCommandHandler', () => {
     eventPublisher = module.get(EventPublisher);
   });
 
-  afterAll(async () => close());
-
   describe('execute', () => {
-    accountEntity = new AccountEntity()
-    account = new Account(accountEntity.id, accountEntity.name, accountEntity.email, accountEntity.password, accountEntity.active);
+    accountEntity = new AccountEntity();
+    account = new Account(
+      accountEntity.id,
+      accountEntity.name,
+      accountEntity.email,
+      accountEntity.password,
+      accountEntity.active,
+    );
     accountUpdateResult = new UpdateResult();
     deleteAccountParamDto = new DeleteAccountParamDTO('id');
-    deleteAccountBodyDto = new DeleteAccountBodyDTO('password')
+    deleteAccountBodyDto = new DeleteAccountBodyDTO('password');
     deleteAccountDto = new DeleteAccountDTO(deleteAccountParamDto, deleteAccountBodyDto);
     deleteAccountCommand = new DeleteAccountCommand(deleteAccountDto);
 

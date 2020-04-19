@@ -1,16 +1,16 @@
-import { TestingModule, Test } from "@nestjs/testing";
+import { TestingModule, Test } from '@nestjs/testing';
 import bcrypt from 'bcrypt-nodejs';
-import { CqrsModule, EventPublisher } from "@nestjs/cqrs";
-import { UpdateAccountCommandHandler } from './account.handler.command.update';
-import { getRepositoryToken } from "@nestjs/typeorm";
-import AccountEntity from "../../../infrastructure/entity/account.entity";
-import { Repository, UpdateResult } from "typeorm";
-import AccountRepository from "../../../infrastructure/repository/account.repository";
-import Account from "../../../domain/model/account.model";
-import { UpdateAccountCommand } from "../implements/account.command.update";
-import UpdateAccountDTO from "../../../interface/dto/account.dto.update";
-import UpdateAccountParamDTO from "../../../interface/dto/account.dto.update.param";
-import UpdateAccountBodyDTO from "../../../interface/dto/account.dto.update.body";
+import { CqrsModule, EventPublisher } from '@nestjs/cqrs';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository, UpdateResult } from 'typeorm';
+import UpdateAccountCommandHandler from './account.handler.command.update';
+import AccountEntity from '../../../infrastructure/entity/account.entity';
+import AccountRepository from '../../../infrastructure/repository/account.repository';
+import Account from '../../../domain/model/account.model';
+import UpdateAccountCommand from '../implements/account.command.update';
+import UpdateAccountDTO from '../../../interface/dto/account.dto.update';
+import UpdateAccountParamDTO from '../../../interface/dto/account.dto.update.param';
+import UpdateAccountBodyDTO from '../../../interface/dto/account.dto.update.body';
 
 describe('UpdateAccountCommandHandler', () => {
   let module: TestingModule;
@@ -38,11 +38,15 @@ describe('UpdateAccountCommandHandler', () => {
     eventPublisher = module.get(EventPublisher);
   });
 
-  afterAll(async () => close());
-
   describe('execute', () => {
     accountEntity = new AccountEntity();
-    account = new Account(accountEntity.id, accountEntity.name, accountEntity.email, accountEntity.password, accountEntity.active);
+    account = new Account(
+      accountEntity.id,
+      accountEntity.name,
+      accountEntity.email,
+      accountEntity.password,
+      accountEntity.active,
+    );
     accountUpdateResult = new UpdateResult();
     updateAccountParamDto = new UpdateAccountParamDTO(accountEntity.id);
     updateAccountBodyDto = new UpdateAccountBodyDTO('newPassword', 'oldPassword');

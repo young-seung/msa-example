@@ -2,15 +2,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { CqrsModule, CommandBus, QueryBus } from '@nestjs/cqrs';
 import { INestApplication } from '@nestjs/common';
 import AccountController from './account.controller';
-import { CreateAccountCommand } from '../application/command/implements/account.command.create';
+import CreateAccountCommand from '../application/command/implements/account.command.create';
 import CreateAccountDTO from './dto/account.dto.create';
-import { ReadAccountListQuery } from '../application/query/implements/account.query.list';
+import ReadAccountListQuery from '../application/query/implements/account.query.list';
 import ReadAccountListDTO from './dto/account.dto.read.list';
 import Account from '../domain/model/account.model';
 import ReadAccountDTO from './dto/account.dto.read';
-import { ReadAccountQuery } from '../application/query/implements/account.query';
-import { UpdateAccountCommand } from '../application/command/implements/account.command.update';
-import { DeleteAccountCommand } from '../application/command/implements/account.command.delete';
+import ReadAccountQuery from '../application/query/implements/account.query';
+import UpdateAccountCommand from '../application/command/implements/account.command.update';
+import DeleteAccountCommand from '../application/command/implements/account.command.delete';
 import AccountUserDTO from './dto/account.dto.user';
 import UpdateAccountParamDTO from './dto/account.dto.update.param';
 import UpdateAccountBodyDTO from './dto/account.dto.update.body';
@@ -28,7 +28,8 @@ describe('AccountController', () => {
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
-      imports: [CqrsModule], controllers: [AccountController],
+      imports: [CqrsModule],
+      controllers: [AccountController],
     }).compile();
 
     app = module.createNestApplication();
@@ -64,7 +65,9 @@ describe('AccountController', () => {
     const readAccountListQuery = new ReadAccountListQuery(readAccountListDto);
 
     it('getAccountByEmailAndPassword method call queryBus with query', async () => {
-      const spy = jest.spyOn(queryBus, 'execute').mockImplementation(() => Promise.resolve(account));
+      const spy = jest
+        .spyOn(queryBus, 'execute')
+        .mockImplementation(() => Promise.resolve(account));
       await accountController.getAccountByEmailAndPassword(readAccountListDto);
       expect(spy).toBeCalledWith(readAccountListQuery);
     });
@@ -76,7 +79,9 @@ describe('AccountController', () => {
     const readAccountQeury = new ReadAccountQuery(readAccountDto);
     const user = new AccountUserDTO('id', 'accountEmail', 'accountName');
     it('getAccount method call queryBus with query', async () => {
-      const spy = jest.spyOn(queryBus, 'execute').mockImplementation(() => Promise.resolve(account));
+      const spy = jest
+        .spyOn(queryBus, 'execute')
+        .mockImplementation(() => Promise.resolve(account));
       await accountController.getAccount({ user }, readAccountDto);
       expect(spy).toBeCalledWith(readAccountQeury);
     });

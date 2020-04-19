@@ -1,13 +1,13 @@
-import { TestingModule, Test } from "@nestjs/testing";
-import { CqrsModule, EventPublisher } from "@nestjs/cqrs";
-import { ReadAccountListQueryHandler } from "./account.handler.query.list";
-import { getRepositoryToken } from "@nestjs/typeorm";
-import AccountEntity from "../../../infrastructure/entity/account.entity";
-import { Repository } from "typeorm";
-import AccountRepository from "../../../infrastructure/repository/account.repository";
-import Account from "../../../domain/model/account.model";
-import { ReadAccountListQuery } from "../implements/account.query.list";
-import ReadAccountListDTO from "../../../interface/dto/account.dto.read.list";
+import { TestingModule, Test } from '@nestjs/testing';
+import { CqrsModule, EventPublisher } from '@nestjs/cqrs';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import ReadAccountListQueryHandler from './account.handler.query.list';
+import AccountEntity from '../../../infrastructure/entity/account.entity';
+import AccountRepository from '../../../infrastructure/repository/account.repository';
+import Account from '../../../domain/model/account.model';
+import ReadAccountListQuery from '../implements/account.query.list';
+import ReadAccountListDTO from '../../../interface/dto/account.dto.read.list';
 
 jest.mock('../../../infrastructure/redis/account.redis');
 
@@ -34,14 +34,18 @@ describe('ReadAccountListQueryHandler', () => {
     eventPublisher = module.get(EventPublisher);
   });
 
-  afterAll(async () => close());
-
   describe('execute', () => {
     accountEntity = new AccountEntity();
-    account = new Account(accountEntity.id, accountEntity.name, accountEntity.email, accountEntity.password, accountEntity.active);
+    account = new Account(
+      accountEntity.id,
+      accountEntity.name,
+      accountEntity.email,
+      accountEntity.password,
+      accountEntity.active,
+    );
     readAccountListDto = new ReadAccountListDTO('test@test.com', 'password');
     readAccountListQuery = new ReadAccountListQuery(readAccountListDto);
-  
+
     it('execute query handler', async () => {
       jest.spyOn(accountRepository, 'findOneOrFail').mockResolvedValue(accountEntity);
       jest.spyOn(eventPublisher, 'mergeObjectContext').mockImplementation(() => account);

@@ -1,7 +1,8 @@
-import DeleteAccountDTO from "../../../interface/dto/account.dto.delete";
+import DeleteAccountDTO from '../../../interface/dto/account.dto.delete';
 
-export class DeleteAccountCommand {
+export default class DeleteAccountCommand {
   public readonly id: string;
+
   public readonly password: string;
 
   constructor(dto: DeleteAccountDTO) {

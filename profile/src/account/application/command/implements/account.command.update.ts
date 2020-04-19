@@ -1,8 +1,10 @@
-import UpdateAccountDTO from "../../../interface/dto/account.dto.update";
+import UpdateAccountDTO from '../../../interface/dto/account.dto.update';
 
-export class UpdateAccountCommand {
+export default class UpdateAccountCommand {
   public readonly id: string;
+
   public readonly oldPassword: string;
+
   public readonly newPassword: string;
 
   constructor(dto: UpdateAccountDTO) {

@@ -1,6 +1,6 @@
-import ReadAccountDTO from "../../../interface/dto/account.dto.read";
+import ReadAccountDTO from '../../../interface/dto/account.dto.read';
 
-export class ReadAccountQuery {
+export default class ReadAccountQuery {
   public readonly id: string;
 
   constructor(dto: ReadAccountDTO) {

@@ -1,9 +1,12 @@
-import CreateAccountDTO from "../../../interface/dto/account.dto.create";
+import CreateAccountDTO from '../../../interface/dto/account.dto.create';
 
-export class CreateAccountCommand {
+export default class CreateAccountCommand {
   public readonly email: string;
+
   public readonly password: string;
+
   public readonly name: string;
+
   public readonly active: boolean = true;
 
   constructor(createAccountDto: CreateAccountDTO) {

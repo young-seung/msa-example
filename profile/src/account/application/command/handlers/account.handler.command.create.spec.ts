@@ -1,14 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import uuid from 'uuid';
-import { CreateAccountCommandHandler } from './account.handler.command.create';
-import { CreateAccountCommand } from '../implements/account.command.create';
-import AccountRepository from '../../../infrastructure/repository/account.repository';
 import { EventPublisher, CqrsModule } from '@nestjs/cqrs';
+import { Repository } from 'typeorm';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import CreateAccountCommandHandler from './account.handler.command.create';
+import CreateAccountCommand from '../implements/account.command.create';
+import AccountRepository from '../../../infrastructure/repository/account.repository';
 import Account from '../../../domain/model/account.model';
 import AccountEntity from '../../../infrastructure/entity/account.entity';
 import CreateAccountDTO from '../../../interface/dto/account.dto.create';
-import { Repository } from 'typeorm';
-import { getRepositoryToken } from '@nestjs/typeorm';
 
 describe('CreateAccountCommandHandler', () => {
   let module: TestingModule;
@@ -34,12 +34,20 @@ describe('CreateAccountCommandHandler', () => {
     eventPublisher = module.get(EventPublisher);
   });
 
-  afterAll(async () => close());
-
   describe('execute', () => {
     accountEntity = new AccountEntity();
-    account = new Account(accountEntity.id, accountEntity.name, accountEntity.email, accountEntity.password, accountEntity.active);
-    createAccountDto = new CreateAccountDTO(accountEntity.email, accountEntity.password, accountEntity.name);
+    account = new Account(
+      accountEntity.id,
+      accountEntity.name,
+      accountEntity.email,
+      accountEntity.password,
+      accountEntity.active,
+    );
+    createAccountDto = new CreateAccountDTO(
+      accountEntity.email,
+      accountEntity.password,
+      accountEntity.name,
+    );
     createAccountCommand = new CreateAccountCommand(createAccountDto);
 
     it('execute command handler', async () => {

@@ -1,7 +1,8 @@
-import ReadAccountListDTO from "../../../interface/dto/account.dto.read.list";
+import ReadAccountListDTO from '../../../interface/dto/account.dto.read.list';
 
-export class ReadAccountListQuery {
+export default class ReadAccountListQuery {
   public readonly email: string;
+
   public readonly password: string;
 
   constructor(dto: ReadAccountListDTO) {
