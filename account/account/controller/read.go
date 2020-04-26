@@ -15,17 +15,13 @@ import (
 // @Success 200 {object} model.Account
 // @Router /accounts [get]
 // @Param email query string false "account email"
-// @Param provider query string false "account service provider"
-// @Param password query string false "account password (email provider only)"
-// @Param social_id query string false "account social_id"
+// @Param password query string false "account password"
 // @Security AccessToken
 func (controller *Controller) readAccount(context *gin.Context) {
 	email := context.Query("email")
-	socialID := context.Query("social_id")
-	provider := context.Query("provider")
 	password := context.Query("password")
 
-	if email == "" && socialID == "" && provider == "" && password == "" {
+	if email == "" && password == "" {
 		accessToken := context.GetHeader("Authorization")
 		account, err := controller.GetAccountByAccessToken(accessToken)
 		if err != nil {
@@ -37,26 +33,21 @@ func (controller *Controller) readAccount(context *gin.Context) {
 		return
 	}
 
-	socialIDAndPasswordBothEmpty := false
-	if socialID == "" && password == "" {
-		socialIDAndPasswordBothEmpty = true
-	}
-
-	if email == "" || provider == "" || socialIDAndPasswordBothEmpty {
+	if email == "" {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
-	emaiFormatlValidationError := checkmail.ValidateFormat(email)
-	if emaiFormatlValidationError != nil {
+	emailFormatValidationError := checkmail.ValidateFormat(email)
+	if emailFormatValidationError != nil {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), httpError.Message())
 		return
 	}
 
-	emaiHostlValidationError := checkmail.ValidateHost(email)
-	if emaiHostlValidationError != nil {
+	emailHostValidationError := checkmail.ValidateHost(email)
+	if emailHostValidationError != nil {
 		httpError := controller.util.Error.HTTP.BadRequest()
 		context.JSON(httpError.Code(), "Email host is not existed.")
 		return
@@ -64,30 +55,12 @@ func (controller *Controller) readAccount(context *gin.Context) {
 
 	data := &dto.ReadAccount{
 		Email:    email,
-		Provider: provider,
-		SocialID: socialID,
 		Password: password,
-	}
-
-	if !data.ValidateProvider() {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Provider is must one of 'email' or 'gmail'.")
-		return
-	}
-
-	data.SetAccountAttributeByProvider()
-
-	if !data.ValidateAccountAttributeByProvider() {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
 	}
 
 	query := &query.ReadAccountQuery{
-		Email:    email,
-		Provider: provider,
-		SocialID: socialID,
-		Password: password,
+		Email:    data.Email,
+		Password: data.Password,
 		Deleted:  false,
 	}
 	account, _ := controller.queryBus.Handle(query)

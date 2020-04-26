@@ -14,25 +14,10 @@ import (
 
 // Interface repository inteface
 type Interface interface {
-	Create(
-		accountID string,
-		email string,
-		provider string,
-		socialID string,
-		password string,
-		fcmToken string,
-		gender string,
-	) (entity.Account, error)
-	Update(
-		accountID string,
-		password string,
-		fcmToken string,
-	) (entity.Account, error)
-	FindByEmailAndProvider(
-		email string, provider string, deleted bool,
-	) entity.Account
-	FindByEmail(email string, deleted bool) entity.Account
+	Create(accountID string, email string, password string) (entity.Account, error)
+	Update(accountID string, password string) (entity.Account, error)
 	FindByID(id string, deleted bool) entity.Account
+	FindByEmail(email string, deleted bool) entity.Account
 	Delete(id string) entity.Account
 }
 
@@ -78,13 +63,7 @@ func (repository *Repository) getCache(
 
 // Create create account
 func (repository *Repository) Create(
-	accountID string,
-	email string,
-	provider string,
-	socialID string,
-	password string,
-	fcmToken string,
-	gender string,
+	accountID string, email string, password string,
 ) (entity.Account, error) {
 	sameEmailAccount := entity.Account{}
 	repository.mongo.FindOne(
@@ -98,11 +77,7 @@ func (repository *Repository) Create(
 	accountEntity := entity.Account{
 		ID:        accountID,
 		Email:     email,
-		Provider:  provider,
 		Password:  password,
-		SocialID:  socialID,
-		FCMToken:  fcmToken,
-		Gender:    gender,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
@@ -119,9 +94,7 @@ func (repository *Repository) Create(
 
 // Update update account
 func (repository *Repository) Update(
-	accountID string,
-	password string,
-	fcmToken string,
+	accountID string, password string,
 ) (entity.Account, error) {
 	account := entity.Account{}
 	condition := bson.M{"_id": accountID, "deletedAt": nil}
@@ -138,7 +111,6 @@ func (repository *Repository) Update(
 		bson.M{
 			"$set": bson.M{
 				"password":  password,
-				"fcmToken":  fcmToken,
 				"updatedAt": time.Now(),
 			},
 		},
@@ -150,33 +122,9 @@ func (repository *Repository) Update(
 	return account, nil
 }
 
-// FindByEmailAndProvider find all account
-func (repository *Repository) FindByEmailAndProvider(
-	email string,
-	provider string,
-	deleted bool,
-) entity.Account {
-	accountEntity := entity.Account{}
-
-	if cache := repository.getCache(email); cache != nil {
-		return *cache
-	}
-	repository.mongo.FindOne(
-		context.TODO(),
-		bson.M{
-			"email":     email,
-			"provider":  provider,
-			"deletedAt": nil,
-		},
-	).Decode(&accountEntity)
-	repository.setCache(email, &accountEntity)
-	return accountEntity
-}
-
 // FindByEmail find account by email
 func (repository *Repository) FindByEmail(
-	email string,
-	deleted bool,
+	email string, deleted bool,
 ) entity.Account {
 	accountEntity := entity.Account{}
 
@@ -201,8 +149,7 @@ func (repository *Repository) FindByEmail(
 
 // FindByID find account by accountId
 func (repository *Repository) FindByID(
-	accountID string,
-	deleted bool,
+	accountID string, deleted bool,
 ) entity.Account {
 	accountEntity := entity.Account{}
 

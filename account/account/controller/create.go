@@ -27,13 +27,6 @@ func (controller *Controller) create(context *gin.Context) {
 		return
 	}
 
-	if data.Email == "" || data.Provider == "" || data.Gender == "" ||
-		data.InterestedField == "" || (data.SocialID == "" && data.Password == "") {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Empty data is included")
-		return
-	}
-
 	emaiFormatlValidationError := checkmail.ValidateFormat(data.Email)
 	if emaiFormatlValidationError != nil {
 		httpError := controller.util.Error.HTTP.BadRequest()
@@ -48,18 +41,6 @@ func (controller *Controller) create(context *gin.Context) {
 		return
 	}
 
-	if !data.ValidateAccountGender() {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Gender is must one of 'male' or female")
-		return
-	}
-
-	if !data.ValidateProvider() {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Provider is must one of 'email' or 'gmail'")
-		return
-	}
-
 	query := &query.ReadAccountByEmailQuery{Email: data.Email}
 	duplicated, _ := controller.queryBus.Handle(query)
 	if duplicated.ID != "" {
@@ -68,41 +49,9 @@ func (controller *Controller) create(context *gin.Context) {
 		return
 	}
 
-	data.SetAccountAttributeByProvider()
-
-	if !data.ValidateAccountAttributeByProvider() {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), httpError.Message())
-		return
-	}
-
-	if !data.ValidateInterestedField() {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(
-			httpError.Code(),
-			"InterestedField is must be one of 'develop', 'design' and 'plan'",
-		)
-		return
-	}
-
-	if !data.ValidateInterestedFieldDetail() {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(
-			httpError.Code(),
-			"InterestedFieldDetail is contain invalid data",
-		)
-		return
-	}
-
 	command := &command.CreateCommand{
-		Email:                 data.Email,
-		Provider:              data.Provider,
-		SocialID:              data.SocialID,
-		Password:              data.Password,
-		Gender:                data.Gender,
-		FCMToken:              data.FCMToken,
-		InterestedField:       data.InterestedField,
-		InterestedFieldDetail: data.InterestedFieldDetail,
+		Email:    data.Email,
+		Password: data.Password,
 	}
 
 	createdAccount, handlingError := controller.commandBus.Handle(command)

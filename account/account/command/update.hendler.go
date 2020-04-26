@@ -13,8 +13,7 @@ func (bus *Bus) handleUpdateCommand(
 	if oldData.ID == "" {
 		return nil, errors.New("Update target Account data is not found")
 	}
-	hashedPassword, _ :=
-		getHashedPasswordAndSocialID(command.Password, "")
+	hashedPassword := getHashedPassword(command.Password)
 
 	if command.Password == "" {
 		hashedPassword = oldData.Password
@@ -23,7 +22,6 @@ func (bus *Bus) handleUpdateCommand(
 	updatedAccountEntity, updateError := bus.repository.Update(
 		oldData.ID,
 		hashedPassword,
-		command.FCMToken,
 	)
 	if updateError != nil {
 		return nil, updateError

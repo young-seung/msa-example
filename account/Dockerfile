@@ -1,5 +1,5 @@
 FROM golang:alpine AS stage
-WORKDIR /go/src/github.com/kyhsa93/gin-rest-cqrs-example
+WORKDIR /go/src/github.com/kyhsa93/account
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -ldflags '-s' -o main main.go
 
