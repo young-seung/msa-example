@@ -4,11 +4,18 @@ on:
   push:
     paths:
       - account/**
-    pull_request:
+      - .github/workflows/account.yml
+  pull_request:
+    paths:
       - account/**
+      - .github/workflows/account.yml
+    types: [assigned, opened, synchronize, reopened]
 
 jobs:
   test:
+    defaults:
+      run:
+        working-directory: ./account
     strategy:
       matrix:
         go-version: [1.12.x, 1.13.x, 1.14.x]
@@ -22,4 +29,4 @@ jobs:
       with:
         go-version: ${{ matrix.go-version }}
     - name: Test
-      run: go test account/... -count=1
+      run: go test ./... -count=1
