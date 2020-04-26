@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/young-seung/msa-example/account/account/api"
 	"github.com/young-seung/msa-example/account/account/command"
 	"github.com/young-seung/msa-example/account/account/controller"
 	"github.com/young-seung/msa-example/account/account/query"
@@ -20,9 +19,8 @@ func TestNew(t *testing.T) {
 	commandBus := &command.Bus{}
 	queryBus := &query.Bus{}
 	config := &config.Config{}
-	api := &api.API{}
 	controllerInstance := controller.New(
-		engine, commandBus, queryBus, util, config, api,
+		engine, commandBus, queryBus, util, config,
 	)
 	if controllerInstance == nil {
 		t.Error("Can not create controller instance")

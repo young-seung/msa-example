@@ -40,16 +40,9 @@ func (controller *Controller) update(context *gin.Context) {
 		return
 	}
 
-	if data.FCMToken == "" {
-		httpError := controller.util.Error.HTTP.BadRequest()
-		context.JSON(httpError.Code(), "Empty data is included.")
-		return
-	}
-
 	command := &command.UpdateCommand{
 		AccountID: id,
 		Password:  data.Password,
-		FCMToken:  data.FCMToken,
 	}
 
 	updatedAccount, handlingError := controller.commandBus.Handle(command)

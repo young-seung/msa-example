@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	"github.com/gin-gonic/gin"
-	"github.com/young-seung/msa-example/account/account/api"
 	"github.com/young-seung/msa-example/account/account/command"
 	"github.com/young-seung/msa-example/account/account/model"
 	"github.com/young-seung/msa-example/account/account/query"
@@ -19,7 +18,6 @@ type Controller struct {
 	queryBus   *query.Bus
 	util       *util.Util
 	config     config.Interface
-	api        api.Interface
 }
 
 // New create account controller instance
@@ -29,7 +27,6 @@ func New(
 	queryBus *query.Bus,
 	util *util.Util,
 	config config.Interface,
-	api api.Interface,
 ) *Controller {
 	controller := &Controller{
 		route:      route,
@@ -37,7 +34,6 @@ func New(
 		queryBus:   queryBus,
 		util:       util,
 		config:     config,
-		api:        api,
 	}
 	controller.SetupRoutes()
 	return controller

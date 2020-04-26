@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
-	"github.com/young-seung/msa-example/account/account/api"
 	"github.com/young-seung/msa-example/account/account/aws"
 	"github.com/young-seung/msa-example/account/account/command"
 	"github.com/young-seung/msa-example/account/account/controller"
@@ -54,8 +53,7 @@ func Initialize(
 	repository := repository.New(redisClient, mongoClient)
 	email := email.New(config)
 	aws := aws.New(config)
-	api := api.New(config)
-	commandBus := command.New(repository, email, aws, config, api)
+	commandBus := command.New(repository, email, aws, config)
 	queryBus := query.New(config, repository)
-	controller.New(engine, commandBus, queryBus, util, config, api)
+	controller.New(engine, commandBus, queryBus, util, config)
 }

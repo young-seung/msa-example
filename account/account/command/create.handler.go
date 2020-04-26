@@ -9,17 +9,12 @@ func (bus *Bus) handleCreateCommand(
 	command *CreateCommand,
 ) (*model.Account, error) {
 	uuid, _ := uuid.NewRandom()
-	hashedPassword, hashedSocialID :=
-		getHashedPasswordAndSocialID(command.Password, command.SocialID)
+	hashedPassword := getHashedPassword(command.Password)
 
 	createdAccountEntity, createError := bus.repository.Create(
 		uuid.String(),
 		command.Email,
-		command.Provider,
-		hashedSocialID,
 		hashedPassword,
-		command.FCMToken,
-		command.Gender,
 	)
 	if createError != nil {
 		return nil, createError
@@ -30,17 +25,5 @@ func (bus *Bus) handleCreateCommand(
 		bus.config.Auth().AccessTokenSecret(),
 		bus.config.Auth().AccessTokenExpiration(),
 	)
-	profile, err := bus.api.CreateProfile(
-		accountModel.AccessToken,
-		accountModel.ID,
-		command.Email,
-		command.Gender,
-		command.InterestedField,
-		command.InterestedFieldDetail,
-	)
-
-	if err != nil || profile == nil {
-		panic(err)
-	}
 	return accountModel, nil
 }

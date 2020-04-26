@@ -8,8 +8,6 @@ type ReadAccountByIDQuery struct {
 // ReadAccountQuery read account query
 type ReadAccountQuery struct {
 	Email    string
-	Provider string
-	SocialID string
 	Password string
 	Deleted  bool
 }

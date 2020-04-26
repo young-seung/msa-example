@@ -3,7 +3,6 @@ package command
 import (
 	"errors"
 
-	"github.com/young-seung/msa-example/account/account/api"
 	"github.com/young-seung/msa-example/account/account/aws"
 	"github.com/young-seung/msa-example/account/account/email"
 	"github.com/young-seung/msa-example/account/account/entity"
@@ -19,7 +18,6 @@ type Bus struct {
 	email      email.Interface
 	aws        aws.Interface
 	config     config.Interface
-	api        api.Interface
 }
 
 // New create Bus instance
@@ -28,14 +26,12 @@ func New(
 	email email.Interface,
 	aws aws.Interface,
 	config config.Interface,
-	api api.Interface,
 ) *Bus {
 	return &Bus{
 		repository: repository,
 		email:      email,
 		aws:        aws,
 		config:     config,
-		api:        api,
 	}
 }
 
@@ -57,22 +53,16 @@ func (bus *Bus) entityToModel(entity entity.Account) *model.Account {
 	var accountModel model.Account
 	accountModel.ID = entity.ID
 	accountModel.Email = entity.Email
-	accountModel.Provider = entity.Provider
 	accountModel.CreatedAt = entity.CreatedAt
 	accountModel.UpdatedAt = entity.UpdatedAt
 
 	return &accountModel
 }
 
-func getHashedPasswordAndSocialID(password string, socialID string) (string, string) {
+func getHashedPassword(password string) string {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
 	if err != nil {
 		panic(err)
 	}
-
-	hashedSocialID, err := bcrypt.GenerateFromPassword([]byte(socialID), bcrypt.MinCost)
-	if err != nil {
-		panic(err)
-	}
-	return string(hashedPassword), string(hashedSocialID)
+	return string(hashedPassword)
 }

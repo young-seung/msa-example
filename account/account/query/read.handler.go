@@ -26,8 +26,8 @@ func (bus *Bus) handleReadAccountByIDQuery(
 func (bus *Bus) handleReadAccountQuery(
 	query *ReadAccountQuery,
 ) (*model.Account, error) {
-	entity := bus.repository.FindByEmailAndProvider(
-		query.Email, query.Provider, query.Deleted,
+	entity := bus.repository.FindByEmail(
+		query.Email, query.Deleted,
 	)
 
 	if entity.ID == "" {
@@ -37,13 +37,6 @@ func (bus *Bus) handleReadAccountQuery(
 	if err := compareHashAndPassword(
 		entity.Password,
 		query.Password,
-	); err != nil {
-		return &model.Account{}, err
-	}
-
-	if err := compareHashAndPassword(
-		entity.SocialID,
-		query.SocialID,
 	); err != nil {
 		return &model.Account{}, err
 	}
