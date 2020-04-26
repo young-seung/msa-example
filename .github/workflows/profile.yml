@@ -1,0 +1,30 @@
+name: profile service test
+
+on: 
+  push:
+    paths:
+      - profile/**
+    pull_request:
+      - profile/**
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+      github:
+        workspace: ./profile/
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+    - name: Set up nodejs version ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install package
+      working-directory: ${{ github.workspace }}
+      run: npm install
+    - name: Test
+      working-directory: ${{ github.workspace }}
+      run: npm test
