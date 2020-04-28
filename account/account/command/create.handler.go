@@ -19,7 +19,6 @@ func (bus *Bus) handleCreateCommand(
 	if createError != nil {
 		return nil, createError
 	}
-	bus.email.Send([]string{command.Email}, "Account is created.")
 	accountModel := bus.entityToModel(createdAccountEntity)
 	accountModel.CreateAccessToken(
 		bus.config.Auth().AccessTokenSecret(),
