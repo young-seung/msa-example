@@ -4,17 +4,22 @@ on:
   push:
     paths:
       - profile/**
-    pull_request:
+      - .github/workflows/profile.yml
+  pull_request:
+    paths:
       - profile/**
+      - .github/workflows/profile.yml
+    types: [assigned, opened, synchronize, reopened]
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./profile
     strategy:
       matrix:
         node-version: [10.x, 12.x, 14.x]
-      github:
-        workspace: ./profile/
+    runs-on: ubuntu-latest
     steps:
     - name: Checkout Code
       uses: actions/checkout@v2
@@ -23,8 +28,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install package
-      working-directory: ${{ github.workspace }}
       run: npm install
     - name: Test
-      working-directory: ${{ github.workspace }}
       run: npm test
