@@ -6,10 +6,7 @@ on:
       - profile/**
       - .github/workflows/profile.yml
   pull_request:
-    paths:
-      - profile/**
-      - .github/workflows/profile.yml
-    types: [assigned, opened, synchronize, reopened]
+    types: [opened, synchronize, reopened]
 
 jobs:
   test:
