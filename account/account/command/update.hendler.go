@@ -27,7 +27,6 @@ func (bus *Bus) handleUpdateCommand(
 		return nil, updateError
 	}
 
-	bus.email.Send([]string{oldData.Email}, "Account is updated.")
 	accountModel := bus.entityToModel(updatedAccountEntity)
 	accountModel.CreateAccessToken(
 		bus.config.Auth().AccessTokenSecret(),

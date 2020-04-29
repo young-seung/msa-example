@@ -3,8 +3,6 @@ package command
 import (
 	"errors"
 
-	"github.com/young-seung/msa-example/account/account/aws"
-	"github.com/young-seung/msa-example/account/account/email"
 	"github.com/young-seung/msa-example/account/account/entity"
 	"github.com/young-seung/msa-example/account/account/model"
 	"github.com/young-seung/msa-example/account/account/repository"
@@ -15,22 +13,16 @@ import (
 // Bus account command
 type Bus struct {
 	repository repository.Interface
-	email      email.Interface
-	aws        aws.Interface
 	config     config.Interface
 }
 
 // New create Bus instance
 func New(
 	repository repository.Interface,
-	email email.Interface,
-	aws aws.Interface,
 	config config.Interface,
 ) *Bus {
 	return &Bus{
 		repository: repository,
-		email:      email,
-		aws:        aws,
 		config:     config,
 	}
 }

@@ -6,10 +6,7 @@ on:
       - account/**
       - .github/workflows/account.yml
   pull_request:
-    paths:
-      - account/**
-      - .github/workflows/account.yml
-    types: [assigned, opened, synchronize, reopened]
+    types: [opened, synchronize, reopened]
 
 jobs:
   test:

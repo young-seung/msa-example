@@ -5,10 +5,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
-	"github.com/young-seung/msa-example/account/account/aws"
 	"github.com/young-seung/msa-example/account/account/command"
 	"github.com/young-seung/msa-example/account/account/controller"
-	"github.com/young-seung/msa-example/account/account/email"
 	"github.com/young-seung/msa-example/account/account/query"
 	"github.com/young-seung/msa-example/account/account/repository"
 	"github.com/young-seung/msa-example/account/config"
@@ -51,9 +49,7 @@ func Initialize(
 	mongoClient := getMongoDBClient(config)
 	redisClient := getRedisClient(config)
 	repository := repository.New(redisClient, mongoClient)
-	email := email.New(config)
-	aws := aws.New(config)
-	commandBus := command.New(repository, email, aws, config)
+	commandBus := command.New(repository, config)
 	queryBus := query.New(config, repository)
 	controller.New(engine, commandBus, queryBus, util, config)
 }
