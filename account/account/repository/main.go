@@ -7,7 +7,6 @@ import (
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/young-seung/msa-example/account/account/entity"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
 // Interface repository interface
@@ -24,17 +23,15 @@ type Interface interface {
 // Repository repository for query to database
 type Repository struct {
 	redis      *redis.Client
-	mongo      *mongo.Collection
 	connection *gorm.DB
 }
 
 // New create repository instance
 func New(
 	redis *redis.Client,
-	mongo *mongo.Collection,
 	connection *gorm.DB,
 ) Interface {
-	return &Repository{mongo: mongo, redis: redis, connection: connection}
+	return &Repository{redis: redis, connection: connection}
 }
 
 func (repository *Repository) setCache(key string, accountEntity *entity.Account) {
@@ -93,7 +90,7 @@ func (repository *Repository) Delete(transaction *gorm.DB, accountID string) err
 
 // FindByEmail find account by email
 func (repository *Repository) FindByEmail(transaction *gorm.DB, email string, deleted bool) (entity.Account, error) {
-	var connection *gorm.DB
+	connection := transaction
 	if transaction == nil {
 		connection = repository.connection
 	}
@@ -106,8 +103,8 @@ func (repository *Repository) FindByEmail(transaction *gorm.DB, email string, de
 	}
 
 	cache, err := repository.getCache(email)
-	if cache == nil || err != nil {
-		return accountEntity, err
+	if cache != nil && err == nil {
+		return *cache, err
 	}
 
 	err = connection.Where(condition).Take(&accountEntity).Error
@@ -116,7 +113,7 @@ func (repository *Repository) FindByEmail(transaction *gorm.DB, email string, de
 
 // FindByID find account by accountId
 func (repository *Repository) FindByID(transaction *gorm.DB, accountID string, deleted bool) (entity.Account, error) {
-	var connection *gorm.DB
+	connection := transaction
 	if transaction == nil {
 		connection = repository.connection
 	}
@@ -129,8 +126,8 @@ func (repository *Repository) FindByID(transaction *gorm.DB, accountID string, d
 	}
 
 	cache, err := repository.getCache(accountID)
-	if cache == nil || err != nil {
-		return accountEntity, err
+	if cache != nil && err == nil {
+		return *cache, err
 	}
 
 	err = connection.Where(condition).Take(&accountEntity).Error

@@ -10,5 +10,6 @@ func (bus *Bus) handleDeleteCommand(command *DeleteCommand) (*model.Account, err
 		transaction.Rollback()
 	}
 	err = bus.repository.Delete(transaction, accountID)
+	transaction.Commit()
 	return bus.entityToModel(entity), err
 }

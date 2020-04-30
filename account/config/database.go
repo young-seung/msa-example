@@ -26,7 +26,7 @@ type Database struct {
 
 // NewDatabaseConfig create database instance
 func NewDatabaseConfig() *Database {
-	port := "27017"
+	port := "3306"
 	host := "localhost"
 	name := "account"
 	user := "root"

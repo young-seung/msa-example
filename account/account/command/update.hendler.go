@@ -24,6 +24,7 @@ func (bus *Bus) handleUpdateCommand(
 	if err != nil {
 		transaction.Rollback()
 	}
+	transaction.Commit()
 
 	accountModel := bus.entityToModel(entity)
 	accountModel.CreateAccessToken(

@@ -1,8 +1,6 @@
 package account
 
 import (
-	"context"
-
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
@@ -13,8 +11,6 @@ import (
 	"github.com/young-seung/msa-example/account/account/repository"
 	"github.com/young-seung/msa-example/account/config"
 	"github.com/young-seung/msa-example/account/util"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func getDatabaseConnection(config config.Interface) *gorm.DB {
@@ -35,26 +31,6 @@ func getDatabaseConnection(config config.Interface) *gorm.DB {
 	return connection
 }
 
-func getMongoDBClient(config config.Interface) *mongo.Collection {
-	user := config.Database().User()
-	password := config.Database().Password()
-	host := config.Database().Host()
-	port := config.Database().Port()
-	clientOptions := options.Client().ApplyURI(
-		"mongodb://" + user + ":" + password + "@" + host + ":" + port,
-	)
-	client, err := mongo.Connect(context.TODO(), clientOptions)
-	if err != nil {
-		panic(err)
-	}
-	client.Ping(context.TODO(), nil)
-	collection := client.Database(
-		config.Database().Name(),
-	).Collection("accounts")
-
-	return collection
-}
-
 func getRedisClient(config config.Interface) *redis.Client {
 	return redis.NewClient(&redis.Options{
 		Addr:     config.Redis().Address(),
@@ -66,10 +42,9 @@ func getRedisClient(config config.Interface) *redis.Client {
 func Initialize(
 	engine *gin.Engine, config config.Interface, util *util.Util,
 ) {
-	mongoClient := getMongoDBClient(config)
 	dbConnection := getDatabaseConnection(config)
 	redisClient := getRedisClient(config)
-	repository := repository.New(redisClient, mongoClient, dbConnection)
+	repository := repository.New(redisClient, dbConnection)
 	commandBus := command.New(repository, config)
 	queryBus := query.New(config, repository)
 	controller.New(engine, commandBus, queryBus, util, config)
