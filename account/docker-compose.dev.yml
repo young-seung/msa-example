@@ -7,12 +7,15 @@ services:
     ports:
       - 6379:6379
     
-  mongo:
-    image: mongo
+  database:
+    image: mysql:5.7
     restart: always
-    env_file: .env
     ports:
-      - 27017:27017
+      - 3306:3306
+    env_file:
+      - .env
+    volumes:
+      - ~/database/account:/var/lib/mysql
 
   localstack:
     image: localstack/localstack
@@ -22,10 +25,3 @@ services:
       - SERVICES=s3
     volumes:
       - ./.aws:/docker-entrypoint-initaws.d
-
-  mongo-express:
-    image: mongo-express
-    restart: always
-    ports:
-      - 8081:8081
-    env_file: .env

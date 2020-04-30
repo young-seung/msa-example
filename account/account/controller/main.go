@@ -48,7 +48,7 @@ func (controller *Controller) SetupRoutes() {
 }
 
 // GetAccountByAccessToken get account data by accesstoken
-func (controller *Controller) GetAccountByAccessToken(
+func (controller *Controller) getAccountByAccessToken(
 	accessToken string,
 ) (model.Account, error) {
 	if accessToken == "" {

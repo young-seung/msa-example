@@ -4,5 +4,4 @@ package command
 type UpdateCommand struct {
 	AccountID string
 	Password  string
-	FCMToken  string
 }

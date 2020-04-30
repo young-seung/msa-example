@@ -14,7 +14,7 @@ import (
 // @Security AccessToken
 func (controller *Controller) delete(context *gin.Context) {
 	accessToken := context.GetHeader("Authorization")
-	account, err := controller.GetAccountByAccessToken(accessToken)
+	account, err := controller.getAccountByAccessToken(accessToken)
 	if account.ID == "" || err != nil {
 		httpError := controller.util.Error.HTTP.Unauthorized()
 		context.JSON(httpError.Code(), httpError.Message())

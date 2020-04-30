@@ -24,12 +24,12 @@ services:
     restart: always
 
   database:
-    image: mongo
+    image: mysql:5.7
     restart: always
     env_file:
       - .env
     volumes:
-      - ~/database/account:/data/db
+      - ~/database/account:/var/lib/mysql
 
   localstack:
     image: localstack/localstack
