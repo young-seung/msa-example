@@ -23,7 +23,7 @@ func (controller *Controller) readAccount(context *gin.Context) {
 
 	if email == "" && password == "" {
 		accessToken := context.GetHeader("Authorization")
-		account, err := controller.GetAccountByAccessToken(accessToken)
+		account, err := controller.getAccountByAccessToken(accessToken)
 		if err != nil {
 			httpError := controller.util.Error.HTTP.Unauthorized()
 			context.JSON(httpError.Code(), httpError.Message())
