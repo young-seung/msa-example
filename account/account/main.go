@@ -67,8 +67,9 @@ func Initialize(
 	engine *gin.Engine, config config.Interface, util *util.Util,
 ) {
 	mongoClient := getMongoDBClient(config)
+	dbConnection := getDatabaseConnection(config)
 	redisClient := getRedisClient(config)
-	repository := repository.New(redisClient, mongoClient)
+	repository := repository.New(redisClient, mongoClient, dbConnection)
 	commandBus := command.New(repository, config)
 	queryBus := query.New(config, repository)
 	controller.New(engine, commandBus, queryBus, util, config)

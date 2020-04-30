@@ -4,10 +4,10 @@ import "time"
 
 // Account account entity for database table
 type Account struct {
-	ID        string     `json:"_id" bson:"_id"`
-	Email     string     `json:"email" bson:"email"`
-	Password  string     `json:"password" bson:"password"`
-	CreatedAt time.Time  `json:"createdAt" bson:"createdAt"`
-	UpdatedAt time.Time  `json:"updatedAt" bson:"updatedAt"`
-	DeletedAt *time.Time `json:"deletedAt" bson:"deletedAt"`
+	ID        string    `gorm:"primary_key;not null"`
+	Email     string    `gorm:"unique;not null"`
+	Password  string    `gorm:"not null"`
+	CreatedAt time.Time `gorm:"not null"`
+	UpdatedAt time.Time `gorm:"not null"`
+	DeletedAt *time.Time
 }

@@ -9,9 +9,9 @@ import (
 func (bus *Bus) handleReadAccountByIDQuery(
 	query *ReadAccountByIDQuery,
 ) (*model.Account, error) {
-	entity := bus.repository.FindByID(query.AccountID, false)
+	entity, err := bus.repository.FindByID(nil, query.AccountID, false)
 
-	if entity.ID == "" {
+	if entity.ID == "" || err != nil {
 		return nil, errors.New("Account is not found")
 	}
 
@@ -26,11 +26,11 @@ func (bus *Bus) handleReadAccountByIDQuery(
 func (bus *Bus) handleReadAccountQuery(
 	query *ReadAccountQuery,
 ) (*model.Account, error) {
-	entity := bus.repository.FindByEmail(
-		query.Email, query.Deleted,
+	entity, err := bus.repository.FindByEmail(
+		nil, query.Email, query.Deleted,
 	)
 
-	if entity.ID == "" {
+	if entity.ID == "" || err != nil {
 		return &model.Account{}, nil
 	}
 
@@ -51,8 +51,8 @@ func (bus *Bus) handleReadAccountQuery(
 func (bus *Bus) handleReadAccountByEmailquery(
 	query *ReadAccountByEmailQuery,
 ) (*model.Account, error) {
-	entity := bus.repository.FindByEmail(query.Email, true)
-	if entity.ID == "" {
+	entity, err := bus.repository.FindByEmail(nil, query.Email, true)
+	if entity.ID == "" || err != nil {
 		return &model.Account{}, nil
 	}
 	model := bus.entityToModel(entity)
