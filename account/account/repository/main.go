@@ -12,6 +12,7 @@ import (
 // Interface repository interface
 type Interface interface {
 	Start() *gorm.DB
+	Create(transaction *gorm.DB, entity *entity.Account) error
 	Save(transaction *gorm.DB, entity *entity.Account) error
 	Delete(transaction *gorm.DB, accountID string) error
 	FindByID(transaction *gorm.DB, accountID string, deleted bool) (entity.Account, error)
@@ -58,7 +59,16 @@ func (repository *Repository) Start() *gorm.DB {
 	return repository.connection.Begin()
 }
 
-// Save create or update account
+// Create insert the value into database
+func (repository *Repository) Create(transaction *gorm.DB, entity *entity.Account) error {
+	if err := transaction.Create(entity).Error; err != nil {
+		return err
+	}
+	repository.setCache(entity.ID, entity)
+	return nil
+}
+
+// Save update value in database, if the value doesn't have primary key, will insert it
 func (repository *Repository) Save(transaction *gorm.DB, entity *entity.Account) error {
 	if err := transaction.Save(entity).Error; err != nil {
 		return err

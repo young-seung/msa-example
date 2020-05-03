@@ -6,25 +6,22 @@ import (
 	"github.com/young-seung/msa-example/account/account/model"
 )
 
-func (bus *Bus) handleCreateCommand(
-	command *CreateCommand,
-) (*model.Account, error) {
+func (bus *Bus) handleCreateCommand(command *CreateCommand) (*model.Account, error) {
 	uuid, _ := uuid.NewRandom()
 	email := command.Email
 	hashedPassword := getHashedPassword(command.Password)
 
 	transaction := bus.repository.Start()
 	entity := entity.Account{ID: uuid.String(), Email: email, Password: hashedPassword}
-	err := bus.repository.Save(transaction, &entity)
+	err := bus.repository.Create(transaction, &entity)
 	if err != nil {
 		transaction.Rollback()
 	}
 	transaction.Commit()
 
 	accountModel := bus.entityToModel(entity)
-	accountModel.CreateAccessToken(
-		bus.config.Auth().AccessTokenSecret(),
-		bus.config.Auth().AccessTokenExpiration(),
-	)
+	secret := bus.config.Auth().AccessTokenSecret()
+	expiration := bus.config.Auth().AccessTokenExpiration()
+	accountModel.CreateAccessToken(secret, expiration)
 	return accountModel, err
 }
