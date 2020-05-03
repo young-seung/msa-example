@@ -24,7 +24,8 @@ export default class DeleteAccountCommandHandler implements ICommandHandler<Dele
     const account = this.publisher.mergeObjectContext(
       new Account(data.id, data.name, data.email, data.password, data.active),
     );
-    if (!account.comparePassword(command.password)) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    if (!account.comparePassword(command.password))
+      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     account.commit();
     await this.repository.update({ id: account.id }, new DeleteAccountMapper(account));
   }

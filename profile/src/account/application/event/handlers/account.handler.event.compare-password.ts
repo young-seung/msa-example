@@ -3,5 +3,6 @@ import ComparePasswordEvent from '../implements/account.event.compare-password';
 
 @EventsHandler(ComparePasswordEvent)
 export default class ComparePasswordEventHandler implements IEventHandler<ComparePasswordEvent> {
-  handle = (event: ComparePasswordEvent): void => console.log(`password is compared! id: ${event.id}`);
+  handle = (event: ComparePasswordEvent): void =>
+    console.log(`password is compared! id: ${event.id}`);
 }

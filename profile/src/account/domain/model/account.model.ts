@@ -21,7 +21,8 @@ export default class Account extends AggregateRoot {
   }
 
   updatePassoword(oldPassoword: string, newPassword: string): void {
-    if (!this.comparePassword(oldPassoword)) throw new HttpException('Bad requeest', HttpStatus.BAD_REQUEST);
+    if (!this.comparePassword(oldPassoword))
+      throw new HttpException('Bad requeest', HttpStatus.BAD_REQUEST);
     this.password = bcrypt.hashSync(newPassword);
   }
 }
