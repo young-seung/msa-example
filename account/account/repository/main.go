@@ -12,8 +12,7 @@ import (
 // Interface repository interface
 type Interface interface {
 	Start() *gorm.DB
-	Commit(transaction *gorm.DB)
-	RollBack(transaction *gorm.DB)
+	Create(transaction *gorm.DB, entity *entity.Account) error
 	Save(transaction *gorm.DB, entity *entity.Account) error
 	Delete(transaction *gorm.DB, accountID string) error
 	FindByID(transaction *gorm.DB, accountID string, deleted bool) (entity.Account, error)
@@ -27,10 +26,7 @@ type Repository struct {
 }
 
 // New create repository instance
-func New(
-	redis *redis.Client,
-	connection *gorm.DB,
-) Interface {
+func New(redis *redis.Client, connection *gorm.DB) Interface {
 	return &Repository{redis: redis, connection: connection}
 }
 
@@ -63,17 +59,16 @@ func (repository *Repository) Start() *gorm.DB {
 	return repository.connection.Begin()
 }
 
-// Commit commit transation
-func (repository *Repository) Commit(transaction *gorm.DB) {
-	transaction.Commit()
+// Create insert the value into database
+func (repository *Repository) Create(transaction *gorm.DB, entity *entity.Account) error {
+	if err := transaction.Create(entity).Error; err != nil {
+		return err
+	}
+	repository.setCache(entity.ID, entity)
+	return nil
 }
 
-// RollBack rollback transaction
-func (repository *Repository) RollBack(transaction *gorm.DB) {
-	transaction.Rollback()
-}
-
-// Save create or update account
+// Save update value in database, if the value doesn't have primary key, will insert it
 func (repository *Repository) Save(transaction *gorm.DB, entity *entity.Account) error {
 	if err := transaction.Save(entity).Error; err != nil {
 		return err
