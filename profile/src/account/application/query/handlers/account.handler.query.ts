@@ -21,9 +21,7 @@ export default class ReadAccountQueryHandler implements IQueryHandler<ReadAccoun
     const data: AccountEntity = JSON.parse(cached);
     const account = new Account(data.id, data.name, data.email, data.password, data.active);
     this.publisher.mergeObjectContext(account);
-    const {
-      id, name, email, active,
-    } = account;
+    const { id, name, email, active } = account;
     return {
       id,
       name,
@@ -54,9 +52,7 @@ export default class ReadAccountQueryHandler implements IQueryHandler<ReadAccoun
     );
     this.publisher.mergeObjectContext(account);
 
-    const {
-      id, name, email, active,
-    } = account;
+    const { id, name, email, active } = account;
     return {
       id,
       name,

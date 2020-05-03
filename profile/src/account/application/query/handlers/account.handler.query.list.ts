@@ -23,7 +23,8 @@ export default class ReadAccountListQueryHandler implements IQueryHandler<ReadAc
     const account = this.publisher.mergeObjectContext(
       new Account(data.id, data.name, data.email, data.password, data.active),
     );
-    if (!account.comparePassword(password)) throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
+    if (!account.comparePassword(password))
+      throw new HttpException('Bad request', HttpStatus.BAD_REQUEST);
     account.commit();
     return {
       id: account.id,
