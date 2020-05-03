@@ -17,6 +17,8 @@ repositories {
 }
 
 dependencies {
+	compile ("io.springfox:springfox-swagger2:2.9.2")
+	compile ("io.springfox:springfox-swagger-ui:2.9.2")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
