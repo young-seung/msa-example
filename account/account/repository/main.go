@@ -12,8 +12,6 @@ import (
 // Interface repository interface
 type Interface interface {
 	Start() *gorm.DB
-	Commit(transaction *gorm.DB)
-	RollBack(transaction *gorm.DB)
 	Save(transaction *gorm.DB, entity *entity.Account) error
 	Delete(transaction *gorm.DB, accountID string) error
 	FindByID(transaction *gorm.DB, accountID string, deleted bool) (entity.Account, error)
@@ -27,10 +25,7 @@ type Repository struct {
 }
 
 // New create repository instance
-func New(
-	redis *redis.Client,
-	connection *gorm.DB,
-) Interface {
+func New(redis *redis.Client, connection *gorm.DB) Interface {
 	return &Repository{redis: redis, connection: connection}
 }
 
@@ -61,16 +56,6 @@ func (repository *Repository) getCache(key string) (*entity.Account, error) {
 // Start start database transaction
 func (repository *Repository) Start() *gorm.DB {
 	return repository.connection.Begin()
-}
-
-// Commit commit transation
-func (repository *Repository) Commit(transaction *gorm.DB) {
-	transaction.Commit()
-}
-
-// RollBack rollback transaction
-func (repository *Repository) RollBack(transaction *gorm.DB) {
-	transaction.Rollback()
 }
 
 // Save create or update account
