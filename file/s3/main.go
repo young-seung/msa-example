@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	sdk "github.com/aws/aws-sdk-go/service/s3"
 	"github.com/google/uuid"
+	"github.com/young-seung/msa-example/file/aws"
 	"github.com/young-seung/msa-example/file/config"
 )
 
@@ -27,14 +28,14 @@ type S3 struct {
 }
 
 // New create s3 instance
-func New(config config.Interface, session *session.Session) *S3 {
+func New(config config.Interface, aws aws.Interface) *S3 {
 	bucket := config.AWS().S3().Bucket()
 	acl := config.AWS().S3().ACL()
 	contentDisposition := config.AWS().S3().ContentDisposition()
 	serverSideEncryption := config.AWS().S3().ServerSideEncryption()
 	storageClass := config.AWS().S3().StorageClass()
 	return &S3{
-		session:              session,
+		session:              aws.GetAWSSession(),
 		bucket:               bucket,
 		acl:                  acl,
 		contentDisposition:   contentDisposition,

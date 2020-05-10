@@ -9,7 +9,9 @@ import (
 )
 
 // Interface aws service interface
-type Interface interface{}
+type Interface interface {
+	GetAWSSession() *session.Session
+}
 
 // AWS aws struct
 type AWS struct {
@@ -36,7 +38,8 @@ func (aws *AWS) endpointResolver(service, region string, optFns ...func(*endpoin
 	return endpoints.DefaultResolver().EndpointFor(service, region, optFns...)
 }
 
-func (aws *AWS) getAWSSession() *session.Session {
+// GetAWSSession get aws session
+func (aws *AWS) GetAWSSession() *session.Session {
 	credential := credentials.NewStaticCredentials(aws.secretID, aws.secretKey, aws.token)
 	region := endpoints.ApNortheast2RegionID
 	endpointResolver := endpoints.ResolverFunc(aws.endpointResolver)
