@@ -50,7 +50,7 @@ func (s3 *S3) Upload(fileHeader *multipart.FileHeader) string {
 		return ""
 	}
 
-	var buffer []byte
+	buffer := make([]byte, fileHeader.Size)
 	file, err := fileHeader.Open()
 	checkError(err)
 

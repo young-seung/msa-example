@@ -11,11 +11,11 @@ import (
 type CreateFileCommand struct {
 	AccountID string
 	Usage     string
-	Image     *multipart.FileHeader
+	File      *multipart.FileHeader
 }
 
 func (commandBus *CommandBus) createFile(command *CreateFileCommand) (*model.FileModel, error) {
-	fileID := commandBus.s3.Upload(command.Image)
+	fileID := commandBus.s3.Upload(command.File)
 	if fileID == "" {
 		return nil, errors.New("can not generate s3 object key")
 	}

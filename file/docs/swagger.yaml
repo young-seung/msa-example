@@ -1,7 +1,56 @@
+definitions:
+  model.FileModel:
+    properties:
+      accountId:
+        example: accountId
+        type: string
+      createdAt:
+        example: createdAt
+        type: string
+      id:
+        example: fileId
+        type: string
+      imageUrl:
+        example: profile.image.com
+        type: string
+      usage:
+        example: profile
+        type: string
+    type: object
 info:
   contact: {}
   license: {}
-paths: {}
+paths:
+  /files:
+    post:
+      consumes:
+      - multipart/form-data
+      description: crate file
+      parameters:
+      - description: accountId for file owner
+        in: formData
+        name: accountId
+        required: true
+        type: string
+      - description: file usage
+        in: formData
+        name: usage
+        required: true
+        type: string
+      - description: file for upload
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.FileModel'
+      tags:
+      - Files
 securityDefinitions:
   AccessToken:
     in: header

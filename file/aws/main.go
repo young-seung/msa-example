@@ -27,7 +27,9 @@ func New(config config.Interface) *AWS {
 	secretID := config.AWS().SecretID()
 	secretKey := config.AWS().SecretKey()
 	token := config.AWS().Token()
-	return &AWS{secretID: secretID, secretKey: secretKey, token: token}
+	s3Endpoint := config.AWS().S3().Endpoint()
+	s3Region := config.AWS().S3().Region()
+	return &AWS{secretID: secretID, secretKey: secretKey, token: token, s3Endpoint: s3Endpoint, s3Region: s3Region}
 }
 
 func (aws *AWS) endpointResolver(service, region string, optFns ...func(*endpoints.Options)) (endpoints.ResolvedEndpoint, error) {

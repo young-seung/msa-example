@@ -18,7 +18,9 @@ type CommandBus struct {
 }
 
 // Interface commandBus interface
-type Interface interface{}
+type Interface interface {
+	Handle(command interface{}) (interface{}, error)
+}
 
 // New create commandBus instance
 func New(repository repository.Interface, s3 s3.Interface, config config.Interface) Interface {
