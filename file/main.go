@@ -32,7 +32,7 @@ func getDatabaseConnection(config config.Interface) *gorm.DB {
 		panic(err)
 	}
 	connection.LogMode(true)
-	connection.AutoMigrate(&entity.FileEntity{})
+	connection.AutoMigrate(&entity.File{})
 	return connection
 }
 
