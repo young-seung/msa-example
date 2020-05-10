@@ -5,12 +5,14 @@ import (
 
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
+	"github.com/young-seung/msa-example/file/aws"
 	"github.com/young-seung/msa-example/file/commandbus"
 	"github.com/young-seung/msa-example/file/config"
 	"github.com/young-seung/msa-example/file/controller"
 	"github.com/young-seung/msa-example/file/entity"
 	"github.com/young-seung/msa-example/file/querybus"
 	"github.com/young-seung/msa-example/file/repository"
+	"github.com/young-seung/msa-example/file/s3"
 	"github.com/young-seung/msa-example/file/util"
 
 	"github.com/gin-gonic/gin"
@@ -32,7 +34,7 @@ func getDatabaseConnection(config config.Interface) *gorm.DB {
 		panic(err)
 	}
 	connection.LogMode(true)
-	connection.AutoMigrate(&entity.FileEntity{})
+	connection.AutoMigrate(&entity.File{})
 	return connection
 }
 
@@ -47,7 +49,9 @@ func initialize(engine *gin.Engine, config config.Interface, util *util.Util) {
 	dbConnection := getDatabaseConnection(config)
 	redisClient := getRedisClient(config)
 	repository := repository.New(redisClient, dbConnection)
-	commandBus := commandbus.New(repository, config)
+	aws := aws.New(config)
+	s3 := s3.New(config, aws)
+	commandBus := commandbus.New(repository, s3, config)
 	queryBus := querybus.New(config, repository)
 	controller.New(engine, commandBus, queryBus, util, config)
 }

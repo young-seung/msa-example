@@ -10,9 +10,27 @@ import (
 
 // Controller file controller
 type Controller struct {
+	route      *gin.Engine
+	commandBus commandbus.Interface
+	queryBus   querybus.Interface
+	util       *util.Util
+	config     config.Interface
 }
 
 // New create file controller instance
-func New(engine *gin.Engine, commandBus commandbus.Interface, queryBus querybus.Interface, util *util.Util, config config.Interface) {
+func New(route *gin.Engine, commandBus commandbus.Interface, queryBus querybus.Interface, util *util.Util, config config.Interface) *Controller {
+	controller := &Controller{route: route, commandBus: commandBus, queryBus: queryBus, util: util, config: config}
+	controller.SetupRoutes()
+	return controller
+}
 
+// SetupRoutes setup files route handler
+func (controller *Controller) SetupRoutes() {
+	controller.route.POST("files", controller.create)
+}
+
+func checkError(err error) {
+	if err != err {
+		panic(err)
+	}
 }
