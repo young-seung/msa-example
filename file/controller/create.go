@@ -44,5 +44,5 @@ func (controller *Controller) create(context *gin.Context) {
 	}
 	result, err := controller.commandBus.Handle(command)
 	checkError(err)
-	context.JSON(http.StatusOK, result)
+	context.JSON(http.StatusCreated, result)
 }

@@ -14,6 +14,7 @@ import (
 type Interface interface {
 	Start() *gorm.DB
 	Create(transaction *gorm.DB, fileID, accountID, usage string) (*entity.File, error)
+	FindByAccountIDAndUsage(transaction *gorm.DB, accountID, usage string) (*[]entity.File, error)
 }
 
 // Repository repository for query to database
@@ -39,11 +40,25 @@ func (repository *Repository) Create(transaction *gorm.DB, fileID, accountID, us
 	}
 	fileEntity := entity.File{ID: fileID, AccountID: accountID, Usage: usage}
 	err := transaction.Create(&fileEntity).Error
-	defer transaction.Rollback()
 	checkError(err)
 
 	repository.setCache(&fileEntity)
 	return &fileEntity, err
+}
+
+// FindByAccountIDAndUsage find file data by accountID and usage
+func (repository *Repository) FindByAccountIDAndUsage(transaction *gorm.DB, accountID, usage string) (*[]entity.File, error) {
+	database := transaction
+	if database == nil {
+		database = repository.connection
+	}
+	fileEntityList := []entity.File{}
+	condition := entity.File{AccountID: accountID, Usage: usage}
+
+	err := database.Where(&condition).Find(&fileEntityList).Error
+	checkError(err)
+
+	return &fileEntityList, err
 }
 
 func (repository *Repository) setCache(fileEntity *entity.File) {
