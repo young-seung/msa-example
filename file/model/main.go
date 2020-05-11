@@ -10,3 +10,6 @@ type FileModel struct {
 	ImageURL  string    `json:"imageUrl" example:"profile.image.com"`
 	CreatedAt time.Time `json:"createdAt" example:"createdAt"`
 }
+
+// FileModelList list of file model
+type FileModelList []FileModel

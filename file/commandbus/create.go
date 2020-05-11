@@ -25,6 +25,6 @@ func (commandBus *CommandBus) createFile(command *CreateFileCommand) (*model.Fil
 	transaction := commandBus.repository.Start()
 	fileEntity, err := commandBus.repository.Create(transaction, fileID, accountID, usage)
 	checkError(err)
-
+	transaction.Commit()
 	return commandBus.entityToModel(*fileEntity), err
 }

@@ -27,6 +27,7 @@ func New(route *gin.Engine, commandBus commandbus.Interface, queryBus querybus.I
 // SetupRoutes setup files route handler
 func (controller *Controller) SetupRoutes() {
 	controller.route.POST("files", controller.create)
+	controller.route.GET("files", controller.read)
 }
 
 func checkError(err error) {

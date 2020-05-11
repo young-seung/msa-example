@@ -6,6 +6,42 @@
     },
     "paths": {
         "/files": {
+            "get": {
+                "description": "get file list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Files"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "file owner's accountId",
+                        "name": "account_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "file usage",
+                        "name": "usage",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.FileModelList"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "crate file",
                 "consumes": [
@@ -75,6 +111,12 @@
                     "type": "string",
                     "example": "profile"
                 }
+            }
+        },
+        "model.FileModelList": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/model.FileModel"
             }
         }
     },
