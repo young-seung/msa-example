@@ -15,7 +15,7 @@ export default class CreateProfileCommandHandler implements ICommandHandler<Crea
   ) {}
 
   async execute(command: CreateProfileCommand): Promise<void> {
-    await this.repository.findOne({ where: [{ email: command.email }] }).then(item => {
+    await this.repository.findOne({ where: [{ email: command.email }] }).then((item) => {
       if (item) throw new HttpException('Conflict', HttpStatus.CONFLICT);
     });
 
