@@ -3,9 +3,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
 import AppConfiguration from '../app.config';
-import ReadAccountQuery from '../account/application/query/implements/account.query';
-import ReadAccountDTO from '../account/interface/dto/account.dto.read';
-import Account from '../account/domain/model/account.model';
+import ReadProfileQuery from '../profile/application/query/implemenets/profile.query';
+import ReadProfileDTO from '../profile/dto/profile.dto.read';
+import Profile from '../profile/domain/model/profile.model';
 
 type PayloadType = { id: string; email: string; name: string };
 
@@ -20,9 +20,9 @@ export default class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   private async validate(payload: PayloadType): Promise<PayloadType | false> {
-    const dto = new ReadAccountDTO(payload.id);
-    const account: Account = await this.queryBus.execute(new ReadAccountQuery(dto));
-    return account && account.email === payload.email && account.name === payload.name
+    const dto = new ReadProfileDTO(payload.id);
+    const profile: Profile = await this.queryBus.execute(new ReadProfileQuery(dto));
+    return profile && profile.email === payload.email && profile.name === payload.name
       ? payload
       : false;
   }
