@@ -30,12 +30,3 @@ services:
       - .env
     volumes:
       - ~/database/account:/var/lib/mysql
-
-  localstack:
-    image: localstack/localstack
-    ports:
-      - 4572:4572
-    environment:
-      - SERVICES=s3
-    volumes:
-      - ./.aws:/docker-entrypoint-initaws.d
