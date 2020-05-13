@@ -5,8 +5,8 @@ import (
 
 	"github.com/badoux/checkmail"
 	"github.com/gin-gonic/gin"
-	"github.com/young-seung/msa-example/account/account/dto"
-	"github.com/young-seung/msa-example/account/account/query"
+	"github.com/young-seung/msa-example/account/dto"
+	"github.com/young-seung/msa-example/account/query"
 )
 
 // @Tags Account

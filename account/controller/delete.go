@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/young-seung/msa-example/account/account/command"
+	"github.com/young-seung/msa-example/account/command"
 )
 
 // @Description delete account

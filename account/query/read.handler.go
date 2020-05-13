@@ -3,7 +3,7 @@ package query
 import (
 	"errors"
 
-	"github.com/young-seung/msa-example/account/account/model"
+	"github.com/young-seung/msa-example/account/model"
 )
 
 func (bus *Bus) handleReadAccountByIDQuery(

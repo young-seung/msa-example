@@ -2,8 +2,8 @@ package command
 
 import (
 	"github.com/google/uuid"
-	"github.com/young-seung/msa-example/account/account/entity"
-	"github.com/young-seung/msa-example/account/account/model"
+	"github.com/young-seung/msa-example/account/entity"
+	"github.com/young-seung/msa-example/account/model"
 )
 
 func (bus *Bus) handleCreateCommand(command *CreateCommand) (*model.Account, error) {

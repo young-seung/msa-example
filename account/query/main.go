@@ -3,10 +3,10 @@ package query
 import (
 	"errors"
 
-	"github.com/young-seung/msa-example/account/account/entity"
-	"github.com/young-seung/msa-example/account/account/model"
-	"github.com/young-seung/msa-example/account/account/repository"
 	"github.com/young-seung/msa-example/account/config"
+	"github.com/young-seung/msa-example/account/entity"
+	"github.com/young-seung/msa-example/account/model"
+	"github.com/young-seung/msa-example/account/repository"
 	"golang.org/x/crypto/bcrypt"
 )
 

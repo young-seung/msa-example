@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/young-seung/msa-example/account/account/command"
-	"github.com/young-seung/msa-example/account/account/dto"
+	"github.com/young-seung/msa-example/account/command"
+	"github.com/young-seung/msa-example/account/dto"
 )
 
 // @Description update account
