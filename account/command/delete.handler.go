@@ -1,6 +1,6 @@
 package command
 
-import "github.com/young-seung/msa-example/account/account/model"
+import "github.com/young-seung/msa-example/account/model"
 
 func (bus *Bus) handleDeleteCommand(command *DeleteCommand) (*model.Account, error) {
 	accountID := command.AccountID

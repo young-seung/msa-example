@@ -6,7 +6,7 @@ import (
 
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
-	"github.com/young-seung/msa-example/account/account/entity"
+	"github.com/young-seung/msa-example/account/entity"
 )
 
 // Interface repository interface

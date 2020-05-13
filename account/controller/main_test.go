@@ -5,10 +5,10 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
-	"github.com/young-seung/msa-example/account/account/command"
-	"github.com/young-seung/msa-example/account/account/controller"
-	"github.com/young-seung/msa-example/account/account/query"
+	"github.com/young-seung/msa-example/account/command"
 	"github.com/young-seung/msa-example/account/config"
+	"github.com/young-seung/msa-example/account/controller"
+	"github.com/young-seung/msa-example/account/query"
 	"github.com/young-seung/msa-example/account/util"
 )
 

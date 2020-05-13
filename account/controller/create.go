@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/badoux/checkmail"
-	"github.com/young-seung/msa-example/account/account/command"
-	"github.com/young-seung/msa-example/account/account/dto"
-	"github.com/young-seung/msa-example/account/account/query"
+	"github.com/young-seung/msa-example/account/command"
+	"github.com/young-seung/msa-example/account/dto"
+	"github.com/young-seung/msa-example/account/query"
 
 	"github.com/gin-gonic/gin"
 )
