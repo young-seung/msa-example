@@ -8,4 +8,8 @@ export default class Profile extends AggregateRoot {
   ) {
     super();
   }
+
+  updateName(newName: string): void {
+    this.name = newName;
+  }
 }
