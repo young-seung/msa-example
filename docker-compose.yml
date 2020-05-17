@@ -1,0 +1,79 @@
+version: "3.7"
+
+services: 
+  proxy:
+    image: nginx:alpine
+    restart: always
+    ports: 
+      - 80:80
+    volumes: 
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    command: [nginx-debug, '-g', 'daemon off;']
+
+  account:
+    build: 
+      context: ./account/.
+    restart: always
+    env_file: account/.env
+    environment: 
+      - DATABASE_HOST=account-database
+
+  profile:
+    build: 
+      context: ./profile/.
+    restart: always
+    env_file: profile/.env
+    environment: 
+      - DATABASE_HOST=profile-database
+
+  file:
+    build: 
+      context: ./file/.
+    restart: always
+    env_file: file/.env
+    environment: 
+      - DATABASE_HOST=file-database
+
+  redis-master:
+    image: kyhsa93/redis-master
+    restart: always
+
+  redis-slave:
+    image: kyhsa93/redis-slave
+    restart: always
+
+  account-database:
+    image: mysql:5.7
+    restart: always
+    env_file: .env
+    environment: 
+      - MYSQL_DATABASE=account
+    volumes: 
+      - ~/database/msa-example/account:/var/lib/mysql
+
+  profile-database:
+    image: mysql:5.7
+    restart: always
+    env_file: .env
+    environment: 
+      - MYSQL_DATABASE=profile
+    volumes: 
+      - ~/database/msa-example/profile:/var/lib/mysql
+
+  file-database:
+    image: mysql:5.7
+    restart: always
+    env_file: .env
+    environment: 
+      - MYSQL_DATABASE=file
+    volumes: 
+      - ~/database/msa-example/file:/var/lib/mysql
+
+  localstack:
+    image: localstack/localstack
+    ports: 
+      - 4572:4572
+    environment: 
+      - SERVICE-s3
+    volumes: 
+      - ./.aws:/docker-entrypoint-initaws.d

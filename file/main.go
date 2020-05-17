@@ -5,13 +5,15 @@ import (
 
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
-	"github.com/young-seung/msa-example/account/command"
-	"github.com/young-seung/msa-example/account/config"
-	"github.com/young-seung/msa-example/account/controller"
-	"github.com/young-seung/msa-example/account/entity"
-	"github.com/young-seung/msa-example/account/query"
-	"github.com/young-seung/msa-example/account/repository"
-	"github.com/young-seung/msa-example/account/util"
+	"github.com/young-seung/msa-example/file/aws"
+	"github.com/young-seung/msa-example/file/commandbus"
+	"github.com/young-seung/msa-example/file/config"
+	"github.com/young-seung/msa-example/file/controller"
+	"github.com/young-seung/msa-example/file/entity"
+	"github.com/young-seung/msa-example/file/querybus"
+	"github.com/young-seung/msa-example/file/repository"
+	"github.com/young-seung/msa-example/file/s3"
+	"github.com/young-seung/msa-example/file/util"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -32,7 +34,7 @@ func getDatabaseConnection(config config.Interface) *gorm.DB {
 		panic(err)
 	}
 	connection.LogMode(true)
-	connection.AutoMigrate(&entity.Account{})
+	connection.AutoMigrate(&entity.File{})
 	return connection
 }
 
@@ -41,6 +43,17 @@ func getRedisClient(config config.Interface) *redis.Client {
 		Addr:     config.Redis().Address(),
 		Password: config.Redis().Password(),
 	})
+}
+
+func initialize(engine *gin.Engine, config config.Interface, util *util.Util) {
+	dbConnection := getDatabaseConnection(config)
+	redisClient := getRedisClient(config)
+	repository := repository.New(redisClient, dbConnection)
+	aws := aws.New(config)
+	s3 := s3.New(config, aws)
+	commandBus := commandbus.New(repository, s3, config)
+	queryBus := querybus.New(config, repository)
+	controller.New(engine, commandBus, queryBus, util, config)
 }
 
 // @securityDefinitions.apikey AccessToken
@@ -52,13 +65,7 @@ func main() {
 	util := util.Initialize()
 	gin.SetMode(config.Server().Mode())
 	route := gin.Default()
-
-	dbConnection := getDatabaseConnection(config)
-	redisClient := getRedisClient(config)
-	repository := repository.New(redisClient, dbConnection)
-	commandBus := command.New(repository, config)
-	queryBus := query.New(config, repository)
-	controller.New(route, commandBus, queryBus, util, config)
+	initialize(route, config, util)
 
 	route.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

@@ -1,0 +1,130 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {},
+        "license": {}
+    },
+    "paths": {
+        "/files": {
+            "get": {
+                "description": "get file list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Files"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "file owner's accountId",
+                        "name": "account_id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "file usage",
+                        "name": "usage",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.FileModelList"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "crate file",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Files"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "accountId for file owner",
+                        "name": "accountId",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "file usage",
+                        "name": "usage",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "file for upload",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/model.FileModel"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.FileModel": {
+            "type": "object",
+            "properties": {
+                "accountId": {
+                    "type": "string",
+                    "example": "accountId"
+                },
+                "createdAt": {
+                    "type": "string",
+                    "example": "createdAt"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "fileId"
+                },
+                "imageUrl": {
+                    "type": "string",
+                    "example": "profile.image.com"
+                },
+                "usage": {
+                    "type": "string",
+                    "example": "profile"
+                }
+            }
+        },
+        "model.FileModelList": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/model.FileModel"
+            }
+        }
+    },
+    "securityDefinitions": {
+        "AccessToken": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

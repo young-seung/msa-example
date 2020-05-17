@@ -23,7 +23,7 @@ const AppConfiguration: AppConfigurationType = {
   DATABASE_TYPE: 'mysql',
   DATABASE_HOST: process.env.DATABASE_HOST || 'localhost',
   DATABASE_PORT: Number(process.env.DATABASE_PORT) || 3306,
-  DATABASE_NAME: process.env.DATABASE_NAME || 'nest',
+  DATABASE_NAME: process.env.DATABASE_NAME || 'profile',
   DATABASE_USER: process.env.DATABASE_USER || 'root',
   DATABASE_PASSWORD: process.env.DATABASE_PASSWORD || 'test',
   DATABASE_SYNC: process.env.DATABASE_SYNC || 'false',
