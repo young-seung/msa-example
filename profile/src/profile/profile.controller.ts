@@ -41,41 +41,25 @@ export default class ProfileController {
   }
 
   @Get()
-  getProfileNames(@Query() query: ReadProfileListDTO): Promise<Profile> {
+  getProfileList(@Query() query: ReadProfileListDTO): Promise<Profile> {
     return this.queryBus.execute(new ReadProfileListQuery(query));
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
   @Get(':id')
-  getProfile(
-    @Request() req: { user: ProfileUserDTO },
-    @Param() param: ReadProfileDTO,
-  ): Promise<Profile> {
-    if (param.id !== req.user.id) throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
-    return this.queryBus.execute(new ReadProfileQuery(param));
+  getProfile(@Query() query: ReadProfileDTO): Promise<Profile> {
+    return this.queryBus.execute(new ReadProfileQuery(query));
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
   @Put(':id')
   updateProfile(
-    @Request() req: { user: ProfileUserDTO },
     @Param() param: UpdateProfileParamDTO,
     @Body() body: UpdateProfileBodyDTO,
   ): Promise<void> {
-    if (param.id !== req.user.id) throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
     return this.commandBus.execute(new UpdateProfileCommand(new UpdateProfileDTO(param, body)));
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @ApiBearerAuth()
   @Delete(':id')
-  deleteProfile(
-    @Request() req: { user: ProfileUserDTO },
-    @Param() param: DeleteProfileDTO,
-  ): Promise<void> {
-    if (param.id !== req.user.id) throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
+  deleteProfile(@Param() param: DeleteProfileDTO): Promise<void> {
     return this.commandBus.execute(new DeleteProfileCommand(new DeleteProfileDTO(param.id)));
   }
 }
