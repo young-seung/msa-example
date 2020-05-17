@@ -18,7 +18,7 @@ export default class ProfileRedis {
   async get(key: string): Promise<string | null> {
     return this.slave
       .get(key)
-      .then(result => result)
+      .then((result) => result)
       .catch(() => null);
   }
 }

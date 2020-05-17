@@ -2,7 +2,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
 import { IsNull } from 'typeorm';
-import { QueryHandler, EventPublisher, IQueryHandler } from '@nestjs/cqrs';
+import { QueryHandler } from '@nestjs/cqrs';
 import ProfileEntity from '../../../infrastructure/entity/profile.entity';
 import ProfileRepository from '../../../infrastructure/repository/profile.repository';
 import ReadProfileListQuery from '../implemenets/profile.query.list';
