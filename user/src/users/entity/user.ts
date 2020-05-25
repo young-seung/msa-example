@@ -1,8 +1,8 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export default class User {
-  @Column({ unique: true, nullable: false })
+  @PrimaryColumn({ unique: true, nullable: false })
   id!: string;
 
   @Column({ unique: true, nullable: false })

@@ -1,8 +1,8 @@
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export default class Event {
-  @Column({ unique: true, nullable: false })
+  @PrimaryColumn({ unique: true, nullable: false })
   id!: string;
 
   @Column({ nullable: false })
