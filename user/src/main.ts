@@ -27,8 +27,9 @@ async function bootstrap(): Promise<void> {
   const messageProducer = app.get(Producer);
   const messageConsumer = app.get(Consumer);
 
-  messageProducer.setUp();
-  messageConsumer.setUp();
+  await messageProducer.setUp();
+  await messageConsumer.setUp();
+  await messageConsumer.consumeFromQueue();
 
   await app.listen(AppConfiguration.PORT);
 }
