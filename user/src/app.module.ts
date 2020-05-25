@@ -11,6 +11,8 @@ import UpdateUserCommandHandler from './users/command/update.handler';
 import DeleteUserCommandHandler from './users/command/delete.handler';
 import UserUpdatedEventHandler from './users/event/updated.handler';
 import Event from './users/entity/event';
+import Producer from './users/message/producer';
+import Consumer from './users/message/consumer';
 
 const commandHandler = [
   CreateUserCommandHandler,
@@ -37,7 +39,7 @@ const eventHandler = [UserUpdatedEventHandler];
     TypeOrmModule.forFeature([User, Event]),
   ],
   controllers: [AppController, UsersController],
-  providers: [...commandHandler, ...eventHandler],
+  providers: [Producer, Consumer, ...commandHandler, ...eventHandler],
 })
 export default class ApplicationModule {
   constructor(private readonly connection: Connection) {}
