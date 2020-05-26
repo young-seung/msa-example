@@ -1,6 +1,4 @@
-import {
-  Controller, Get, Post, Put, Delete, Body, Param, Query,
-} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import CreateUserDto from './dto/create';
 import CreateUserCommand from './command/create';
