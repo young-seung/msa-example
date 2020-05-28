@@ -11,11 +11,10 @@ export default class UpdateUserCommandHandler implements ICommandHandler<UpdateU
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
   public async execute(command: UpdateUserCommand): Promise<UpdateUserCommandResult> {
-    const { userId, password } = command;
+    const { userId } = command;
     const user = await this.userRepository.findOne(userId);
     if (!user) throw new NotFoundException();
 
-    user.password = password;
     await this.userRepository.save(user);
     return new UpdateUserCommandResult();
   }
