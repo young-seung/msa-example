@@ -1,22 +1,21 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity()
-export default class User {
+export default class UserEntity {
   @PrimaryColumn({ unique: true, nullable: false })
-  id!: string;
-
-  @Column({ unique: true, nullable: false })
-  accountId!: string;
-
-  @Column({ unique: true, nullable: false })
-  profileId!: string;
-
-  @Column({ unique: true, nullable: false })
-  email!: string;
+  public readonly id!: string;
 
   @Column({ nullable: false })
-  password!: string;
+  public readonly createdAt!: Date;
 
-  @Column({ nullable: false })
-  createdAt!: Date;
+  @Column({ nullable: true, default: null })
+  public readonly updatedAt!: Date;
+
+  @Column({ nullable: true, default: null })
+  public readonly deletedAt?: Date;
+
+  constructor(id: string) {
+    this.id = id;
+    this.createdAt = new Date();
+  }
 }

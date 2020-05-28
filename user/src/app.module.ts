@@ -13,6 +13,7 @@ import UserUpdatedEventHandler from './users/event/updated.handler';
 import Event from './users/entity/event';
 import Producer from './users/message/producer';
 import Consumer from './users/message/consumer';
+import UserFactory from './users/model/user.factory';
 
 const commandHandler = [
   CreateUserCommandHandler,
@@ -39,7 +40,7 @@ const eventHandler = [UserUpdatedEventHandler];
     TypeOrmModule.forFeature([User, Event]),
   ],
   controllers: [AppController, UsersController],
-  providers: [Producer, Consumer, ...commandHandler, ...eventHandler],
+  providers: [Producer, Consumer, UserFactory, ...commandHandler, ...eventHandler],
 })
 export default class ApplicationModule {
   constructor(private readonly connection: Connection) {}

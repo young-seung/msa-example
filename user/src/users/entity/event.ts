@@ -3,14 +3,21 @@ import { Entity, Column, PrimaryColumn } from 'typeorm';
 @Entity()
 export default class Event {
   @PrimaryColumn({ unique: true, nullable: false })
-  id!: string;
+  public readonly id!: string;
 
   @Column({ nullable: false })
-  userId!: string;
+  public readonly userId!: string;
 
   @Column({ nullable: false })
-  type!: string;
+  public readonly type!: string;
 
-  @Column({ unique: true, nullable: false })
-  createdAt!: Date;
+  @Column({ nullable: false })
+  public readonly createdAt!: Date;
+
+  constructor(id: string, userId: string, type: string) {
+    this.id = id;
+    this.userId = userId;
+    this.type = type;
+    this.createdAt = new Date();
+  }
 }

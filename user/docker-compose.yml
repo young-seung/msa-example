@@ -1,32 +1,21 @@
 version: "3.7"
 
 services:
-  proxy:
-    image: nginx:alpine
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: root
+      RABBITMQ_DEFAULT_PASS: test
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  redis:
+    image: redis:alpine
     restart: always
     ports:
-      - 80:80
-    links:
-      - nest
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    command: [nginx-debug, '-g', 'daemon off;']
-
-  nest:
-    image: kyhsa93/nestjs-rest-cqrs-example
-    restart: always
-    env_file:
-      - .env
-    links:
-      - database
-
-  redis-master:
-    image: kyhsa93/redis-master
-    restart: always
-
-  redis-slave:
-    image: kyhsa93/redis-slave
-    restart: always
+      - 6379:6379
 
   database:
     image: mysql:5.7
@@ -35,5 +24,3 @@ services:
       - 3306:3306
     env_file:
       - .env
-    volumes:
-      - ~/database/nest:/var/lib/mysql
