@@ -2,9 +2,10 @@ import { IEventHandler, EventsHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Inject } from '@nestjs/common';
-import Event from '../entity/event';
-import UserCreatedEvent from './created';
-import Producer from '../message/producer';
+
+import Event from '@src/users/entity/event';
+import UserCreatedEvent from '@src/users/event/created';
+import Producer from '@src/users/message/producer';
 
 @EventsHandler(UserCreatedEvent)
 export default class UserCreatedEventHandler implements IEventHandler {

@@ -1,15 +1,16 @@
 import { Test } from '@nestjs/testing';
 import { ModuleMetadata } from '@nestjs/common/interfaces';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import UsersController from './users.controller';
-import CreateUserDto from './dto/create';
-import CreateUserResponse from './dto/create.response';
-import UpdateUserDto from './dto/update';
-import UpdateUserResponse from './dto/update.response';
-import DeleteUserResponse from './dto/delete.response';
-import FindUserByIdResponse from './dto/findById.response';
-import FindUserResponse from './dto/find.response';
-import FindUserDto from './dto/find';
+
+import UsersController from '@src/users/users.controller';
+import CreateUserDto from '@src/users/dto/create';
+import CreateUserResponse from '@src/users/dto/create.response';
+import UpdateUserDto from '@src/users/dto/update';
+import UpdateUserResponse from '@src/users/dto/update.response';
+import DeleteUserResponse from '@src/users/dto/delete.response';
+import FindUserByIdResponse from '@src/users/dto/findById.response';
+import FindUserResponse from '@src/users/dto/find.response';
+import FindUserDto from '@src/users/dto/find';
 
 describe('UsersController', () => {
   let moduleMetaData: ModuleMetadata;

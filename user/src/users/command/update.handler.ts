@@ -2,9 +2,10 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
-import UpdateUserCommand from './update';
-import UpdateUserCommandResult from './update.result';
-import User from '../entity/user';
+
+import UpdateUserCommand from '@src/users/command/update';
+import UpdateUserCommandResult from '@src/users/command/update.result';
+import User from '@src/users/entity/user';
 
 @CommandHandler(UpdateUserCommand)
 export default class UpdateUserCommandHandler implements ICommandHandler<UpdateUserCommand> {
