@@ -5,7 +5,7 @@ import { Inject } from '@nestjs/common';
 
 import CreateUserCommand from '@src/users/command/create';
 import CreateUserCommandResult from '@src/users/command/create.result';
-import User from '@src/users/entity/user';
+import UserEntity from '@src/users/entity/user';
 import Producer from '@src/users/message/producer';
 import UserFactory from '@src/users/model/user.factory';
 
@@ -13,7 +13,7 @@ import UserFactory from '@src/users/model/user.factory';
 export default class CreateUserCommandHandler implements ICommandHandler<CreateUserCommand> {
   constructor(
     @Inject(UserFactory) private readonly userFactory: UserFactory,
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
     @Inject(Producer) private readonly messageProducer: Producer,
   ) {}
 
