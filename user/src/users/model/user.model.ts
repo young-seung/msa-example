@@ -1,9 +1,9 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import uuid from 'uuid';
-import UserUpdatedEvent from '../event/updated';
-import UserDeletedEvent from '../event/deleted';
-import UserEntity from '../entity/user';
-// import UserEntity from '../entity/user';
+
+import UserUpdatedEvent from '@src/users/event/updated';
+import UserDeletedEvent from '@src/users/event/deleted';
+import UserEntity from '@src/users/entity/user';
 
 export default class User extends AggregateRoot {
   constructor(

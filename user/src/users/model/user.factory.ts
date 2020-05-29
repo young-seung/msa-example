@@ -1,7 +1,8 @@
 import uuid from 'uuid';
 import { EventBus } from '@nestjs/cqrs';
-import User from './user.model';
-import UserCreatedEvent from '../event/created';
+
+import User from '@src/users/model/user.model';
+import UserCreatedEvent from '@src/users/event/created';
 
 export default class UserFactory {
   constructor(private readonly eventBus: EventBus) {}

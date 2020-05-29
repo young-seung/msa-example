@@ -2,18 +2,19 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
-import AppController from './app.controller';
-import AppConfiguration from './app.config';
-import UsersController from './users/users.controller';
-import User from './users/entity/user';
-import CreateUserCommandHandler from './users/command/create.handler';
-import UpdateUserCommandHandler from './users/command/update.handler';
-import DeleteUserCommandHandler from './users/command/delete.handler';
-import UserUpdatedEventHandler from './users/event/updated.handler';
-import Event from './users/entity/event';
-import Producer from './users/message/producer';
-import Consumer from './users/message/consumer';
-import UserFactory from './users/model/user.factory';
+
+import AppController from '@src/app.controller';
+import AppConfiguration from '@src/app.config';
+import UsersController from '@src/users/users.controller';
+import User from '@src/users/entity/user';
+import CreateUserCommandHandler from '@src/users/command/create.handler';
+import UpdateUserCommandHandler from '@src/users/command/update.handler';
+import DeleteUserCommandHandler from '@src/users/command/delete.handler';
+import UserUpdatedEventHandler from '@src/users/event/updated.handler';
+import Event from '@src/users/entity/event';
+import Producer from '@src/users/message/producer';
+import Consumer from '@src/users/message/consumer';
+import UserFactory from '@src/users/model/user.factory';
 
 const commandHandler = [
   CreateUserCommandHandler,

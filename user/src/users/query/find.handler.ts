@@ -1,9 +1,11 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import FindUserQuery from './find';
-import User from '../entity/user';
-import FindUserQueryResult from './find.result';
+
+import User from '@src/users/entity/user';
+
+import FindUserQuery from '@src/users/query/find';
+import FindUserQueryResult from '@src/users/query/find.result';
 
 @QueryHandler(FindUserQuery)
 export default class FindUserQueryHandler implements IQueryHandler<FindUserQuery> {

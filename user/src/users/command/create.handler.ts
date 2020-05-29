@@ -2,11 +2,12 @@ import { ICommandHandler, CommandHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Inject } from '@nestjs/common';
-import CreateUserCommand from './create';
-import CreateUserCommandResult from './create.result';
-import User from '../entity/user';
-import Producer from '../message/producer';
-import UserFactory from '../model/user.factory';
+
+import CreateUserCommand from '@src/users/command/create';
+import CreateUserCommandResult from '@src/users/command/create.result';
+import User from '@src/users/entity/user';
+import Producer from '@src/users/message/producer';
+import UserFactory from '@src/users/model/user.factory';
 
 @CommandHandler(CreateUserCommand)
 export default class CreateUserCommandHandler implements ICommandHandler<CreateUserCommand> {
