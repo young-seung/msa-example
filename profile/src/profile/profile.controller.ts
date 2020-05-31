@@ -1,26 +1,13 @@
 import {
-  Controller,
-  Post,
-  Body,
-  Get,
-  Query,
-  UseGuards,
-  Request,
-  Param,
-  HttpException,
-  HttpStatus,
-  Put,
-  Delete,
+  Controller, Post, Body, Get, Query, Param, Put, Delete,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
 import CreateProfileDTO from './dto/profile.dto.create';
 import CreateProfileCommand from './application/command/implements/profile.command.create';
 import ReadProfileListDTO from './dto/profile.dto.read.list';
 import Profile from './domain/model/profile.model';
 import ReadProfileListQuery from './application/query/implemenets/profile.query.list';
-import ProfileUserDTO from './dto/profile.dto.user';
 import ReadProfileDTO from './dto/profile.dto.read';
 import ReadProfileQuery from './application/query/implemenets/profile.query';
 import UpdateProfileParamDTO from './dto/profile.dto.update.param';
