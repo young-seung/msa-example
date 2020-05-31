@@ -1,11 +1,11 @@
 import { ModuleMetadata } from '@nestjs/common/interfaces';
 import { Test } from '@nestjs/testing';
 import { Repository } from 'typeorm';
+import { EventPublisher, CqrsModule } from '@nestjs/cqrs';
 
 import CreateUserCommandHandler from '@src/users/command/create.handler';
 import UserFactory from '@src/users/model/user.factory';
 import UserEntity from '@src/users/entity/user';
-import Producer from '@src/users/message/producer';
 import User from '@src/users/model/user.model';
 import CreateUserCommand from '@src/users/command/create';
 import CreateUserCommandResult from '@src/users/command/create.result';
@@ -18,16 +18,17 @@ describe('CreateUserCommandHandler', () => {
 
   beforeAll(async () => {
     moduleMetaData = {
+      imports: [CqrsModule],
       providers: [
         UserFactory,
+        EventPublisher,
         { provide: 'UserEntityRepository', useClass: Repository },
-        Producer,
         CreateUserCommandHandler,
       ],
     };
     const testModule = await Test.createTestingModule(moduleMetaData).compile();
-    createUserCommandHandler = testModule.get('CreateUserCommandHandler');
-    userFactory = testModule.get('UserFactory');
+    createUserCommandHandler = testModule.get(CreateUserCommandHandler);
+    userFactory = testModule.get(UserFactory);
     userRepository = testModule.get('UserEntityRepository');
   });
 

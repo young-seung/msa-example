@@ -1,15 +1,20 @@
 import uuid from 'uuid';
-import { EventBus } from '@nestjs/cqrs';
+import { Injectable } from '@nestjs/common';
 
-import User from '@src/users/model/user.model';
 import UserCreatedEvent from '@src/users/event/created';
+import User from '@src/users/model/user.model';
 
+@Injectable()
 export default class UserFactory {
-  constructor(private readonly eventBus: EventBus) {}
+  private readonly updatedAt = null;
+
+  private readonly deletedAt = null;
 
   public create(email: string, password: string): User {
     const userId = uuid.v1();
-    this.eventBus.publish(new UserCreatedEvent(uuid.v1(), userId, email, password));
-    return new User(userId, email, password, new Date(), null, null);
+    const user = new User(userId, email, password, new Date(), this.updatedAt, this.deletedAt);
+    const eventId = uuid.v1();
+    user.apply(new UserCreatedEvent(eventId, userId, email, password));
+    return user;
   }
 }

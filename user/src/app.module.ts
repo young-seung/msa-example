@@ -15,6 +15,7 @@ import Event from '@src/users/entity/event';
 import Producer from '@src/users/message/producer';
 import Consumer from '@src/users/message/consumer';
 import UserFactory from '@src/users/model/user.factory';
+import UserCreatedEventHandler from '@src/users/event/created.handler';
 
 const commandHandler = [
   CreateUserCommandHandler,
@@ -22,7 +23,7 @@ const commandHandler = [
   DeleteUserCommandHandler,
 ];
 
-const eventHandler = [UserUpdatedEventHandler];
+const eventHandler = [UserCreatedEventHandler, UserUpdatedEventHandler];
 
 @Module({
   imports: [
