@@ -22,7 +22,8 @@ export default class Producer {
   private async getChannel(): Promise<Amqp.Channel> {
     const option = { credentials: Amqp.credentials.plain('root', 'test') };
     this.connection = await Amqp.connect('amqp://localhost', option);
-    if (!this.connection) throw new InternalServerErrorException('producer connection is not exists');
+    if (!this.connection)
+      throw new InternalServerErrorException('producer connection is not exists');
     return this.connection.createChannel();
   }
 
