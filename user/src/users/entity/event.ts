@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity()
-export default class Event {
+export default class EventEntity {
   @PrimaryColumn({ unique: true, nullable: false })
   public readonly id!: string;
 

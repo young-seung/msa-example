@@ -15,7 +15,6 @@ describe('CreateUserCommandHandler', () => {
   let createUserCommandHandler: CreateUserCommandHandler;
   let userFactory: UserFactory;
   let userRepository: Repository<UserEntity>;
-  let messageProducer: Producer;
 
   beforeAll(async () => {
     moduleMetaData = {
@@ -30,7 +29,6 @@ describe('CreateUserCommandHandler', () => {
     createUserCommandHandler = testModule.get('CreateUserCommandHandler');
     userFactory = testModule.get('UserFactory');
     userRepository = testModule.get('UserEntityRepository');
-    messageProducer = testModule.get('Producer');
   });
 
   describe('execute', () => {
