@@ -8,7 +8,7 @@ import UserCreatedEvent from '@src/users/event/created';
 import Producer from '@src/users/message/producer';
 
 @EventsHandler(UserCreatedEvent)
-export default class UserCreatedEventHandler implements IEventHandler {
+export default class UserCreatedEventHandler implements IEventHandler<UserCreatedEvent> {
   constructor(
     @InjectRepository(EventEntity) private readonly eventRepository: Repository<EventEntity>,
     @Inject(Producer) private readonly messageProducer: Producer,
