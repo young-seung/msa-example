@@ -1,5 +1,5 @@
 import Amqp from 'amqplib';
-import { InternalServerErrorException } from '@nestjs/common';
+import Message from '@src/users/rabbitmq/message';
 
 export default class Producer {
   private readonly queueName = 'user';
@@ -13,21 +13,21 @@ export default class Producer {
     this.assertQueue();
   }
 
-  public sendToQueue(message: string): void {
-    if (!this.channel) throw new InternalServerErrorException('publisher channel is not exists');
-    this.channel.sendToQueue(this.queueName, Buffer.from(message));
+  public sendToQueue(message: Message): void {
+    if (!this.channel) process.exit(1);
+    const content = JSON.stringify(message);
+    this.channel.sendToQueue(this.queueName, Buffer.from(content));
   }
 
   private async getChannel(): Promise<Amqp.Channel> {
     const option = { credentials: Amqp.credentials.plain('root', 'test') };
     this.connection = await Amqp.connect('amqp://localhost', option);
-    if (!this.connection)
-      throw new InternalServerErrorException('producer connection is not exists');
+    if (!this.connection) process.exit(1);
     return this.connection.createChannel();
   }
 
   private async assertQueue(): Promise<void> {
-    if (!this.channel) throw new InternalServerErrorException('publisher channel is not exists');
+    if (!this.channel) process.exit(1);
     await this.channel.assertQueue(this.queueName, { durable: false });
   }
 }

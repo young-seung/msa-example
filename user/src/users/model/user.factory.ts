@@ -12,9 +12,21 @@ export default class UserFactory {
 
   public create(email: string, password: string): User {
     const userId = uuid.v1();
-    const user = new User(userId, email, password, new Date(), this.updatedAt, this.deletedAt);
+    const createdAt = new Date();
+    const user = new User(userId, email, password, createdAt, this.updatedAt, this.deletedAt);
     const eventId = uuid.v1();
-    user.apply(new UserCreatedEvent(eventId, userId, email, password));
+    user.apply(
+      new UserCreatedEvent(
+        eventId,
+        userId,
+        email,
+        password,
+        null,
+        createdAt,
+        this.updatedAt,
+        this.deletedAt,
+      ),
+    );
     return user;
   }
 }

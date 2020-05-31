@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 
 import UserCreatedEventHandler from '@src/users/event/created.handler';
 import EventEntity from '@src/users/entity/event';
-import Producer from '@src/users/message/producer';
+import Producer from '@src/users/rabbitmq/producer';
 import UserCreatedEvent from '@src/users/event/created';
 
 describe('UserCreatedEventHandler', () => {
@@ -34,12 +34,21 @@ describe('UserCreatedEventHandler', () => {
       const type = 'created';
       const email = 'test@email.com';
       const password = 'password';
+      const fileId = null;
+      const createdAt = new Date();
+      const updatedAt = null;
+      const deletedAt = null;
+
       const event: UserCreatedEvent = {
         id,
         userId,
         type,
         email,
         password,
+        fileId,
+        createdAt,
+        updatedAt,
+        deletedAt,
       };
 
       const eventEntity = new EventEntity(id, userId, type);

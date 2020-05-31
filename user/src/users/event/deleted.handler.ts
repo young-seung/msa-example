@@ -4,22 +4,22 @@ import { Repository } from 'typeorm';
 import { Inject } from '@nestjs/common';
 
 import EventEntity from '@src/users/entity/event';
-import UserUpdatedEvent from '@src/users/event/updated';
+import UserDeletedEvent from '@src/users/event/deleted';
 import Producer from '@src/users/rabbitmq/producer';
 import Message from '@src/users/rabbitmq/message';
 
-@EventsHandler(UserUpdatedEvent)
-export default class UserUpdatedEventHandler implements IEventHandler<UserUpdatedEvent> {
+@EventsHandler(UserDeletedEvent)
+export default class UserDeletedEventHandler implements IEventHandler {
   constructor(
     @InjectRepository(EventEntity) private readonly eventRepository: Repository<EventEntity>,
     @Inject(Producer) private readonly messageProducer: Producer,
   ) {}
 
-  public async handle(event: UserUpdatedEvent): Promise<void> {
-    const { id, type, userId } = event;
-    const entity = new EventEntity(id, userId, type);
+  public async handle(event: UserDeletedEvent): Promise<void> {
+    const { id, userId, type } = event;
+    const eventEntity = new EventEntity(id, userId, type);
     const message = new Message(event);
     this.messageProducer.sendToQueue(message);
-    await this.eventRepository.save(entity);
+    await this.eventRepository.save(eventEntity);
   }
 }
