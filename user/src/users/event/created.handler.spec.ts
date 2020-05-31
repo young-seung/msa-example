@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 
 import UserCreatedEventHandler from '@src/users/event/created.handler';
 import EventEntity from '@src/users/entity/event';
-import Producer from '@src/users/message/producer';
+import Producer from '@src/users/rabbitmq/producer';
 import UserCreatedEvent from '@src/users/event/created';
 
 describe('UserCreatedEventHandler', () => {

@@ -5,7 +5,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import compression from 'compression';
 
 import ApplicationModule from '@src/app.module';
-import Producer from '@src/users/message/producer';
+import Producer from '@src/users/rabbitmq/producer';
 import AppConfiguration from '@src/app.config';
 
 async function bootstrap(): Promise<void> {

@@ -37,7 +37,20 @@ export default class User extends AggregateRoot {
   }
 
   public delete(): void {
-    this.apply(new UserDeletedEvent('deleted', this.id));
+    const eventId = uuid.v1();
+    this.deletedAt = new Date();
+    this.apply(
+      new UserDeletedEvent(
+        eventId,
+        this.id,
+        this.email,
+        this.password,
+        null,
+        this.createdAt,
+        this.updatedAt,
+        this.deletedAt,
+      ),
+    );
   }
 
   public toEntity(): UserEntity {

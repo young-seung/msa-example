@@ -1,5 +1,5 @@
 import Amqp from 'amqplib';
-import Message from '@src/users/message/message';
+import Message from '@src/users/rabbitmq/message';
 
 export default class Producer {
   private readonly queueName = 'user';

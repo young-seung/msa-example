@@ -12,8 +12,8 @@ import UpdateUserCommandHandler from '@src/users/command/update.handler';
 import DeleteUserCommandHandler from '@src/users/command/delete.handler';
 import UserUpdatedEventHandler from '@src/users/event/updated.handler';
 import Event from '@src/users/entity/event';
-import Producer from '@src/users/message/producer';
-import Consumer from '@src/users/message/consumer';
+import Producer from '@src/users/rabbitmq/producer';
+import Consumer from '@src/users/rabbitmq/consumer';
 import UserFactory from '@src/users/model/user.factory';
 import UserCreatedEventHandler from '@src/users/event/created.handler';
 

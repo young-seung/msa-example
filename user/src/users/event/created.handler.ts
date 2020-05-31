@@ -5,8 +5,8 @@ import { Inject } from '@nestjs/common';
 
 import EventEntity from '@src/users/entity/event';
 import UserCreatedEvent from '@src/users/event/created';
-import Producer from '@src/users/message/producer';
-import Message from '@src/users/message/message';
+import Producer from '@src/users/rabbitmq/producer';
+import Message from '@src/users/rabbitmq/message';
 
 @EventsHandler(UserCreatedEvent)
 export default class UserCreatedEventHandler implements IEventHandler<UserCreatedEvent> {
