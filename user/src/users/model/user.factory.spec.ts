@@ -29,7 +29,16 @@ describe('UserFactory', () => {
 
       const user = new User(randomId, email, password, createdAt, updatedAt, deletedAt);
 
-      const userCreatedEvent = new UserCreatedEvent(randomId, randomId, email, password);
+      const userCreatedEvent = new UserCreatedEvent(
+        randomId,
+        randomId,
+        email,
+        password,
+        null,
+        createdAt,
+        updatedAt,
+        deletedAt,
+      );
 
       jest.spyOn(uuid, 'v1').mockReturnValue(randomId);
 

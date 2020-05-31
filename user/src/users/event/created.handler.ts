@@ -6,6 +6,7 @@ import { Inject } from '@nestjs/common';
 import EventEntity from '@src/users/entity/event';
 import UserCreatedEvent from '@src/users/event/created';
 import Producer from '@src/users/message/producer';
+import Message from '@src/users/message/message';
 
 @EventsHandler(UserCreatedEvent)
 export default class UserCreatedEventHandler implements IEventHandler<UserCreatedEvent> {
@@ -17,7 +18,8 @@ export default class UserCreatedEventHandler implements IEventHandler<UserCreate
   public async handle(event: UserCreatedEvent): Promise<void> {
     const { id, userId, type } = event;
     const eventEntity = new EventEntity(id, userId, type);
-    this.messageProducer.sendToQueue('test');
+    const message = new Message(event);
+    this.messageProducer.sendToQueue(message);
     await this.eventRepository.save(eventEntity);
   }
 }

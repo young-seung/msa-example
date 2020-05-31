@@ -34,12 +34,21 @@ describe('UserCreatedEventHandler', () => {
       const type = 'created';
       const email = 'test@email.com';
       const password = 'password';
+      const fileId = null;
+      const createdAt = new Date();
+      const updatedAt = null;
+      const deletedAt = null;
+
       const event: UserCreatedEvent = {
         id,
         userId,
         type,
         email,
         password,
+        fileId,
+        createdAt,
+        updatedAt,
+        deletedAt,
       };
 
       const eventEntity = new EventEntity(id, userId, type);
