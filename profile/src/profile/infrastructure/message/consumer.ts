@@ -15,7 +15,7 @@ export default class Consumer {
 
   public async consumeFromQueue(): Promise<void> {
     if (!this.channel) throw new InternalServerErrorException('consumer channel is not exists');
-    await this.channel.consume(this.queueName, message => message, { noAck: true });
+    await this.channel.consume(this.queueName, (message) => message, { noAck: true });
   }
 
   private async getChannel(): Promise<Amqp.Channel> {

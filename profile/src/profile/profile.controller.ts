@@ -2,7 +2,7 @@ import {
   Controller, Post, Body, Get, Query, Param, Put, Delete,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiUseTags } from '@nestjs/swagger';
 import CreateProfileDTO from './dto/profile.dto.create';
 import CreateProfileCommand from './application/command/implements/profile.command.create';
 import ReadProfileListDTO from './dto/profile.dto.read.list';
