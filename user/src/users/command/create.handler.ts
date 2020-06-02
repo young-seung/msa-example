@@ -18,8 +18,8 @@ export default class CreateUserCommandHandler implements ICommandHandler<CreateU
 
   public async execute(command: CreateUserCommand): Promise<CreateUserCommandResult> {
     const { email, password } = command;
-    const user = this.eventPublisher.mergeObjectContext(this.userFactory.create(email, password));
-    user.commit();
+    const user = this.userFactory.create(email, password);
+    this.eventPublisher.mergeObjectContext(user).commit();
     await this.userRepository.save(user.toEntity());
     return new CreateUserCommandResult();
   }

@@ -9,10 +9,10 @@ export default class UserEntity {
   public readonly createdAt!: Date;
 
   @Column({ nullable: true, default: null })
-  public readonly updatedAt!: Date;
+  public readonly updatedAt!: Date | null;
 
   @Column({ nullable: true, default: null })
-  public readonly deletedAt?: Date;
+  public readonly deletedAt!: Date | null;
 
   constructor(id: string) {
     this.id = id;

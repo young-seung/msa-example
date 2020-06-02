@@ -16,6 +16,8 @@ import Producer from '@src/users/rabbitmq/producer';
 import Consumer from '@src/users/rabbitmq/consumer';
 import UserFactory from '@src/users/model/user.factory';
 import UserCreatedEventHandler from '@src/users/event/created.handler';
+import AccountService from '@src/users/service/account';
+import ProfileService from '@src/users/service/profile';
 
 const commandHandler = [
   CreateUserCommandHandler,
@@ -24,6 +26,8 @@ const commandHandler = [
 ];
 
 const eventHandler = [UserCreatedEventHandler, UserUpdatedEventHandler];
+
+const services = [AccountService, ProfileService];
 
 @Module({
   imports: [
@@ -42,7 +46,7 @@ const eventHandler = [UserCreatedEventHandler, UserUpdatedEventHandler];
     TypeOrmModule.forFeature([User, Event]),
   ],
   controllers: [AppController, UsersController],
-  providers: [Producer, Consumer, UserFactory, ...commandHandler, ...eventHandler],
+  providers: [Producer, Consumer, UserFactory, ...commandHandler, ...eventHandler, ...services],
 })
 export default class ApplicationModule {
   constructor(private readonly connection: Connection) {}
