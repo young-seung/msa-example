@@ -45,9 +45,7 @@ export default class UserFactory {
     const userAccount = accountList.find((account) => account.userId === userId);
     if (!accountList || !userAccount) throw new NotFoundException('user account is not found');
 
-    const {
-      id, createdAt, updatedAt, deletedAt,
-    } = userEntity;
+    const { id, createdAt, updatedAt, deletedAt } = userEntity;
     const { email, password } = userAccount;
     return new User(id, email, password, createdAt, updatedAt, deletedAt);
   }
