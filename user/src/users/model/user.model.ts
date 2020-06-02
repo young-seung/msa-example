@@ -17,7 +17,7 @@ export default class User extends AggregateRoot {
     super();
   }
 
-  public update(email: string, password: string): void {
+  public update(email: string, password: string): User {
     this.email = email;
     this.password = password;
     this.updatedAt = new Date();
@@ -34,9 +34,10 @@ export default class User extends AggregateRoot {
         this.deletedAt,
       ),
     );
+    return this;
   }
 
-  public delete(): void {
+  public delete(): User {
     const eventId = uuid.v1();
     this.deletedAt = new Date();
     this.apply(
@@ -51,6 +52,7 @@ export default class User extends AggregateRoot {
         this.deletedAt,
       ),
     );
+    return this;
   }
 
   public toEntity(): UserEntity {
