@@ -17,9 +17,9 @@ export default class User extends AggregateRoot {
     super();
   }
 
-  public update(email: string, password: string): User {
-    this.email = email;
-    this.password = password;
+  public update(email: string | null, password: string | null): User {
+    this.email = email || this.email;
+    this.password = password || this.password;
     this.updatedAt = new Date();
     const eventId = uuid.v1();
     this.apply(

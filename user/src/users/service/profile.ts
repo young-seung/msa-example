@@ -13,7 +13,8 @@ export default class ProfileService {
       `http://localhost:7000/profiles?userId=${userId}`,
     );
     const response = await observableResponse.toPromise();
-    if (!response || !response.data) throw new InternalServerErrorException('profile service is not available');
+    if (!response || !response.data)
+      throw new InternalServerErrorException('profile service is not available');
     return response.data as Profile[];
   }
 }

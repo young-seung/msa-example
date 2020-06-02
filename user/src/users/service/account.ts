@@ -16,7 +16,8 @@ export default class AccountService {
       `http://localhost:6000/accounts?userId=${userId}`,
     );
     const response = await observableResponse.toPromise();
-    if (!response || !response.data) throw new InternalServerErrorException('account service is not available');
+    if (!response || !response.data)
+      throw new InternalServerErrorException('account service is not available');
     return response.data as Account[];
   }
 }
