@@ -20,7 +20,7 @@ export default class UserUpdatedEventHandler implements IEventHandler<UserUpdate
       id, type, userId, email, password, fileId,
     } = event;
     const entity = new EventEntity(id, userId, email, password, fileId, type);
-    const message = new Message(event);
+    const message = new Message(userId, email, password, fileId, type);
     this.messageProducer.sendToQueue(message);
     await this.eventRepository.save(entity);
   }

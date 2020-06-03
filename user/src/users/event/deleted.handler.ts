@@ -20,7 +20,7 @@ export default class UserDeletedEventHandler implements IEventHandler {
       id, userId, type, email, password, fileId,
     } = event;
     const eventEntity = new EventEntity(id, userId, email, password, fileId, type);
-    const message = new Message(event);
+    const message = new Message(userId, email, password, fileId, type);
     this.messageProducer.sendToQueue(message);
     await this.eventRepository.save(eventEntity);
   }

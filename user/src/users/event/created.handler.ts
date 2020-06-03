@@ -20,7 +20,7 @@ export default class UserCreatedEventHandler implements IEventHandler<UserCreate
       id, userId, email, password, fileId, type,
     } = event;
     const eventEntity = new EventEntity(id, userId, email, password, fileId, type);
-    const message = new Message(event);
+    const message = new Message(userId, email, password, fileId, type);
     this.messageProducer.sendToQueue(message);
     await this.eventRepository.save(eventEntity);
   }
