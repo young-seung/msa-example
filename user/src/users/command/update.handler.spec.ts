@@ -6,7 +6,7 @@ import { Test } from '@nestjs/testing';
 import UpdateUserCommandHandler from '@src/users/command/update.handler';
 import UserFactory from '@src/users/model/user.factory';
 import UserEntity from '@src/users/entity/user';
-import User from '@src/users/model/user.model';
+import User from '@src/users/model/user';
 import UpdateUserCommand from '@src/users/command/update';
 import UpdateUserCommandResult from '@src/users/command/update.result';
 

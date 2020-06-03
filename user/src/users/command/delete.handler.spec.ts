@@ -6,7 +6,7 @@ import { Test } from '@nestjs/testing';
 import DeleteUserCommandHandler from '@src/users/command/delete.handler';
 import UserEntity from '@src/users/entity/user';
 import UserFactory from '@src/users/model/user.factory';
-import User from '@src/users/model/user.model';
+import User from '@src/users/model/user';
 import DeleteUserCommand from '@src/users/command/delete';
 import DeleteUserCommandResult from '@src/users/command/delete.result';
 

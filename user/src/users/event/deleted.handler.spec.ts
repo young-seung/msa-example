@@ -1,15 +1,15 @@
 import { ModuleMetadata } from '@nestjs/common/interfaces';
-import { Test } from '@nestjs/testing';
 import { Repository } from 'typeorm';
+import { Test } from '@nestjs/testing';
 
-import UserCreatedEventHandler from '@src/users/event/created.handler';
+import UserDeletedEventHandler from '@src/users/event/deleted.handler';
 import EventEntity from '@src/users/entity/event';
 import Producer from '@src/users/rabbitmq/producer';
-import UserCreatedEvent from '@src/users/event/created';
+import UserDeletedEvent from '@src/users/event/deleted';
 
-describe('UserCreatedEventHandler', () => {
+describe('UserDeletedEventHandler', () => {
   let moduleMetaData: ModuleMetadata;
-  let userCreatedEventHandler: UserCreatedEventHandler;
+  let userDeletedEventHandler: UserDeletedEventHandler;
   let eventRepository: Repository<EventEntity>;
   let messageProducer: Producer;
 
@@ -18,11 +18,11 @@ describe('UserCreatedEventHandler', () => {
       providers: [
         { provide: 'EventEntityRepository', useClass: Repository },
         Producer,
-        UserCreatedEventHandler,
+        UserDeletedEventHandler,
       ],
     };
     const testModule = await Test.createTestingModule(moduleMetaData).compile();
-    userCreatedEventHandler = testModule.get('UserCreatedEventHandler');
+    userDeletedEventHandler = testModule.get('UserDeletedEventHandler');
     eventRepository = testModule.get('EventEntityRepository');
     messageProducer = testModule.get('Producer');
   });
@@ -31,18 +31,18 @@ describe('UserCreatedEventHandler', () => {
     it('should return Promise<void>', () => {
       const id = 'eventId';
       const userId = 'userId';
-      const type = 'user.created';
+      const type = 'user.deleted';
       const email = 'test@email.com';
       const password = 'password';
       const fileId = null;
 
-      const event = new UserCreatedEvent(id, userId, email, password, fileId);
+      const event = new UserDeletedEvent(id, userId, email, password, fileId);
       const eventEntity = new EventEntity(id, userId, email, password, fileId, type);
 
       jest.spyOn(messageProducer, 'sendToQueue').mockReturnValue(undefined);
       jest.spyOn(eventRepository, 'save').mockResolvedValue(eventEntity);
 
-      expect(userCreatedEventHandler.handle(event)).resolves.toEqual(undefined);
+      expect(userDeletedEventHandler.handle(event)).resolves.toEqual(undefined);
     });
   });
 });

@@ -3,7 +3,7 @@ import { ModuleMetadata } from '@nestjs/common/interfaces';
 import { Test } from '@nestjs/testing';
 
 import UserFactory from '@src/users/model/user.factory';
-import User from '@src/users/model/user.model';
+import User from '@src/users/model/user';
 import UserCreatedEvent from '@src/users/event/created';
 import AccountService from '@src/users/service/account';
 
@@ -36,16 +36,7 @@ describe('UserFactory', () => {
 
       const user = new User(randomId, email, password, createdAt, updatedAt, deletedAt);
 
-      const userCreatedEvent = new UserCreatedEvent(
-        randomId,
-        randomId,
-        email,
-        password,
-        null,
-        createdAt,
-        updatedAt,
-        deletedAt,
-      );
+      const userCreatedEvent = new UserCreatedEvent(randomId, randomId, email, password, null);
 
       jest.spyOn(uuid, 'v1').mockReturnValue(randomId);
 

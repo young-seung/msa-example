@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, HttpModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -31,6 +31,7 @@ const services = [AccountService, ProfileService];
 
 @Module({
   imports: [
+    HttpModule,
     CqrsModule,
     TypeOrmModule.forRoot({
       type: AppConfiguration.DATABASE_TYPE,
