@@ -16,8 +16,10 @@ export default class UserDeletedEventHandler implements IEventHandler {
   ) {}
 
   public async handle(event: UserDeletedEvent): Promise<void> {
-    const { id, userId, type } = event;
-    const eventEntity = new EventEntity(id, userId, type);
+    const {
+      id, userId, type, email, password, fileId,
+    } = event;
+    const eventEntity = new EventEntity(id, userId, email, password, fileId, type);
     const message = new Message(event);
     this.messageProducer.sendToQueue(message);
     await this.eventRepository.save(eventEntity);

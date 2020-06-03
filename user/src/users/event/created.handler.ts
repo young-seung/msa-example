@@ -16,8 +16,10 @@ export default class UserCreatedEventHandler implements IEventHandler<UserCreate
   ) {}
 
   public async handle(event: UserCreatedEvent): Promise<void> {
-    const { id, userId, type } = event;
-    const eventEntity = new EventEntity(id, userId, type);
+    const {
+      id, userId, email, password, fileId, type,
+    } = event;
+    const eventEntity = new EventEntity(id, userId, email, password, fileId, type);
     const message = new Message(event);
     this.messageProducer.sendToQueue(message);
     await this.eventRepository.save(eventEntity);

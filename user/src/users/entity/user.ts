@@ -8,10 +8,10 @@ export default class UserEntity {
   @Column({ nullable: false })
   public readonly createdAt!: Date;
 
-  @Column({ nullable: true, default: null })
+  @Column({ type: 'datetime', nullable: true, default: null })
   public readonly updatedAt!: Date | null;
 
-  @Column({ nullable: true, default: null })
+  @Column({ type: 'datetime', nullable: true, default: null })
   public readonly deletedAt!: Date | null;
 
   constructor(id: string) {

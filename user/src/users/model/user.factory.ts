@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import UserCreatedEvent from '@src/users/event/created';
-import User from '@src/users/model/user.model';
+import User from '@src/users/model/user';
 import UserEntity from '@src/users/entity/user';
 import AccountService from '@src/users/service/account';
 
@@ -24,18 +24,7 @@ export default class UserFactory {
     const createdAt = new Date();
     const user = new User(userId, email, password, createdAt, this.updatedAt, this.deletedAt);
     const eventId = uuid.v1();
-    user.apply(
-      new UserCreatedEvent(
-        eventId,
-        userId,
-        email,
-        password,
-        null,
-        createdAt,
-        this.updatedAt,
-        this.deletedAt,
-      ),
-    );
+    user.apply(new UserCreatedEvent(eventId, userId, email, password, null));
     return user;
   }
 
@@ -45,7 +34,9 @@ export default class UserFactory {
     const userAccount = accountList.find((account) => account.userId === userId);
     if (!accountList || !userAccount) throw new NotFoundException('user account is not found');
 
-    const { id, createdAt, updatedAt, deletedAt } = userEntity;
+    const {
+      id, createdAt, updatedAt, deletedAt,
+    } = userEntity;
     const { email, password } = userAccount;
     return new User(id, email, password, createdAt, updatedAt, deletedAt);
   }
