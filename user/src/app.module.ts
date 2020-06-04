@@ -18,12 +18,16 @@ import UserFactory from '@src/users/model/user.factory';
 import UserCreatedEventHandler from '@src/users/event/created.handler';
 import AccountService from '@src/users/service/account';
 import ProfileService from '@src/users/service/profile';
+import FindUserQueryHandler from '@src/users/query/find.handler';
+import FindUserByIdQueryHandler from '@src/users/query/findById.handle';
 
 const commandHandler = [
   CreateUserCommandHandler,
   UpdateUserCommandHandler,
   DeleteUserCommandHandler,
 ];
+
+const queryHandler = [FindUserQueryHandler, FindUserByIdQueryHandler];
 
 const eventHandler = [UserCreatedEventHandler, UserUpdatedEventHandler];
 
@@ -47,7 +51,15 @@ const services = [AccountService, ProfileService];
     TypeOrmModule.forFeature([User, Event]),
   ],
   controllers: [AppController, UsersController],
-  providers: [Producer, Consumer, UserFactory, ...commandHandler, ...eventHandler, ...services],
+  providers: [
+    Producer,
+    Consumer,
+    UserFactory,
+    ...commandHandler,
+    ...queryHandler,
+    ...eventHandler,
+    ...services,
+  ],
 })
 export default class ApplicationModule {
   constructor(private readonly connection: Connection) {}
