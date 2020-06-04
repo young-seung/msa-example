@@ -1,4 +1,6 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
+import {
+  Controller, Get, Post, Put, Delete, Body, Param, Query,
+} from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import CreateUserDto from '@src/users/dto/create';
@@ -14,6 +16,7 @@ import UpdateUserResponse from '@src/users/dto/update.response';
 import DeleteUserResponse from '@src/users/dto/delete.response';
 import FindUserByIdResponse from '@src/users/dto/findById.response';
 import FindUserResponse from '@src/users/dto/find.response';
+import FindUserQueryResult from '@src/users/query/find.result';
 
 @Controller('users')
 export default class UsersController {
@@ -30,7 +33,7 @@ export default class UsersController {
   @Put('/:userId')
   public async update(
     @Param('userId') userId: string,
-    @Body() dto: UpdateUserDto,
+      @Body() dto: UpdateUserDto,
   ): Promise<UpdateUserResponse> {
     const { password } = dto;
     const command = new UpdateUserCommand(userId, password);
@@ -56,7 +59,7 @@ export default class UsersController {
   public async find(@Query() dto: FindUserDto): Promise<FindUserResponse> {
     const { cursorId, take } = dto;
     const query = new FindUserQuery(cursorId, Number(take));
-    const result = await this.queryBus.execute(query);
+    const result = (await this.queryBus.execute(query));
     return { message: 'success', result };
   }
 }

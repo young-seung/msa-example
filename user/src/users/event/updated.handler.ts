@@ -16,9 +16,7 @@ export default class UserUpdatedEventHandler implements IEventHandler<UserUpdate
   ) {}
 
   public async handle(event: UserUpdatedEvent): Promise<void> {
-    const {
-      id, type, userId, email, password, fileId,
-    } = event;
+    const { id, type, userId, email, password, fileId } = event;
     const entity = new EventEntity(id, userId, email, password, fileId, type);
     const message = new Message(userId, email, password, fileId, type);
     this.messageProducer.sendToQueue(message);

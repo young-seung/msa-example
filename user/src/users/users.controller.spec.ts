@@ -64,9 +64,17 @@ describe('UsersController', () => {
 
   describe('find', () => {
     it('should return response body', () => {
-      jest.spyOn(queryBus, 'execute').mockResolvedValue({});
+      const data = [{
+        id: 'userId', createdAt: new Date(), updatedAt: null, deletedAt: null,
+      }];
+      const hasMore = false;
+      const responseBody = { data, hasMore };
+
+      jest.spyOn(queryBus, 'execute').mockResolvedValue(responseBody);
+
       const dto = new FindUserDto('cursorId', '0');
-      const response = new FindUserResponse('success', {});
+      const response = new FindUserResponse('success', responseBody);
+
       expect(controller.find(dto)).resolves.toEqual(response);
     });
   });
