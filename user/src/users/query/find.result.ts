@@ -1,11 +1,6 @@
-interface User {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date | null;
-  deletedAt: Date | null;
-}
+import FindUserByIdQueryResult from '@src/users/query/findById.result';
 
-type UserList = Array<User>;
+type UserList = Array<FindUserByIdQueryResult>;
 
 export default interface FindUserQueryResult {
   data: UserList;

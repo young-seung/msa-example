@@ -17,6 +17,7 @@ import DeleteUserResponse from '@src/users/dto/delete.response';
 import FindUserByIdResponse from '@src/users/dto/findById.response';
 import FindUserResponse from '@src/users/dto/find.response';
 import FindUserQueryResult from '@src/users/query/find.result';
+import FindUserByIdQueryResult from '@src/users/query/findById.result';
 
 @Controller('users')
 export default class UsersController {
@@ -51,7 +52,7 @@ export default class UsersController {
   @Get('/:userId')
   public async findById(@Param('userId') userId: string): Promise<FindUserByIdResponse> {
     const query = new FindUserByIdQuery(userId);
-    const result = await this.queryBus.execute(query);
+    const result: FindUserByIdQueryResult = await this.queryBus.execute(query);
     return { message: 'success', result };
   }
 

@@ -19,7 +19,7 @@ import UserCreatedEventHandler from '@src/users/event/created.handler';
 import AccountService from '@src/users/service/account';
 import ProfileService from '@src/users/service/profile';
 import FindUserQueryHandler from '@src/users/query/find.handler';
-import FindUserByIdQueryHandler from '@src/users/query/findById.handle';
+import FindUserByIdQueryHandler from '@src/users/query/findById.handler';
 
 const commandHandler = [
   CreateUserCommandHandler,
