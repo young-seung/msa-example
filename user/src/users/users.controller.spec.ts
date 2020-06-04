@@ -64,9 +64,14 @@ describe('UsersController', () => {
 
   describe('find', () => {
     it('should return response body', () => {
-      const data = [{
-        id: 'userId', createdAt: new Date(), updatedAt: null, deletedAt: null,
-      }];
+      const data = [
+        {
+          id: 'userId',
+          createdAt: new Date(),
+          updatedAt: null,
+          deletedAt: null,
+        },
+      ];
       const hasMore = false;
       const responseBody = { data, hasMore };
 

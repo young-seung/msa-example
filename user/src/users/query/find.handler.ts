@@ -1,8 +1,6 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import {
-  Repository, FindManyOptions, LessThan, LessThanOrEqual,
-} from 'typeorm';
+import { Repository, FindManyOptions, LessThan, LessThanOrEqual } from 'typeorm';
 
 import UserEntity from '@src/users/entity/user';
 

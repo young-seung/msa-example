@@ -59,7 +59,7 @@ export default class UsersController {
   public async find(@Query() dto: FindUserDto): Promise<FindUserResponse> {
     const { cursorId, take } = dto;
     const query = new FindUserQuery(cursorId, Number(take));
-    const result = (await this.queryBus.execute(query));
+    const result: FindUserQueryResult = await this.queryBus.execute(query);
     return { message: 'success', result };
   }
 }
