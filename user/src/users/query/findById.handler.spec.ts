@@ -25,7 +25,10 @@ describe('FindUserByIdQueryHandler', () => {
   it('should return Promise<FindUserByIdQueryResult>', () => {
     const userId = 'userId';
     const user = {
-      id: userId, createdAt: new Date(), updatedAt: null, deletedAt: null,
+      id: userId,
+      createdAt: new Date(),
+      updatedAt: null,
+      deletedAt: null,
     };
     const query: FindUserByIdQuery = { userId };
 

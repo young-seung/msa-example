@@ -26,10 +26,16 @@ describe('FindUserQueryHandler', () => {
       const take = 1;
       const hasMore = false;
       const cursor = {
-        id: 'cursorId', createdAt: new Date(), updatedAt: null, deletedAt: null,
+        id: 'cursorId',
+        createdAt: new Date(),
+        updatedAt: null,
+        deletedAt: null,
       };
       const user = {
-        id: 'userId', createdAt: new Date(), updatedAt: null, deletedAt: null,
+        id: 'userId',
+        createdAt: new Date(),
+        updatedAt: null,
+        deletedAt: null,
       };
       const userList = [user];
 
