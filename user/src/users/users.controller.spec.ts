@@ -57,7 +57,10 @@ describe('UsersController', () => {
   describe('findById', () => {
     it('should return response body', () => {
       const data = {
-        id: 'userId', createdAt: new Date(), updatedAt: null, deletedAt: null,
+        id: 'userId',
+        createdAt: new Date(),
+        updatedAt: null,
+        deletedAt: null,
       };
 
       jest.spyOn(queryBus, 'execute').mockResolvedValue(data);
