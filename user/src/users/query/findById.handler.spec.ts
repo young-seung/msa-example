@@ -1,25 +1,23 @@
 import { ModuleMetadata } from '@nestjs/common/interfaces';
 import { Repository } from 'typeorm';
-import UserEntity from '@src/users/entity/user';
-import FindUserByIdQueryHandler from '@src/users/query/findById.handler';
 import { Test } from '@nestjs/testing';
+
+import FindUserByIdQueryHandler from '@src/users/query/findById.handler';
 import FindUserByIdQuery from '@src/users/query/findById';
+import UserRepository from '@src/users/repository/user.repository';
 
 describe('FindUserByIdQueryHandler', () => {
   let moduleMetaData: ModuleMetadata;
-  let userRepository: Repository<UserEntity>;
+  let userRepository: UserRepository;
   let findUserByIdQueryHandler: FindUserByIdQueryHandler;
 
   beforeAll(async () => {
     moduleMetaData = {
-      providers: [
-        { provide: 'UserEntityRepository', useClass: Repository },
-        FindUserByIdQueryHandler,
-      ],
+      providers: [{ provide: UserRepository, useClass: Repository }, FindUserByIdQueryHandler],
     };
     const testModule = await Test.createTestingModule(moduleMetaData).compile();
-    userRepository = testModule.get('UserEntityRepository');
-    findUserByIdQueryHandler = testModule.get('FindUserByIdQueryHandler');
+    userRepository = testModule.get(UserRepository);
+    findUserByIdQueryHandler = testModule.get(FindUserByIdQueryHandler);
   });
 
   it('should return Promise<FindUserByIdQueryResult>', () => {

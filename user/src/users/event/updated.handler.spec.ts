@@ -6,25 +6,26 @@ import UserUpdatedEventHandler from '@src/users/event/updated.handler';
 import EventEntity from '@src/users/entity/event';
 import Publisher from '@src/users/rabbitmq/publisher';
 import UserUpdatedEvent from '@src/users/event/updated';
+import EventRepository from '@src/users/repository/event.repository';
 
 describe('UserUpdatedEventHandler', () => {
   let moduleMetaData: ModuleMetadata;
   let userUpdatedEventHandler: UserUpdatedEventHandler;
-  let eventRepository: Repository<EventEntity>;
+  let eventRepository: EventRepository;
   let messagePublisher: Publisher;
 
   beforeAll(async () => {
     moduleMetaData = {
       providers: [
-        { provide: 'EventEntityRepository', useClass: Repository },
+        { provide: EventRepository, useClass: Repository },
         Publisher,
         UserUpdatedEventHandler,
       ],
     };
     const testModule = await Test.createTestingModule(moduleMetaData).compile();
-    userUpdatedEventHandler = testModule.get('UserUpdatedEventHandler');
-    eventRepository = testModule.get('EventEntityRepository');
-    messagePublisher = testModule.get('Publisher');
+    userUpdatedEventHandler = testModule.get(UserUpdatedEventHandler);
+    eventRepository = testModule.get(EventRepository);
+    messagePublisher = testModule.get(Publisher);
   });
 
   describe('handle', () => {

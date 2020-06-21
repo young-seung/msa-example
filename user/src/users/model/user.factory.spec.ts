@@ -6,6 +6,7 @@ import UserFactory from '@src/users/model/user.factory';
 import User from '@src/users/model/user';
 import UserCreatedEvent from '@src/users/event/created';
 import AccountService from '@src/users/service/account';
+import UserRepository from '@src/users/repository/user.repository';
 
 describe('UserFactory', () => {
   let moduleMetaData: ModuleMetadata;
@@ -16,7 +17,7 @@ describe('UserFactory', () => {
       providers: [
         UserFactory,
         { provide: AccountService, useValue: {} },
-        { provide: 'UserEntityRepository', useValue: {} },
+        { provide: UserRepository, useValue: {} },
       ],
     };
     const testModule = await Test.createTestingModule(moduleMetaData).compile();

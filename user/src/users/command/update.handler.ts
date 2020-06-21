@@ -1,19 +1,17 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { Inject } from '@nestjs/common';
 
 import UpdateUserCommand from '@src/users/command/update';
 import UpdateUserCommandResult from '@src/users/command/update.result';
-import User from '@src/users/entity/user';
 import UserFactory from '@src/users/model/user.factory';
+import UserRepository from '@src/users/repository/user.repository';
 
 @CommandHandler(UpdateUserCommand)
 export default class UpdateUserCommandHandler implements ICommandHandler<UpdateUserCommand> {
   constructor(
     @Inject(EventPublisher) private readonly eventPublisher: EventPublisher,
     @Inject(UserFactory) private readonly userFactory: UserFactory,
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @Inject(UserRepository) private readonly userRepository: UserRepository,
   ) {}
 
   public async execute(command: UpdateUserCommand): Promise<UpdateUserCommandResult> {

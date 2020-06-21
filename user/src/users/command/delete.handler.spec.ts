@@ -9,27 +9,28 @@ import UserFactory from '@src/users/model/user.factory';
 import User from '@src/users/model/user';
 import DeleteUserCommand from '@src/users/command/delete';
 import DeleteUserCommandResult from '@src/users/command/delete.result';
+import UserRepository from '@src/users/repository/user.repository';
 
 describe('DeleteUserCommandHandler', () => {
   let moduleMetaData: ModuleMetadata;
   let eventPublisher: EventPublisher;
   let deleteUserCommandHandler: DeleteUserCommandHandler;
   let userFactory: UserFactory;
-  let userRepository: Repository<UserEntity>;
+  let userRepository: UserRepository;
 
   beforeAll(async () => {
     moduleMetaData = {
       providers: [
         { provide: EventPublisher, useValue: { mergeObjectContext: (): null => null } },
         { provide: UserFactory, useValue: { reconstitute: (): null => null } },
-        { provide: 'UserEntityRepository', useClass: Repository },
+        { provide: UserRepository, useClass: Repository },
         DeleteUserCommandHandler,
       ],
     };
     const testModule = await Test.createTestingModule(moduleMetaData).compile();
     deleteUserCommandHandler = testModule.get(DeleteUserCommandHandler);
     userFactory = testModule.get(UserFactory);
-    userRepository = testModule.get('UserEntityRepository');
+    userRepository = testModule.get(UserRepository);
     eventPublisher = testModule.get(EventPublisher);
   });
 

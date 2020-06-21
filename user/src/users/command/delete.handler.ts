@@ -1,19 +1,17 @@
 import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { Inject } from '@nestjs/common';
 
 import DeleteUserCommand from '@src/users/command/delete';
 import DeleteUserCommandResult from '@src/users/command/delete.result';
-import UserEntity from '@src/users/entity/user';
 import UserFactory from '@src/users/model/user.factory';
+import UserRepository from '@src/users/repository/user.repository';
 
 @CommandHandler(DeleteUserCommand)
 export default class DeleteUserCommandHandler implements ICommandHandler<DeleteUserCommand> {
   constructor(
     @Inject(EventPublisher) private readonly eventPublisher: EventPublisher,
     @Inject(UserFactory) private readonly userFactory: UserFactory,
-    @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
+    @Inject(UserRepository) private readonly userRepository: UserRepository,
   ) {}
 
   public async execute(command: DeleteUserCommand): Promise<DeleteUserCommandResult> {
