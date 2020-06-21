@@ -4,7 +4,7 @@ import { Connection } from 'typeorm';
 
 import AppController from '@src/app.controller';
 import AppConfiguration from '@src/app.config';
-import Producer from '@src/users/rabbitmq/producer';
+import Publisher from '@src/users/rabbitmq/publisher';
 import Consumer from '@src/users/rabbitmq/consumer';
 import UsersModule from '@src/users/users.module';
 
@@ -23,7 +23,7 @@ import UsersModule from '@src/users/users.module';
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [Producer, Consumer],
+  providers: [Publisher, Consumer],
 })
 export default class ApplicationModule {
   constructor(private readonly connection: Connection) {}

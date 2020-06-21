@@ -4,27 +4,27 @@ import { Test } from '@nestjs/testing';
 
 import UserUpdatedEventHandler from '@src/users/event/updated.handler';
 import EventEntity from '@src/users/entity/event';
-import Producer from '@src/users/rabbitmq/producer';
+import Publisher from '@src/users/rabbitmq/publisher';
 import UserUpdatedEvent from '@src/users/event/updated';
 
 describe('UserUpdatedEventHandler', () => {
   let moduleMetaData: ModuleMetadata;
   let userUpdatedEventHandler: UserUpdatedEventHandler;
   let eventRepository: Repository<EventEntity>;
-  let messageProducer: Producer;
+  let messagePublisher: Publisher;
 
   beforeAll(async () => {
     moduleMetaData = {
       providers: [
         { provide: 'EventEntityRepository', useClass: Repository },
-        Producer,
+        Publisher,
         UserUpdatedEventHandler,
       ],
     };
     const testModule = await Test.createTestingModule(moduleMetaData).compile();
     userUpdatedEventHandler = testModule.get('UserUpdatedEventHandler');
     eventRepository = testModule.get('EventEntityRepository');
-    messageProducer = testModule.get('Producer');
+    messagePublisher = testModule.get('Publisher');
   });
 
   describe('handle', () => {
@@ -39,7 +39,7 @@ describe('UserUpdatedEventHandler', () => {
       const event = new UserUpdatedEvent(id, userId, email, password, fileId);
       const eventEntity = new EventEntity(id, userId, email, password, fileId, type);
 
-      jest.spyOn(messageProducer, 'sendToQueue').mockReturnValue(undefined);
+      jest.spyOn(messagePublisher, 'sendToQueue').mockReturnValue(undefined);
       jest.spyOn(eventRepository, 'save').mockResolvedValue(eventEntity);
 
       expect(userUpdatedEventHandler.handle(event)).resolves.toEqual(undefined);
