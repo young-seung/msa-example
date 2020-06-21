@@ -1,17 +1,14 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, FindManyOptions, LessThan, LessThanOrEqual } from 'typeorm';
-
-import UserEntity from '@src/users/entity/user';
+import { FindManyOptions, LessThan, LessThanOrEqual } from 'typeorm';
+import { Inject } from '@nestjs/common';
 
 import FindUserQuery from '@src/users/query/find';
 import FindUserQueryResult from '@src/users/query/find.result';
+import UserRepository from '@src/users/repository/user.repository';
 
 @QueryHandler(FindUserQuery)
 export default class FindUserQueryHandler implements IQueryHandler<FindUserQuery> {
-  constructor(
-    @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
-  ) {}
+  constructor(@Inject(UserRepository) private readonly userRepository: UserRepository) {}
 
   public async execute(query: FindUserQuery): Promise<FindUserQueryResult> {
     const { cursorId, take } = query;

@@ -6,25 +6,26 @@ import UserDeletedEventHandler from '@src/users/event/deleted.handler';
 import EventEntity from '@src/users/entity/event';
 import Publisher from '@src/users/rabbitmq/publisher';
 import UserDeletedEvent from '@src/users/event/deleted';
+import EventRepository from '@src/users/repository/event.repository';
 
 describe('UserDeletedEventHandler', () => {
   let moduleMetaData: ModuleMetadata;
   let userDeletedEventHandler: UserDeletedEventHandler;
-  let eventRepository: Repository<EventEntity>;
+  let eventRepository: EventRepository;
   let messagePublisher: Publisher;
 
   beforeAll(async () => {
     moduleMetaData = {
       providers: [
-        { provide: 'EventEntityRepository', useClass: Repository },
+        { provide: EventRepository, useClass: Repository },
         Publisher,
         UserDeletedEventHandler,
       ],
     };
     const testModule = await Test.createTestingModule(moduleMetaData).compile();
-    userDeletedEventHandler = testModule.get('UserDeletedEventHandler');
-    eventRepository = testModule.get('EventEntityRepository');
-    messagePublisher = testModule.get('Publisher');
+    userDeletedEventHandler = testModule.get(UserDeletedEventHandler);
+    eventRepository = testModule.get(EventRepository);
+    messagePublisher = testModule.get(Publisher);
   });
 
   describe('handle', () => {

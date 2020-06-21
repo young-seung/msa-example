@@ -1,9 +1,6 @@
 import { Module, HttpModule } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
-import UserEntity from '@src/users/entity/user';
-import EventEntity from '@src/users/entity/event';
 import UsersController from '@src/users/users.controller';
 import UserFactory from '@src/users/model/user.factory';
 import CreateUserCommandHandler from '@src/users/command/create.handler';
@@ -18,6 +15,8 @@ import AccountService from '@src/users/service/account';
 import ProfileService from '@src/users/service/profile';
 import Publisher from '@src/users/rabbitmq/publisher';
 import Consumer from '@src/users/rabbitmq/consumer';
+import UserRepository from '@src/users/repository/user.repository';
+import EventRepository from '@src/users/repository/event.repository';
 
 const commandHandlers = [
   CreateUserCommandHandler,
@@ -31,11 +30,18 @@ const eventHandlers = [UserCreatedEventHandler, UserUpdatedEventHandler, UserDel
 
 const services = [AccountService, ProfileService, Publisher, Consumer];
 
-const entities = [UserEntity, EventEntity];
+const repository = [UserRepository, EventRepository];
 
 @Module({
-  imports: [HttpModule, CqrsModule, TypeOrmModule.forFeature(entities)],
+  imports: [HttpModule, CqrsModule],
   controllers: [UsersController],
-  providers: [UserFactory, ...commandHandlers, ...queryHandlers, ...eventHandlers, ...services],
+  providers: [
+    UserFactory,
+    ...commandHandlers,
+    ...queryHandlers,
+    ...eventHandlers,
+    ...services,
+    ...repository,
+  ],
 })
 export default class UsersModule {}

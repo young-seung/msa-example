@@ -1,6 +1,5 @@
 import { ModuleMetadata } from '@nestjs/common/interfaces';
 import { Test } from '@nestjs/testing';
-import { Repository } from 'typeorm';
 import { EventPublisher } from '@nestjs/cqrs';
 
 import CreateUserCommandHandler from '@src/users/command/create.handler';
@@ -9,12 +8,13 @@ import UserEntity from '@src/users/entity/user';
 import User from '@src/users/model/user';
 import CreateUserCommand from '@src/users/command/create';
 import CreateUserCommandResult from '@src/users/command/create.result';
+import UserRepository from '@src/users/repository/user.repository';
 
 describe('CreateUserCommandHandler', () => {
   let moduleMetaData: ModuleMetadata;
   let createUserCommandHandler: CreateUserCommandHandler;
   let userFactory: UserFactory;
-  let userRepository: Repository<UserEntity>;
+  let userRepository: UserRepository;
   let eventPublisher: EventPublisher;
 
   beforeAll(async () => {
@@ -22,14 +22,14 @@ describe('CreateUserCommandHandler', () => {
       providers: [
         { provide: EventPublisher, useValue: { mergeObjectContext: (): null => null } },
         { provide: UserFactory, useValue: { create: (): null => null } },
-        { provide: 'UserEntityRepository', useValue: { save: (): null => null } },
+        { provide: UserRepository, useValue: { save: (): null => null } },
         CreateUserCommandHandler,
       ],
     };
     const testModule = await Test.createTestingModule(moduleMetaData).compile();
     createUserCommandHandler = testModule.get(CreateUserCommandHandler);
     userFactory = testModule.get(UserFactory);
-    userRepository = testModule.get('UserEntityRepository');
+    userRepository = testModule.get(UserRepository);
     eventPublisher = testModule.get(EventPublisher);
   });
 

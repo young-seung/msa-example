@@ -5,6 +5,7 @@ import { Test } from '@nestjs/testing';
 import FindUserQueryHandler from '@src/users/query/find.handler';
 import FindUserQuery from '@src/users/query/find';
 import FindUserQueryResult from '@src/users/query/find.result';
+import UserRepository from '@src/users/repository/user.repository';
 
 describe('FindUserQueryHandler', () => {
   let moduleMetaData: ModuleMetadata;
@@ -13,11 +14,11 @@ describe('FindUserQueryHandler', () => {
 
   beforeAll(async () => {
     moduleMetaData = {
-      providers: [{ provide: 'UserEntityRepository', useClass: Repository }, FindUserQueryHandler],
+      providers: [{ provide: UserRepository, useClass: Repository }, FindUserQueryHandler],
     };
     const testModule = await Test.createTestingModule(moduleMetaData).compile();
-    userRepository = testModule.get('UserEntityRepository');
-    findUserQueryHandler = testModule.get('FindUserQueryHandler');
+    userRepository = testModule.get(UserRepository);
+    findUserQueryHandler = testModule.get(FindUserQueryHandler);
   });
 
   describe('execute', () => {

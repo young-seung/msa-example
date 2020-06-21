@@ -1,12 +1,10 @@
 import uuid from 'uuid';
 import { Injectable, Inject, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
 import UserCreatedEvent from '@src/users/event/created';
 import User from '@src/users/model/user';
-import UserEntity from '@src/users/entity/user';
 import AccountService from '@src/users/service/account';
+import UserRepository from '@src/users/repository/user.repository';
 
 @Injectable()
 export default class UserFactory {
@@ -16,7 +14,7 @@ export default class UserFactory {
 
   constructor(
     @Inject(AccountService) private readonly accountService: AccountService,
-    @InjectRepository(UserEntity) private readonly userRepository: Repository<UserEntity>,
+    @Inject(UserRepository) private readonly userRepository: UserRepository,
   ) {}
 
   public create(email: string, password: string): User {
@@ -29,12 +27,16 @@ export default class UserFactory {
   }
 
   public async reconstitute(userId: string): Promise<User> {
-    const userEntity = await this.userRepository.findOneOrFail(userId);
+    const userEntity = await this.userRepository.findOne(userId);
+    if (!userEntity) throw new NotFoundException('can not found user');
+
     const accountList = await this.accountService.findByUserId(userId);
     const userAccount = accountList.find((account) => account.userId === userId);
     if (!accountList || !userAccount) throw new NotFoundException('user account is not found');
 
-    const { id, createdAt, updatedAt, deletedAt } = userEntity;
+    const {
+      id, createdAt, updatedAt, deletedAt,
+    } = userEntity;
     const { email, password } = userAccount;
     return new User(id, email, password, createdAt, updatedAt, deletedAt);
   }
