@@ -16,7 +16,7 @@ import UserUpdatedEventHandler from '@src/users/event/updated.handler';
 import UserDeletedEventHandler from '@src/users/event/deleted.handler';
 import AccountService from '@src/users/service/account';
 import ProfileService from '@src/users/service/profile';
-import Producer from '@src/users/rabbitmq/producer';
+import Publisher from '@src/users/rabbitmq/publisher';
 import Consumer from '@src/users/rabbitmq/consumer';
 
 const commandHandlers = [
@@ -29,7 +29,7 @@ const queryHandlers = [FindUserQueryHandler, FindUserByIdQueryHandler];
 
 const eventHandlers = [UserCreatedEventHandler, UserUpdatedEventHandler, UserDeletedEventHandler];
 
-const services = [AccountService, ProfileService, Producer, Consumer];
+const services = [AccountService, ProfileService, Publisher, Consumer];
 
 const entities = [UserEntity, EventEntity];
 

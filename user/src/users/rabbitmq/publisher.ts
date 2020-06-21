@@ -1,7 +1,7 @@
 import Amqp from 'amqplib';
 import Message from '@src/users/rabbitmq/message';
 
-export default class Producer {
+export default class Publisher {
   private readonly queueName = 'user';
 
   private connection: Amqp.Connection | null = null;
