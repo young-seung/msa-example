@@ -10,18 +10,18 @@ import Message from '@src/users/rabbitmq/message';
 
 @EventsHandler(UserDeletedEvent)
 export default class UserDeletedEventHandler implements IEventHandler {
+  private readonly key = 'user.deleted';
+
   constructor(
     @InjectRepository(EventEntity) private readonly eventRepository: Repository<EventEntity>,
     @Inject(Publisher) private readonly messagePublisher: Publisher,
   ) {}
 
   public async handle(event: UserDeletedEvent): Promise<void> {
-    const {
-      id, userId, type, email, password, fileId,
-    } = event;
+    const { id, userId, type, email, password, fileId } = event;
     const eventEntity = new EventEntity(id, userId, email, password, fileId, type);
-    const message = new Message(userId, email, password, fileId, type);
-    this.messagePublisher.sendToQueue(message);
+    const message = new Message(this.key, userId, email, password, fileId, type);
+    this.messagePublisher.publish(message);
     await this.eventRepository.save(eventEntity);
   }
 }

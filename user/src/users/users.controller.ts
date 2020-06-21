@@ -1,6 +1,4 @@
-import {
-  Controller, Get, Post, Put, Delete, Body, Param, Query,
-} from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Query } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 
 import CreateUserDto from '@src/users/dto/create';
@@ -34,7 +32,7 @@ export default class UsersController {
   @Put('/:userId')
   public async update(
     @Param('userId') userId: string,
-      @Body() dto: UpdateUserDto,
+    @Body() dto: UpdateUserDto,
   ): Promise<UpdateUserResponse> {
     const { password } = dto;
     const command = new UpdateUserCommand(userId, password);

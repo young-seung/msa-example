@@ -2,7 +2,7 @@ import Amqp from 'amqplib';
 import { InternalServerErrorException } from '@nestjs/common';
 
 export default class Consumer {
-  private readonly queueName = 'user';
+  private readonly queueName = 'user-queue';
 
   private connection: Amqp.Connection | null = null;
 
