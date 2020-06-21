@@ -1,8 +1,15 @@
 import Amqp from 'amqplib';
 import Message from '@src/users/rabbitmq/message';
+import { InternalServerErrorException } from '@nestjs/common';
 
 export default class Publisher {
-  private readonly queueName = 'user';
+  private readonly url = 'amqp://localhost';
+
+  private readonly userName = 'root';
+
+  private readonly password = 'test';
+
+  private readonly exchange = 'user-exchange';
 
   private connection: Amqp.Connection | null = null;
 
@@ -10,24 +17,25 @@ export default class Publisher {
 
   public async setUp(): Promise<void> {
     this.channel = await this.getChannel();
-    this.assertQueue();
+    await this.assertExchange(this.exchange);
   }
 
-  public sendToQueue(message: Message): void {
+  public publish(message: Message): void {
     if (!this.channel) process.exit(1);
     const content = JSON.stringify(message);
-    this.channel.sendToQueue(this.queueName, Buffer.from(content));
+    const result = this.channel.publish(this.exchange, message.key, Buffer.from(content));
+    if (!result) throw new InternalServerErrorException('can not publish message');
   }
 
   private async getChannel(): Promise<Amqp.Channel> {
-    const option = { credentials: Amqp.credentials.plain('root', 'test') };
-    this.connection = await Amqp.connect('amqp://localhost', option);
+    const option = { credentials: Amqp.credentials.plain(this.userName, this.password) };
+    this.connection = await Amqp.connect(this.url, option);
     if (!this.connection) process.exit(1);
     return this.connection.createChannel();
   }
 
-  private async assertQueue(): Promise<void> {
+  private async assertExchange(exchange: string): Promise<void> {
     if (!this.channel) process.exit(1);
-    await this.channel.assertQueue(this.queueName, { durable: false });
+    await this.channel.assertExchange(exchange, 'topic', { durable: false });
   }
 }

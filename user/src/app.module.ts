@@ -7,6 +7,8 @@ import AppConfiguration from '@src/app.config';
 import Publisher from '@src/users/rabbitmq/publisher';
 import Consumer from '@src/users/rabbitmq/consumer';
 import UsersModule from '@src/users/users.module';
+import UserEntity from '@src/users/entity/user';
+import EventEntity from '@src/users/entity/event';
 
 @Module({
   imports: [
@@ -19,6 +21,7 @@ import UsersModule from '@src/users/users.module';
       password: AppConfiguration.DATABASE_PASSWORD,
       synchronize: true,
       logging: true,
+      entities: [UserEntity, EventEntity],
     }),
     UsersModule,
   ],

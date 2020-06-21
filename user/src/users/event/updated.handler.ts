@@ -10,18 +10,18 @@ import Message from '@src/users/rabbitmq/message';
 
 @EventsHandler(UserUpdatedEvent)
 export default class UserUpdatedEventHandler implements IEventHandler<UserUpdatedEvent> {
+  private readonly key = 'user.updated';
+
   constructor(
     @InjectRepository(EventEntity) private readonly eventRepository: Repository<EventEntity>,
     @Inject(Publisher) private readonly messagePublisher: Publisher,
   ) {}
 
   public async handle(event: UserUpdatedEvent): Promise<void> {
-    const {
-      id, type, userId, email, password, fileId,
-    } = event;
+    const { id, type, userId, email, password, fileId } = event;
     const entity = new EventEntity(id, userId, email, password, fileId, type);
-    const message = new Message(userId, email, password, fileId, type);
-    this.messagePublisher.sendToQueue(message);
+    const message = new Message(this.key, userId, email, password, fileId, type);
+    this.messagePublisher.publish(message);
     await this.eventRepository.save(entity);
   }
 }

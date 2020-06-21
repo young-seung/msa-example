@@ -39,7 +39,7 @@ describe('UserCreatedEventHandler', () => {
       const event = new UserCreatedEvent(id, userId, email, password, fileId);
       const eventEntity = new EventEntity(id, userId, email, password, fileId, type);
 
-      jest.spyOn(messagePublisher, 'sendToQueue').mockReturnValue(undefined);
+      jest.spyOn(messagePublisher, 'publish').mockReturnValue(undefined);
       jest.spyOn(eventRepository, 'save').mockResolvedValue(eventEntity);
 
       expect(userCreatedEventHandler.handle(event)).resolves.toEqual(undefined);

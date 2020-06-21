@@ -39,7 +39,7 @@ describe('UserDeletedEventHandler', () => {
       const event = new UserDeletedEvent(id, userId, email, password, fileId);
       const eventEntity = new EventEntity(id, userId, email, password, fileId, type);
 
-      jest.spyOn(messagePublisher, 'sendToQueue').mockReturnValue(undefined);
+      jest.spyOn(messagePublisher, 'publish').mockReturnValue(undefined);
       jest.spyOn(eventRepository, 'save').mockResolvedValue(eventEntity);
 
       expect(userDeletedEventHandler.handle(event)).resolves.toEqual(undefined);
