@@ -27,6 +27,16 @@ services:
       - "traefik.http.routers.user.rule=Host(`user.localhost`)"
       - "traefik.http.routers.user.entrypoints=user"
 
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: root
+      RABBITMQ_DEFAULT_PASS: test
+    ports:
+      - 5672:5672
+      - 15672:15672
+
   account:
     build: 
       context: ./account/.
@@ -59,7 +69,7 @@ services:
     image: kyhsa93/redis-slave
     restart: always
 
-  account-database:
+  user-database:
     image: mysql:5.7
     restart: always
     env_file: .env
