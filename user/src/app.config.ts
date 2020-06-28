@@ -11,6 +11,11 @@ type AppConfigurationType = {
     synchronize: boolean;
     logging: boolean;
   };
+  rabbitmq: {
+    url: string;
+    userName: string;
+    password: string;
+  };
   JWT_SECRET: string;
   JWT_EXPIRATION: number;
   REDIS_MASTER_HOST: string;
@@ -31,6 +36,11 @@ const AppConfiguration: AppConfigurationType = {
     password: process.env.DATABASE_PASSWORD || 'test',
     synchronize: process.env.DATABASE_SYNC === 'true',
     logging: process.env.DATABASE_LOGGING === 'true',
+  },
+  rabbitmq: {
+    url: process.env.RABBITMQ_URL || 'amqp://localhost',
+    userName: process.env.RABBITMQ_USER_NAME || 'root',
+    password: process.env.RABBITMQ_PASSWORD || 'test',
   },
   JWT_SECRET: 'sAmPlEsEcReT',
   JWT_EXPIRATION: 3600,

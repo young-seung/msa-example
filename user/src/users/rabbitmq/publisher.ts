@@ -1,19 +1,26 @@
 import Amqp from 'amqplib';
 import Message from '@src/users/rabbitmq/message';
 import { InternalServerErrorException } from '@nestjs/common';
+import AppConfiguration from '@src/app.config';
 
 export default class Publisher {
-  private readonly url = 'amqp://localhost';
-
-  private readonly userName = 'root';
-
-  private readonly password = 'test';
-
   private readonly exchange = 'user-exchange';
+
+  private readonly url: string;
+
+  private readonly userName: string;
+
+  private readonly password: string;
 
   private connection: Amqp.Connection | null = null;
 
   private channel: Amqp.Channel | null = null;
+
+  constructor() {
+    this.url = AppConfiguration.rabbitmq.url;
+    this.userName = AppConfiguration.rabbitmq.userName;
+    this.password = AppConfiguration.rabbitmq.password;
+  }
 
   public async setUp(): Promise<void> {
     this.channel = await this.getChannel();
