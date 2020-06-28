@@ -1,14 +1,31 @@
 version: "3.7"
 
 services: 
-  proxy:
-    image: nginx:alpine
+  traefik:
+    image: traefik
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  user:
+    build:
+      context: ./user/.
     restart: always
-    ports: 
-      - 80:80
-    volumes: 
-      - ./nginx.conf:/etc/nginx/nginx.conf
-    command: [nginx-debug, '-g', 'daemon off;']
+    env_file: user/.env
+    environment: 
+      - DATABASE_HOST=user-database
+    labels: 
+      - "traefik.enable=true"
+      - "traefik.http.routers.user.rule=Host(`user.localhost`)"
+      - "traefik.http.routers.user.entrypoints=user"
 
   account:
     build: 
@@ -41,6 +58,15 @@ services:
   redis-slave:
     image: kyhsa93/redis-slave
     restart: always
+
+  account-database:
+    image: mysql:5.7
+    restart: always
+    env_file: .env
+    environment: 
+      - MYSQL_DATABASE=user
+    volumes: 
+      - ~/database/msa-example/user:/var/lib/mysql
 
   account-database:
     image: mysql:5.7
