@@ -8,7 +8,7 @@ services:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.user.address=:80"
+      - "--entrypoints.web.address=:80"
     ports:
       - "80:80"
       - "8080:8080"
@@ -22,10 +22,13 @@ services:
     env_file: user/.env
     environment: 
       - DATABASE_HOST=user-database
+      - DATABASE_SYNC=true
+      - DATABASE_LOGGING=true
     labels: 
       - "traefik.enable=true"
       - "traefik.http.routers.user.rule=Host(`user.localhost`)"
-      - "traefik.http.routers.user.entrypoints=user"
+      - "traefik.http.routers.user.entrypoints=web"
+      - "traefik.http.middlewares.latency-check.circuitbreaker.expression=LatencyAtQuantileMS(50.0) > 100"
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -44,6 +47,11 @@ services:
     env_file: account/.env
     environment: 
       - DATABASE_HOST=account-database
+    labels: 
+      - "traefik.enable=true"
+      - "traefik.http.routers.account.rule=Host(`account.localhost`)"
+      - "traefik.http.routers.account.entrypoints=web"
+      - "traefik.http.middlewares.latency-check.circuitbreaker.expression=LatencyAtQuantileMS(50.0) > 100"
 
   profile:
     build: 
@@ -52,6 +60,11 @@ services:
     env_file: profile/.env
     environment: 
       - DATABASE_HOST=profile-database
+    labels: 
+      - "traefik.enable=true"
+      - "traefik.http.routers.profile.rule=Host(`profile.localhost`)"
+      - "traefik.http.routers.profile.entrypoints=web"
+      - "traefik.http.middlewares.latency-check.circuitbreaker.expression=LatencyAtQuantileMS(50.0) > 100"
 
   file:
     build: 
@@ -60,6 +73,11 @@ services:
     env_file: file/.env
     environment: 
       - DATABASE_HOST=file-database
+    labels: 
+      - "traefik.enable=true"
+      - "traefik.http.routers.file.rule=Host(`file.localhost`)"
+      - "traefik.http.routers.file.entrypoints=web"
+      - "traefik.http.middlewares.latency-check.circuitbreaker.expression=LatencyAtQuantileMS(50.0) > 100"
 
   redis-master:
     image: kyhsa93/redis-master
