@@ -5,4 +5,5 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -ldflags '-s' -o main main
 
 FROM scratch
 COPY --from=stage /go/src/github.com/young-seung/msa-example/file/main /main
+EXPOSE 5000
 CMD [ "/main" ]
