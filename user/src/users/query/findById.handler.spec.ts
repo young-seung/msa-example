@@ -1,5 +1,4 @@
 import { ModuleMetadata } from '@nestjs/common/interfaces';
-import { Repository } from 'typeorm';
 import { Test } from '@nestjs/testing';
 
 import FindUserByIdQueryHandler from '@src/users/query/findById.handler';
@@ -13,7 +12,7 @@ describe('FindUserByIdQueryHandler', () => {
 
   beforeAll(async () => {
     moduleMetaData = {
-      providers: [{ provide: UserRepository, useClass: Repository }, FindUserByIdQueryHandler],
+      providers: [UserRepository, FindUserByIdQueryHandler],
     };
     const testModule = await Test.createTestingModule(moduleMetaData).compile();
     userRepository = testModule.get(UserRepository);
@@ -30,7 +29,7 @@ describe('FindUserByIdQueryHandler', () => {
     };
     const query: FindUserByIdQuery = { userId };
 
-    jest.spyOn(userRepository, 'findOne').mockResolvedValue(user);
+    jest.spyOn(userRepository, 'findById').mockResolvedValue(user);
 
     expect(findUserByIdQueryHandler.execute(query)).resolves.toEqual(user);
   });

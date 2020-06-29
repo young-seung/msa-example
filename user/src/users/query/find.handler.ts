@@ -1,5 +1,4 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { FindManyOptions, LessThan, LessThanOrEqual } from 'typeorm';
 import { Inject } from '@nestjs/common';
 
 import FindUserQuery from '@src/users/query/find';
@@ -13,20 +12,7 @@ export default class FindUserQueryHandler implements IQueryHandler<FindUserQuery
   public async execute(query: FindUserQuery): Promise<FindUserQueryResult> {
     const { cursorId, take } = query;
 
-    const findManyOptions: FindManyOptions = {
-      take: take + 1,
-      order: { id: 'DESC', createdAt: 'DESC' },
-    };
-
-    const cursor = await this.userRepository.findOne(cursorId);
-    if (cursorId && cursor) {
-      findManyOptions.where = {
-        id: LessThan(cursorId),
-        createdAt: LessThanOrEqual(cursor.createdAt),
-      };
-    }
-
-    const data = await this.userRepository.find(findManyOptions);
+    const data = await this.userRepository.find(cursorId, take);
 
     return { data, hasMore: data.length === take + 1 };
   }

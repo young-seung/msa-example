@@ -11,7 +11,7 @@ export default class FindUserByIdQueryHandler implements IQueryHandler<FindUserB
 
   public async execute(query: FindUserByIdQuery): Promise<FindUserByIdQueryResult> {
     const { userId } = query;
-    const user = await this.userRepository.findOne(userId);
+    const user = await this.userRepository.findById(userId);
     if (!user) throw new NotFoundException();
 
     return user;

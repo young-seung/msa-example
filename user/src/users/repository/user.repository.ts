@@ -1,4 +1,10 @@
-import { EntityRepository, getRepository, FindManyOptions } from 'typeorm';
+import {
+  EntityRepository,
+  getRepository,
+  FindManyOptions,
+  LessThan,
+  LessThanOrEqual,
+} from 'typeorm';
 
 import UserEntity from '@src/users/entity/user';
 
@@ -9,13 +15,24 @@ export default class UserRepository {
     return getRepository(UserEntity).save(entityList);
   };
 
-  public findOne = async (id: string): Promise<UserEntity | undefined> => {
+  public findById = async (userId: string): Promise<UserEntity | undefined> => {
     const repository = getRepository(UserEntity);
-    return repository.findOne(id);
+    return repository.findOne(userId);
   };
 
-  public find = async (options: FindManyOptions): Promise<UserEntity[]> => {
+  public find = async (cursorId: string, take: number): Promise<UserEntity[]> => {
     const repository = getRepository(UserEntity);
-    return repository.find(options);
+    const findManyOptions: FindManyOptions<UserEntity> = {
+      take: take + 1,
+      order: { id: 'DESC', createdAt: 'DESC' },
+    };
+
+    const cursor = await repository.findOne(cursorId);
+    if (cursorId && cursor) {
+      const condition = { id: LessThan(cursorId), createdAt: LessThanOrEqual(cursor.createdAt) };
+      findManyOptions.where = condition;
+    }
+
+    return repository.find(findManyOptions);
   };
 }
