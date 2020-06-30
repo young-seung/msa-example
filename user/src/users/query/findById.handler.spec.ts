@@ -1,11 +1,11 @@
 import { ModuleMetadata, Provider } from '@nestjs/common/interfaces';
 import { Test } from '@nestjs/testing';
+import { HttpService } from '@nestjs/common';
 
 import FindUserByIdQueryHandler from '@src/users/query/findById.handler';
 import FindUserByIdQuery from '@src/users/query/findById';
 import UserRepository from '@src/users/repository/user.repository';
 import ProfileService from '@src/users/service/profile';
-import { HttpService } from '@nestjs/common';
 
 describe('FindUserByIdQueryHandler', () => {
   let moduleMetaData: ModuleMetadata;

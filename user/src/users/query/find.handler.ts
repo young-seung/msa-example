@@ -21,7 +21,9 @@ export default class FindUserQueryHandler implements IQueryHandler<FindUserQuery
 
     const profiles = await this.profileService.findByUserIds(userIds);
     const userProfiles = users.map(({ id }) => profiles.find(({ userId }) => id === userId));
-    const userNames = userProfiles.map((userProfile) => (userProfile?.name ? userProfile.name : ''));
+    const userNames = userProfiles.map((userProfile) =>
+      userProfile?.name ? userProfile.name : '',
+    );
 
     const data = users.map((user, index) => ({ ...user, name: userNames[index] }));
     return { data, hasMore: data.length === take + 1 };

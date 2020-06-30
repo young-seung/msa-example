@@ -30,7 +30,7 @@ export default class UserFactory {
     const userEntity = await this.userRepository.findById(userId);
     if (!userEntity) throw new NotFoundException('can not found user');
 
-    const accountList = await this.accountService.findByUserId(userId);
+    const accountList = await this.accountService.findByUserIds([userId]);
     const userAccount = accountList.find((account) => account.userId === userId);
     if (!accountList || !userAccount) throw new NotFoundException('user account is not found');
 

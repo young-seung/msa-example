@@ -1,12 +1,12 @@
 import { ModuleMetadata, Provider } from '@nestjs/common/interfaces';
 import { Test } from '@nestjs/testing';
+import { HttpService } from '@nestjs/common';
 
 import FindUserQueryHandler from '@src/users/query/find.handler';
 import FindUserQuery from '@src/users/query/find';
 import FindUserQueryResult from '@src/users/query/find.result';
 import UserRepository from '@src/users/repository/user.repository';
 import ProfileService from '@src/users/service/profile';
-import { HttpService } from '@nestjs/common';
 
 describe('FindUserQueryHandler', () => {
   let moduleMetaData: ModuleMetadata;
