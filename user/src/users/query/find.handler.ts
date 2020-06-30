@@ -1,33 +1,29 @@
 import { QueryHandler, IQueryHandler } from '@nestjs/cqrs';
-import { FindManyOptions, LessThan, LessThanOrEqual } from 'typeorm';
 import { Inject } from '@nestjs/common';
 
 import FindUserQuery from '@src/users/query/find';
 import FindUserQueryResult from '@src/users/query/find.result';
 import UserRepository from '@src/users/repository/user.repository';
+import ProfileService from '@src/users/service/profile';
 
 @QueryHandler(FindUserQuery)
 export default class FindUserQueryHandler implements IQueryHandler<FindUserQuery> {
-  constructor(@Inject(UserRepository) private readonly userRepository: UserRepository) {}
+  constructor(
+    @Inject(UserRepository) private readonly userRepository: UserRepository,
+    @Inject(ProfileService) private readonly profileService: ProfileService,
+  ) {}
 
   public async execute(query: FindUserQuery): Promise<FindUserQueryResult> {
     const { cursorId, take } = query;
 
-    const findManyOptions: FindManyOptions = {
-      take: take + 1,
-      order: { id: 'DESC', createdAt: 'DESC' },
-    };
+    const users = await this.userRepository.find(cursorId, take);
+    const userIds = users.map((user) => user.id);
 
-    const cursor = await this.userRepository.findOne(cursorId);
-    if (cursorId && cursor) {
-      findManyOptions.where = {
-        id: LessThan(cursorId),
-        createdAt: LessThanOrEqual(cursor.createdAt),
-      };
-    }
+    const profiles = await this.profileService.findByUserIds(userIds);
+    const userProfiles = users.map(({ id }) => profiles.find(({ userId }) => id === userId));
+    const userNames = userProfiles.map((userProfile) => (userProfile?.name ? userProfile.name : ''));
 
-    const data = await this.userRepository.find(findManyOptions);
-
+    const data = users.map((user, index) => ({ ...user, name: userNames[index] }));
     return { data, hasMore: data.length === take + 1 };
   }
 }

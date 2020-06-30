@@ -16,6 +16,10 @@ type AppConfigurationType = {
     userName: string;
     password: string;
   };
+  service: {
+    account: string;
+    profile: string;
+  };
   JWT_SECRET: string;
   JWT_EXPIRATION: number;
   REDIS_MASTER_HOST: string;
@@ -41,6 +45,10 @@ const AppConfiguration: AppConfigurationType = {
     url: process.env.RABBITMQ_URL || 'amqp://localhost',
     userName: process.env.RABBITMQ_USER_NAME || 'root',
     password: process.env.RABBITMQ_PASSWORD || 'test',
+  },
+  service: {
+    account: process.env.ACCOUNT_SERVICE_URL || 'http://localhost:6000',
+    profile: process.env.PROFILE_SERVICE_URL || 'http://localhost:7000',
   },
   JWT_SECRET: 'sAmPlEsEcReT',
   JWT_EXPIRATION: 3600,

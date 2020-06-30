@@ -1,20 +1,22 @@
-import { Injectable, HttpService, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, HttpService, Inject } from '@nestjs/common';
+
+import AppConfiguration from '@src/app.config';
 
 interface Profile {
   userId: string;
+  name: string;
 }
 
 @Injectable()
 export default class ProfileService {
-  constructor(private readonly httpService: HttpService) {}
+  private readonly config = AppConfiguration;
 
-  public async findByUserId(userId: string): Promise<Profile[]> {
-    const observableResponse = this.httpService.get(
-      `http://localhost:7000/profiles?userId=${userId}`,
-    );
-    const response = await observableResponse.toPromise();
-    if (!response || !response.data)
-      throw new InternalServerErrorException('profile service is not available');
-    return response.data as Profile[];
+  constructor(@Inject(HttpService) private readonly httpService: HttpService) {}
+
+  public async findByUserIds(userIds: string[]): Promise<Profile[]> {
+    const queryString = userIds.map((userId) => `userId=${userId}`);
+    const url = `${this.config.service.profile}?${queryString}`;
+    const observableResponse = this.httpService.get<Profile[]>(url);
+    return (await observableResponse.toPromise()).data;
   }
 }

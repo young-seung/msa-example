@@ -1,5 +1,7 @@
 import { Injectable, HttpService, InternalServerErrorException } from '@nestjs/common';
 
+import AppConfiguration from '@src/app.config';
+
 interface Account {
   id: string;
   userId: string;
@@ -9,15 +11,15 @@ interface Account {
 
 @Injectable()
 export default class AccountService {
+  private readonly config = AppConfiguration;
+
   constructor(private readonly httpService: HttpService) {}
 
   public async findByUserId(userId: string): Promise<Account[]> {
-    const observableResponse = this.httpService.get(
-      `http://localhost:6000/accounts?userId=${userId}`,
-    );
+    const url = `${this.config.service.account}?userId=${userId}`;
+    const observableResponse = this.httpService.get(url);
     const response = await observableResponse.toPromise();
-    if (!response || !response.data)
-      throw new InternalServerErrorException('account service is not available');
+    if (!response || !response.data) throw new InternalServerErrorException('account service is not available');
     return response.data as Account[];
   }
 }
