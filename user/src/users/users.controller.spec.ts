@@ -58,6 +58,7 @@ describe('UsersController', () => {
     it('should return response body', () => {
       const data = {
         id: 'userId',
+        name: 'name',
         createdAt: new Date(),
         updatedAt: null,
         deletedAt: null,
@@ -76,6 +77,7 @@ describe('UsersController', () => {
       const data = [
         {
           id: 'userId',
+          name: 'name',
           createdAt: new Date(),
           updatedAt: null,
           deletedAt: null,
