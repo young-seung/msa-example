@@ -17,5 +17,7 @@ export default class UserEntity {
   constructor(id: string) {
     this.id = id;
     this.createdAt = new Date();
+    this.updatedAt = null;
+    this.deletedAt = null;
   }
 }
