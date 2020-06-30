@@ -29,33 +29,33 @@ describe('UsersController', () => {
   });
 
   describe('create', () => {
-    it('should return response body', () => {
+    it('should return response body', async () => {
       jest.spyOn(commandBus, 'execute').mockResolvedValue({});
       const dto = new CreateUserDto('email', 'password');
       const response = new CreateUserResponse('created', {});
-      expect(controller.create(dto)).resolves.toEqual(response);
+      await expect(controller.create(dto)).resolves.toEqual(response);
     });
   });
 
   describe('update', () => {
-    it('should return response body', () => {
+    it('should return response body', async () => {
       jest.spyOn(commandBus, 'execute').mockResolvedValue({});
       const dto = new UpdateUserDto('password');
       const response = new UpdateUserResponse('success', {});
-      expect(controller.update('userId', dto)).resolves.toEqual(response);
+      await expect(controller.update('userId', dto)).resolves.toEqual(response);
     });
   });
 
   describe('delete', () => {
-    it('should return response body', () => {
+    it('should return response body', async () => {
       jest.spyOn(commandBus, 'execute').mockResolvedValue({});
       const response = new DeleteUserResponse('success', {});
-      expect(controller.delete('userId')).resolves.toEqual(response);
+      await expect(controller.delete('userId')).resolves.toEqual(response);
     });
   });
 
   describe('findById', () => {
-    it('should return response body', () => {
+    it('should return response body', async () => {
       const data = {
         id: 'userId',
         name: 'name',
@@ -68,12 +68,12 @@ describe('UsersController', () => {
 
       const response = new FindUserByIdResponse('success', data);
 
-      expect(controller.findById('userId')).resolves.toEqual(response);
+      await expect(controller.findById('userId')).resolves.toEqual(response);
     });
   });
 
   describe('find', () => {
-    it('should return response body', () => {
+    it('should return response body', async () => {
       const data = [
         {
           id: 'userId',
@@ -91,7 +91,7 @@ describe('UsersController', () => {
       const dto = new FindUserDto('cursorId', '0');
       const response = new FindUserResponse('success', responseBody);
 
-      expect(controller.find(dto)).resolves.toEqual(response);
+      await expect(controller.find(dto)).resolves.toEqual(response);
     });
   });
 });

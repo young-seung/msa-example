@@ -34,7 +34,7 @@ describe('CreateUserCommandHandler', () => {
   });
 
   describe('execute', () => {
-    it('should return CreateUserCommandResult', () => {
+    it('should return CreateUserCommandResult', async () => {
       const userId = 'userId';
       const email = 'test@email.com';
       const password = 'password';
@@ -52,7 +52,7 @@ describe('CreateUserCommandHandler', () => {
       const command: CreateUserCommand = { email, password };
       const result: CreateUserCommandResult = {};
 
-      expect(createUserCommandHandler.execute(command)).resolves.toEqual(result);
+      await expect(createUserCommandHandler.execute(command)).resolves.toEqual(result);
     });
   });
 });
