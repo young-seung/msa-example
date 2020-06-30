@@ -38,11 +38,12 @@ describe('UpdateUserHandler', () => {
       const userId = 'userId';
       const email = 'test@email.com';
       const password = 'password';
+      const name = 'name';
       const createdAt = new Date();
       const updatedAt = null;
       const deletedAt = null;
 
-      const user = new User(userId, email, password, createdAt, updatedAt, deletedAt);
+      const user = new User(userId, email, password, name, createdAt, updatedAt, deletedAt);
 
       jest.spyOn(userFactory, 'reconstitute').mockResolvedValue(user);
       jest.spyOn(eventPublisher, 'mergeObjectContext').mockReturnValue(user);

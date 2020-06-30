@@ -38,18 +38,19 @@ describe('CreateUserCommandHandler', () => {
       const userId = 'userId';
       const email = 'test@email.com';
       const password = 'password';
+      const name = 'name';
       const createdAt = new Date();
       const updatedAt = null;
       const deletedAt = null;
 
-      const user = new User(userId, email, password, createdAt, updatedAt, deletedAt);
+      const user = new User(userId, email, password, name, createdAt, updatedAt, deletedAt);
       const userEntity = new UserEntity(userId);
 
       jest.spyOn(userFactory, 'create').mockReturnValue(user);
       jest.spyOn(eventPublisher, 'mergeObjectContext').mockReturnValue(user);
       jest.spyOn(userRepository, 'save').mockResolvedValue(userEntity);
 
-      const command: CreateUserCommand = { email, password };
+      const command: CreateUserCommand = { email, password, name };
       const result: CreateUserCommandResult = {};
 
       await expect(createUserCommandHandler.execute(command)).resolves.toEqual(result);
