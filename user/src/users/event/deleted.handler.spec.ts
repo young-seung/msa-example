@@ -29,7 +29,7 @@ describe('UserDeletedEventHandler', () => {
   });
 
   describe('handle', () => {
-    it('should return Promise<void>', () => {
+    it('should return Promise<void>', async () => {
       const id = 'eventId';
       const userId = 'userId';
       const type = 'user.deleted';
@@ -43,7 +43,7 @@ describe('UserDeletedEventHandler', () => {
       jest.spyOn(messagePublisher, 'publish').mockReturnValue(undefined);
       jest.spyOn(eventRepository, 'save').mockResolvedValue(eventEntity);
 
-      expect(userDeletedEventHandler.handle(event)).resolves.toEqual(undefined);
+      await expect(userDeletedEventHandler.handle(event)).resolves.toEqual(undefined);
     });
   });
 });

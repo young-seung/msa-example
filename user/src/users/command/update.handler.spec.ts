@@ -34,7 +34,7 @@ describe('UpdateUserHandler', () => {
   });
 
   describe('update', () => {
-    it('should return UpdateUserCommandHandler', () => {
+    it('should return UpdateUserCommandHandler', async () => {
       const userId = 'userId';
       const email = 'test@email.com';
       const password = 'password';
@@ -51,7 +51,7 @@ describe('UpdateUserHandler', () => {
       const command: UpdateUserCommand = { userId, password };
       const result: UpdateUserCommandResult = {};
 
-      expect(updateUserCommandHandler.execute(command)).resolves.toEqual(result);
+      await expect(updateUserCommandHandler.execute(command)).resolves.toEqual(result);
     });
   });
 });

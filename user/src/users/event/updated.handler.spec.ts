@@ -29,7 +29,7 @@ describe('UserUpdatedEventHandler', () => {
   });
 
   describe('handle', () => {
-    it('should return Promise<void>', () => {
+    it('should return Promise<void>', async () => {
       const id = 'eventId';
       const userId = 'userId';
       const type = 'user.updated';
@@ -43,7 +43,7 @@ describe('UserUpdatedEventHandler', () => {
       jest.spyOn(messagePublisher, 'publish').mockReturnValue(undefined);
       jest.spyOn(eventRepository, 'save').mockResolvedValue(eventEntity);
 
-      expect(userUpdatedEventHandler.handle(event)).resolves.toEqual(undefined);
+      await expect(userUpdatedEventHandler.handle(event)).resolves.toEqual(undefined);
     });
   });
 });

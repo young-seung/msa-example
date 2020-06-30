@@ -35,7 +35,7 @@ describe('DeleteUserCommandHandler', () => {
   });
 
   describe('delete', () => {
-    it('should return DeleteUserCommandHandler', () => {
+    it('should return DeleteUserCommandHandler', async () => {
       const userId = 'userId';
       const email = 'test@email.com';
       const password = 'password';
@@ -53,7 +53,7 @@ describe('DeleteUserCommandHandler', () => {
       const command: DeleteUserCommand = { userId };
       const result: DeleteUserCommandResult = {};
 
-      expect(deleteUserCommandHandler.execute(command)).resolves.toEqual(result);
+      await expect(deleteUserCommandHandler.execute(command)).resolves.toEqual(result);
     });
   });
 });

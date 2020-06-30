@@ -31,7 +31,7 @@ describe('FindUserQueryHandler', () => {
   });
 
   describe('execute', () => {
-    it('should return Promise<FindUserQueryResult>', () => {
+    it('should return Promise<FindUserQueryResult>', async () => {
       const cursorId = 'cursorId';
       const take = 1;
       const hasMore = false;
@@ -51,7 +51,7 @@ describe('FindUserQueryHandler', () => {
       jest.spyOn(userRepository, 'find').mockResolvedValue([user]);
       jest.spyOn(profileService, 'findByUserIds').mockResolvedValue([profile]);
 
-      expect(findUserQueryHandler.execute(query)).resolves.toEqual(result);
+      await expect(findUserQueryHandler.execute(query)).resolves.toEqual(result);
     });
   });
 });

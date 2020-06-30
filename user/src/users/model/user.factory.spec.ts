@@ -67,7 +67,10 @@ describe('UserFactory', () => {
       const user = new User(userId, email, password, createdAt, null, null);
 
       const account = {
-        id: 'accountId', userId, email, password,
+        id: 'accountId',
+        userId,
+        email,
+        password,
       };
 
       jest.spyOn(userRepository, 'findById').mockResolvedValue(userEntity);
