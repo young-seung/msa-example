@@ -31,7 +31,7 @@ describe('UsersController', () => {
   describe('create', () => {
     it('should return response body', async () => {
       jest.spyOn(commandBus, 'execute').mockResolvedValue({});
-      const dto = new CreateUserDto('email', 'password');
+      const dto = new CreateUserDto('email', 'password', 'name');
       const response = new CreateUserResponse('created', {});
       await expect(controller.create(dto)).resolves.toEqual(response);
     });

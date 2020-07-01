@@ -9,18 +9,21 @@ import UserCreatedEvent from '@src/users/event/created';
 import AccountService from '@src/users/service/account';
 import UserRepository from '@src/users/repository/user.repository';
 import UserEntity from '@src/users/entity/user';
+import ProfileService from '@src/users/service/profile';
 
 describe('UserFactory', () => {
   let moduleMetaData: ModuleMetadata;
   let userFactory: UserFactory;
   let userRepository: UserRepository;
   let accountService: AccountService;
+  let profileService: ProfileService;
 
   beforeAll(async () => {
     const httpServiceProvider: Provider = { provide: HttpService, useValue: {} };
     const providers: Provider[] = [
       UserFactory,
       AccountService,
+      ProfileService,
       UserRepository,
       httpServiceProvider,
     ];
@@ -31,6 +34,7 @@ describe('UserFactory', () => {
     userFactory = testModule.get(UserFactory);
     userRepository = testModule.get(UserRepository);
     accountService = testModule.get(AccountService);
+    profileService = testModule.get(ProfileService);
 
     global.Date.now = Date.now;
   });
@@ -40,11 +44,12 @@ describe('UserFactory', () => {
       const randomId = 'randomId';
       const email = 'test@email.com';
       const password = 'password';
+      const name = 'name';
       const createdAt = new Date();
       const updatedAt = null;
       const deletedAt = null;
 
-      const user = new User(randomId, email, password, createdAt, updatedAt, deletedAt);
+      const user = new User(randomId, email, password, name, createdAt, updatedAt, deletedAt);
 
       const userCreatedEvent = new UserCreatedEvent(randomId, randomId, email, password, null);
 
@@ -52,7 +57,7 @@ describe('UserFactory', () => {
 
       user.apply(userCreatedEvent);
 
-      expect(userFactory.create(email, password)).toBeInstanceOf(User);
+      expect(userFactory.create(email, password, name)).toBeInstanceOf(User);
     });
   });
 
@@ -61,10 +66,11 @@ describe('UserFactory', () => {
       const userId = 'userId';
       const email = 'test@email.com';
       const password = 'password';
+      const name = 'name';
       const createdAt = new Date();
 
       const userEntity = new UserEntity(userId);
-      const user = new User(userId, email, password, createdAt, null, null);
+      const user = new User(userId, email, password, name, createdAt, null, null);
 
       const account = {
         id: 'accountId',
@@ -73,8 +79,15 @@ describe('UserFactory', () => {
         password,
       };
 
+      const profile = {
+        id: 'profileId',
+        userId,
+        name: 'name',
+      };
+
       jest.spyOn(userRepository, 'findById').mockResolvedValue(userEntity);
       jest.spyOn(accountService, 'findByUserIds').mockResolvedValue([account]);
+      jest.spyOn(profileService, 'findByUserIds').mockResolvedValue([profile]);
 
       await expect(userFactory.reconstitute(userId)).resolves.toEqual(user);
     });

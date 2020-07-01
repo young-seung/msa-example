@@ -23,8 +23,8 @@ export default class UsersController {
 
   @Post()
   public async create(@Body() dto: CreateUserDto): Promise<CreateUserResponse> {
-    const { email, password } = dto;
-    const command = new CreateUserCommand(email, password);
+    const { email, password, name } = dto;
+    const command = new CreateUserCommand(email, password, name);
     const result = await this.commandBus.execute(command);
     return new CreateUserResponse('created', result);
   }

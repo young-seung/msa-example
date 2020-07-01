@@ -39,11 +39,12 @@ describe('DeleteUserCommandHandler', () => {
       const userId = 'userId';
       const email = 'test@email.com';
       const password = 'password';
+      const name = 'name';
       const createdAt = new Date();
       const updatedAt = null;
       const deletedAt = null;
 
-      const user = new User(userId, email, password, createdAt, updatedAt, deletedAt);
+      const user = new User(userId, email, password, name, createdAt, updatedAt, deletedAt);
       const userEntity = new UserEntity(userId);
 
       jest.spyOn(userFactory, 'reconstitute').mockResolvedValue(user);

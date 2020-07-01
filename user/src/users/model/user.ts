@@ -10,6 +10,7 @@ export default class User extends AggregateRoot {
     private readonly id: string,
     private email: string,
     private password: string,
+    private name: string,
     private readonly createdAt: Date,
     private updatedAt: Date | null,
     private deletedAt: Date | null,
