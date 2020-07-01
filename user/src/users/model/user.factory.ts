@@ -24,7 +24,7 @@ export default class UserFactory {
     const createdAt = new Date();
     const user = new User(userId, email, password, name, createdAt, this.updatedAt, this.deletedAt);
     const eventId = uuid.v1();
-    user.apply(new UserCreatedEvent(eventId, userId, email, password, null));
+    user.apply(new UserCreatedEvent(eventId, userId, email, password, name, null));
     return user;
   }
 
