@@ -23,14 +23,14 @@ export default class User extends AggregateRoot {
     this.password = password || this.password;
     this.updatedAt = new Date();
     const eventId = uuid.v1();
-    this.apply(new UserUpdatedEvent(eventId, this.id, this.email, this.password, null));
+    this.apply(new UserUpdatedEvent(eventId, this.id, this.email, this.password, this.name, null));
     return this;
   }
 
   public delete(): User {
     const eventId = uuid.v1();
     this.deletedAt = new Date();
-    this.apply(new UserDeletedEvent(eventId, this.id, this.email, this.password, null));
+    this.apply(new UserDeletedEvent(eventId, this.id, this.email, this.password, this.name, null));
     return this;
   }
 

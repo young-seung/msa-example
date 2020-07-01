@@ -6,6 +6,7 @@ export default class UserUpdatedEvent {
     public readonly userId: string,
     public readonly email: string,
     public readonly password: string,
+    public readonly name: string,
     public readonly fileId: string | null,
   ) {}
 }

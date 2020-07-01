@@ -35,9 +35,10 @@ describe('UserCreatedEventHandler', () => {
       const type = 'user.created';
       const email = 'test@email.com';
       const password = 'password';
+      const name = 'name';
       const fileId = null;
 
-      const event = new UserCreatedEvent(id, userId, email, password, fileId);
+      const event = new UserCreatedEvent(id, userId, email, password, name, fileId);
       const eventEntity = new EventEntity(id, userId, email, password, fileId, type);
 
       jest.spyOn(messagePublisher, 'publish').mockReturnValue(undefined);
