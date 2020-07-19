@@ -1,6 +1,6 @@
 import Amqp from 'amqplib';
 import { InternalServerErrorException } from '@nestjs/common';
-import AppConfiguration from '../../../app.config'
+import AppConfiguration from '../../../app.config';
 
 export default class Consumer {
   private readonly queueName = 'profile';

@@ -1,6 +1,4 @@
-import {
-  Controller, Post, Body, Get, Query, Param, Put, Delete,
-} from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, Param, Put, Delete } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiUseTags } from '@nestjs/swagger';
 import CreateProfileDTO from './dto/profile.dto.create';
