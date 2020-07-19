@@ -9,7 +9,6 @@ import ReadProfileListQueryHandler from './application/query/handlers/profile.ha
 import ReadProfileQueryHandler from './application/query/handlers/profile.handler.query';
 import UpdateProfileCommandHandler from './application/command/handlers/profile.handler.command.update';
 import DeleteProfileCommandHandler from './application/command/handlers/profile.handler.command.delete';
-import Producer from './infrastructure/message/producer';
 import Consumer from './infrastructure/message/consumer';
 
 const commandHandler = [
@@ -23,6 +22,6 @@ const queryHandler = [ReadProfileListQueryHandler, ReadProfileQueryHandler];
 @Module({
   imports: [CqrsModule, TypeOrmModule.forFeature([ProfileEntity])],
   controllers: [ProfileController],
-  providers: [ProfileRepository, Producer, Consumer, ...commandHandler, ...queryHandler],
+  providers: [ProfileRepository, Consumer, ...commandHandler, ...queryHandler],
 })
 export default class ProfileModule {}

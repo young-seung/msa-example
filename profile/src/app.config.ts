@@ -15,6 +15,9 @@ type AppConfigurationType = {
   REDIS_MASTER_PORT: number;
   REDIS_SLAVE_HOST: string;
   REDIS_SLAVE_PORT: number;
+  RABBITMQ_URL: string;
+  RABBITMQ_USERNAME: string;
+  RABBITMQ_PASSWORD: string
 };
 
 const AppConfiguration: AppConfigurationType = {
@@ -34,6 +37,9 @@ const AppConfiguration: AppConfigurationType = {
   REDIS_MASTER_PORT: Number(process.env.REDIS_MASTER_PORT) || 6379,
   REDIS_SLAVE_HOST: process.env.REDIS_SLAVE_HOST || 'localhost',
   REDIS_SLAVE_PORT: Number(process.env.REDIS_SLAVE_PORT) || 6379,
+  RABBITMQ_URL: process.env.RABBITMQ_URL || 'amqp://localhost',
+  RABBITMQ_USERNAME: process.env.RABBITMQ_USER_NAME || 'root',
+  RABBITMQ_PASSWORD: process.env.RABBITMQ_PASSWORD || 'test',
 };
 
 export default AppConfiguration;
