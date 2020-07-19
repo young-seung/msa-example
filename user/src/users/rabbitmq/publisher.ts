@@ -13,6 +13,11 @@ export default class Publisher {
 
   private readonly password: string;
 
+  private readonly onRejected = (error: Error): never => {
+    throw new InternalServerErrorException(error);
+    return process.exit(1);
+  };
+
   private connection: Amqp.Connection | null = null;
 
   private channel: Amqp.Channel | null = null;
@@ -24,8 +29,8 @@ export default class Publisher {
   }
 
   public async setUp(): Promise<void> {
-    this.channel = await this.getChannel();
-    await this.assertExchange(this.exchange);
+    this.channel = await this.getChannel().catch(this.onRejected);
+    return this.assertExchange(this.exchange).catch(this.onRejected);
   }
 
   public publish(message: Message): void {
