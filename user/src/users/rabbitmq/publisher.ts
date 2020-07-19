@@ -1,6 +1,7 @@
 import Amqp from 'amqplib';
 import Message from '@src/users/rabbitmq/message';
 import { InternalServerErrorException } from '@nestjs/common';
+
 import AppConfiguration from '@src/app.config';
 
 export default class Publisher {
