@@ -3,10 +3,15 @@ import helmet from 'helmet';
 import RateLimit from 'express-rate-limit';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import compression from 'compression';
+import { InternalServerErrorException } from '@nestjs/common';
 
 import ApplicationModule from '@src/app.module';
-import Publisher from '@src/users/rabbitmq/publisher';
-import AppConfiguration from '@src/app.config';
+import ApplicationService from '@src/app.service';
+
+function exitProcess(error: Error): never {
+  throw new InternalServerErrorException(error);
+  return process.exit(1);
+}
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(ApplicationModule, { cors: true });
@@ -24,10 +29,9 @@ async function bootstrap(): Promise<void> {
   app.use(compression());
   app.use(new RateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
 
-  const messagePublisher = app.get(Publisher);
+  const appService = app.get(ApplicationService);
 
-  await messagePublisher.setUp();
-
-  await app.listen(AppConfiguration.PORT);
+  await appService.setUp(app).catch(exitProcess);
 }
+
 bootstrap();
