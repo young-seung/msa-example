@@ -17,7 +17,7 @@ type AppConfigurationType = {
   REDIS_SLAVE_PORT: number;
   RABBITMQ_URL: string;
   RABBITMQ_USERNAME: string;
-  RABBITMQ_PASSWORD: string
+  RABBITMQ_PASSWORD: string;
 };
 
 const AppConfiguration: AppConfigurationType = {

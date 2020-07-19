@@ -12,7 +12,8 @@ export default class ProfileRedis {
   }
 
   async set(key: string, value: string): Promise<string> {
-    return this.master.set(key, value, 'EX', 1);
+    const result = await this.master.set(key, value, 'EX', 1);
+    return result === 'OK' ? 'OK' : '';
   }
 
   async get(key: string): Promise<string | null> {
