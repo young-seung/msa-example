@@ -24,6 +24,8 @@ services:
       - DATABASE_HOST=user-database
       - DATABASE_SYNC=true
       - DATABASE_LOGGING=true
+      - ACCOUNT_SERVICE_URL=http://account:5000/accounts
+      - PROFILE_SERVICE_URL=http://profile:5000/profiles
     labels: 
       - "traefik.enable=true"
       - "traefik.http.routers.user.rule=Host(`user.localhost`)"
@@ -62,8 +64,8 @@ services:
       - DATABASE_HOST=profile-database
     labels: 
       - "traefik.enable=true"
-      - "traefik.http.routers.profile.rule=Host(`profile.localhost`)"
-      - "traefik.http.routers.profile.entrypoints=web"
+      # - "traefik.http.routers.profile.rule=Host(`profile.localhost`)"
+      # - "traefik.http.routers.profile.entrypoints=web"
       - "traefik.http.middlewares.latency-check.circuitbreaker.expression=LatencyAtQuantileMS(50.0) > 100"
 
   file:
@@ -93,6 +95,8 @@ services:
     env_file: .env
     environment: 
       - MYSQL_DATABASE=user
+    ports: 
+      - "3306:3306"
     volumes: 
       - ~/database/msa-example/user:/var/lib/mysql
 
@@ -100,6 +104,8 @@ services:
     image: mysql:5.7
     restart: always
     env_file: .env
+    # ports: 
+    #   - "3306:3306"
     environment: 
       - MYSQL_DATABASE=account
     volumes: 
