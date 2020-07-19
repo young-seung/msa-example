@@ -5,7 +5,6 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import compression from 'compression';
 import ApplicationModule from './app.module';
 import AppConfiguration from './app.config';
-import Producer from './profile/infrastructure/message/producer';
 import Consumer from './profile/infrastructure/message/consumer';
 
 async function bootstrap(): Promise<void> {
@@ -24,10 +23,8 @@ async function bootstrap(): Promise<void> {
   app.use(compression());
   app.use(new RateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
 
-  const messageProducer = app.get(Producer);
   const messageConsumer = app.get(Consumer);
 
-  await messageProducer.setUp();
   await messageConsumer.setUp();
   await messageConsumer.consumeFromQueue();
 
