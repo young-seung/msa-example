@@ -51,8 +51,6 @@ services:
       - DATABASE_HOST=account-database
     labels: 
       - "traefik.enable=true"
-      - "traefik.http.routers.account.rule=Host(`account.localhost`)"
-      - "traefik.http.routers.account.entrypoints=web"
       - "traefik.http.middlewares.latency-check.circuitbreaker.expression=LatencyAtQuantileMS(50.0) > 100"
 
   profile:
@@ -64,8 +62,6 @@ services:
       - DATABASE_HOST=profile-database
     labels: 
       - "traefik.enable=true"
-      # - "traefik.http.routers.profile.rule=Host(`profile.localhost`)"
-      # - "traefik.http.routers.profile.entrypoints=web"
       - "traefik.http.middlewares.latency-check.circuitbreaker.expression=LatencyAtQuantileMS(50.0) > 100"
 
   file:
@@ -95,8 +91,6 @@ services:
     env_file: .env
     environment: 
       - MYSQL_DATABASE=user
-    ports: 
-      - "3306:3306"
     volumes: 
       - ~/database/msa-example/user:/var/lib/mysql
 
@@ -104,8 +98,6 @@ services:
     image: mysql:5.7
     restart: always
     env_file: .env
-    # ports: 
-    #   - "3306:3306"
     environment: 
       - MYSQL_DATABASE=account
     volumes: 
