@@ -1,14 +1,15 @@
 import { createConnection, Connection } from 'typeorm';
+import bodyParser from 'body-parser';
+import Cors from 'cors';
 import Express from 'express';
 import Helmet from 'helmet';
-import Cors from 'cors';
-import bodyParser from 'body-parser';
 import Swagger from 'swagger-ui-express';
-import SwaggerJSDoc from 'swagger-jsdoc';
-import SwaggerDefinition  from './swagger'
+import SwaggerDefinition from './swagger';
 import Routes from './routes';
 import AppConfiguration from './config';
 import AuthEntity from './entity/user.entity';
+
+const a = require('./swagger')
 
 async function bootstrap(): Promise<void> {
   const connection: Connection = await createConnection({
@@ -27,19 +28,11 @@ async function bootstrap(): Promise<void> {
 
   const port: number = AppConfiguration.PORT;
 
-  const options = {
-    swaggerDefinition: SwaggerDefinition,
-    apis: ['./routes/*.ts']
-  };
-
-  const specs = SwaggerJSDoc(options);
-
-  app.use('/api', Swagger.serve, Swagger.setup(specs));
   app.use(Cors());
   app.use(Helmet());
-  app.use(bodyParser.json());
-
+  app.use(bodyParser.json());  
   app.use('/', Routes);
+  app.use('/api', Swagger.serve, Swagger.setup(SwaggerDefinition));
 
   app.listen(port, () => {
     console.log(`Example app listening on port ${port}!`);
