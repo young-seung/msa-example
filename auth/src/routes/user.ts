@@ -5,23 +5,24 @@ import { checkJwt } from '../middlewares/checkJwt';
 
 const router = Express.Router();
 
-router.post('/', UserController.newUser)
+//Create one user
+router.post('/', cors(), UserController.newUser)
 
 //Get all users
 router.get('/', cors(), UserController.listAll);
 
-// Get one user
+//Get one user
 router.get(
   '/:id',
-  // checkJwt,
+  checkJwt,
   cors(),
   UserController.getOneById
 );
 
-// //Edit one user
+//Edit one user
 router.put(
   '/:id',
-  // checkJwt,
+  checkJwt,
   cors(),
   UserController.editUser
 );
@@ -29,7 +30,7 @@ router.put(
 //Delete one user
 router.delete(
   '/:id',
-  // checkJwt,
+  checkJwt,
   cors(),
   UserController.deleteUser
 );

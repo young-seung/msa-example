@@ -16,6 +16,7 @@ const swaggerDefinition = {
     }
   },
   host: 'localhost:5000',
+  apis: ['./routes/index.ts'],
   paths: {
     '/user': {
       post:{
@@ -23,13 +24,14 @@ const swaggerDefinition = {
           'Users'
         ],
         summary: 'Post user',
+        description: '',
         requestBody: {
           description: 'User Object',
           required: true,
           content: {
             'application/json': {
               schema: {
-                $ref: '#definitions/User'
+                $ref: '#component/schemas/User'
               }
             }
           }
@@ -39,15 +41,15 @@ const swaggerDefinition = {
         ],
         responses: {
           200: {
-            description: 'OK',
-            schema: {
-              $ref: '#/definitions/Id'
-            }
+            description: 'OK'
           },
           400: {
             description: 'Failed. Bad post data'
+          },
+          409: {
+            description: 'Failed email already in use'
           }
-        }
+        },
       },
       get: {
         tags: [
@@ -56,17 +58,24 @@ const swaggerDefinition = {
         summary: 'Get users',
         responses: {
           200: {
-            description: 'OK',
-            schema: {
-              $ref: '#/definitions/Users'
-            }
+            description: 'OK'
+          },
+          400: {
+            description: 'Failed User not found'
           }
-        },
-        // security: { JWT: [] }
+        }
       }
     },
     '/user/{id}': {
       parameters: [{
+        name: 'token',
+        in: 'header',
+        required: true,
+        type: 'string'
+        // schema: {
+        //   type: 'string'
+        // }
+      },{
         id: 'id',
         name: 'id',
         in: 'path',
@@ -80,12 +89,15 @@ const swaggerDefinition = {
         summary: 'Get user',
         responses: {
           200: {
-            description: 'OK',
-            schema: {
-              $ref: '#/definitions/User'
-            }
+            description: 'OK'
+          },
+          401: {
+            description: 'Failed. Unauthorized'
+          },
+          404: {
+            description: 'Failed. User not found'
           }
-        }
+        },
       },
       put: {
         tags: [
@@ -93,25 +105,34 @@ const swaggerDefinition = {
         ],
         summary: 'Put user',
         requestBody: {
-          description: 'User Object',
+          description: 'New Password',
           required: true,
           content: {
             'application/json': {
               schema: {
-                $ref: '#definitions/Password'
+                $ref: '#component/schemas/Password'
               }
             }
           }
         },
+        produces: [
+          'application/json'
+        ],
         responses: {
           200: {
             description: 'OK',
             schema: {
-              $ref: '#/definitions/User'
+              $ref: '#/component/schemas/User'
             }
           },
           400: {
             description: 'Failed. Bad post data.'
+          },
+          401: {
+            description: 'Failed. Unauthorized'
+          },
+          402: {
+            description: 'Failed. The password is the same as the previous password.'
           },
           404: {
             description: 'Failed. User not found'
@@ -124,11 +145,11 @@ const swaggerDefinition = {
         ],
         summary: 'Delete user',
         responses: {
-          200: {
-            description: 'OK',
-            schema: {
-              $ref: '#/definitions/User'
-            }
+          204: {
+            description: 'Sucess. User deleted'
+          },
+          401: {
+            description: 'Failed. Unauthorized'
           },
           404: {
             description: 'Failed. User not found'
@@ -137,53 +158,58 @@ const swaggerDefinition = {
       }
     }
   },
-  definitions: {
-    Id: {
-      properties: {
+  component: {
+    schemas: {
+      Id: {
         uuid: {
           type: 'string'
         }
-      }
-    },
-    Password: {
-      properties: {
-        password: {
-          type: 'string'
-        }
-      }
-    },
-    User: {
-      type: 'object',
-      properties: {
-        name: {
-          type: 'string',
-        },
-        email: {
-          type: 'string'
-        },
-        password:{
-          type: 'string'
-        }
-      }
-    },
-    Users: {
-      type: 'object',
-      properties: {
-        users: {
-          type: 'object',
-          additionalProperties: {
-            $ref: '#/definitions/User'
+      },
+      Password: {
+        type: 'object',
+        properties: {
+          password: {
+            type: 'string',
+            example: '2'
           }
         }
-      }
-    }
-  },
-  securityDefinitions: {
-    JWT: {
-      type: 'apiKey',
-      name: 'Authorization',
-      in: 'header'
-    }
+      },
+      User: {
+        type: 'object',
+        properties: {
+          name: {
+            type: 'string',
+            example: 'test'
+          },
+          email: {
+            type: 'string',
+            example: 'test@test.com'
+          },
+          password:{
+            type: 'string',
+            example: '1'
+          }
+        }
+      },
+      Users: {
+        type: 'object',
+        properties: {
+          users: {
+            type: 'object',
+            additionalProperties: {
+              $ref: '#/component/schemas/User'
+            }
+          }
+        }
+      }  
+    },
+    securitySchemes: {
+      JWT: {
+        type: 'apiKey',
+        in: 'header',
+        name: 'Authorization'
+      },
+    },
   },
 };
 
