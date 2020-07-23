@@ -9,8 +9,6 @@ import Routes from './routes';
 import AppConfiguration from './config';
 import AuthEntity from './entity/user.entity';
 
-const a = require('./swagger')
-
 async function bootstrap(): Promise<void> {
   const connection: Connection = await createConnection({
     type: 'mysql',

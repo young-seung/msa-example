@@ -19,4 +19,5 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
 
   //Call the next middleware or controller
   next();
-};
+
+}; 
