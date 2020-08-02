@@ -1,6 +1,4 @@
-import {
-  Controller, Post, Body, Get, Query, Param, Put, Delete,
-} from '@nestjs/common';
+import { Controller, Post, Body, Get, Query, Param, Put, Delete } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiUseTags } from '@nestjs/swagger';
 
@@ -41,7 +39,7 @@ export default class ProfileController {
   @Put(':id')
   updateProfile(
     @Param() param: UpdateProfileParamDTO,
-      @Body() body: UpdateProfileBodyDTO,
+    @Body() body: UpdateProfileBodyDTO,
   ): Promise<void> {
     return this.commandBus.execute(new UpdateProfileCommand(new UpdateProfileDTO(param, body)));
   }
