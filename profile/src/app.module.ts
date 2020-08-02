@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
-import ProfileModule from './profile/profile.module';
-import AppController from './app.controller';
-import AppConfiguration from './app.config';
-import ProfileEntity from './profile/infrastructure/entity/profile.entity';
+
+import ProfileModule from '@src/profile/profile.module';
+import AppController from '@src/app.controller';
+import AppConfiguration from '@src/app.config';
+import ProfileEntity from '@src/profile/infrastructure/entity/profile.entity';
 
 @Module({
   imports: [

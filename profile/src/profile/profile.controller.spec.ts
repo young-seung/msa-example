@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CqrsModule, CommandBus } from '@nestjs/cqrs';
 import { INestApplication } from '@nestjs/common';
-import ProfileController from './profile.controller';
-import CreateProfileDTO from './dto/profile.dto.create';
-import CreateProfileCommand from './application/command/implements/profile.command.create';
+
+import ProfileController from '@src/profile/profile.controller';
+import CreateProfileDTO from '@src/profile/dto/profile.dto.create';
+import CreateProfileCommand from '@src/profile/application/command/implements/profile.command.create';
 
 describe('Profile Controller', () => {
   let module: TestingModule;

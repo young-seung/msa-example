@@ -1,5 +1,5 @@
-import UpdateProfileParamDTO from './profile.dto.update.param';
-import UpdateProfileBodyDTO from './profile.dto.update.body';
+import UpdateProfileParamDTO from '@src/profile/dto/profile.dto.update.param';
+import UpdateProfileBodyDTO from '@src/profile/dto/profile.dto.update.body';
 
 export default class UpdateProfileDTO {
   public readonly id: string;

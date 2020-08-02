@@ -72,6 +72,9 @@
   },
   "jest": {
     "verbose": false,
+    "moduleNameMapper": {
+      "src/(.*)": "<rootDir>/$1"
+    },
     "moduleFileExtensions": [
       "js",
       "json",
