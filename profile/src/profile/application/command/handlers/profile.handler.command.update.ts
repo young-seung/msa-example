@@ -2,11 +2,14 @@ import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { IsNull } from 'typeorm';
-import UpdateProfileCommand from '../implements/profile.command.update';
-import ProfileEntity from '../../../infrastructure/entity/profile.entity';
-import ProfileRepository from '../../../infrastructure/repository/profile.repository';
-import Profile from '../../../domain/model/profile.model';
-import UpdateProfileMapper from '../../../infrastructure/mapper/profile.mapper.update';
+
+import ProfileEntity from '@src/profile/infrastructure/entity/profile.entity';
+import ProfileRepository from '@src/profile/infrastructure/repository/profile.repository';
+import UpdateProfileMapper from '@src/profile/infrastructure/mapper/profile.mapper.update';
+
+import UpdateProfileCommand from '@src/profile/application/command/implements/profile.command.update';
+
+import Profile from '@src/profile/domain/model/profile.model';
 
 @CommandHandler(UpdateProfileCommand)
 export default class UpdateProfileCommandHandler implements ICommandHandler<UpdateProfileCommand> {
@@ -15,7 +18,7 @@ export default class UpdateProfileCommandHandler implements ICommandHandler<Upda
     private readonly publisher: EventPublisher,
   ) {}
 
-  async execute(command: UpdateProfileCommand): Promise<void> {
+  public async execute(command: UpdateProfileCommand): Promise<void> {
     const data = await this.repository
       .findOneOrFail({ id: command.id, deletedAt: IsNull() })
       .catch(() => {

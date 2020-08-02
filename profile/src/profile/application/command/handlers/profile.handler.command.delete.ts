@@ -2,11 +2,14 @@ import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull } from 'typeorm';
-import DeleteProfileCommand from '../implements/profile.command.delete';
-import ProfileEntity from '../../../infrastructure/entity/profile.entity';
-import ProfileRepository from '../../../infrastructure/repository/profile.repository';
-import Profile from '../../../domain/model/profile.model';
-import DeleteProfileMapper from '../../../infrastructure/mapper/profile.mapper.delete';
+
+import ProfileEntity from '@src/profile/infrastructure/entity/profile.entity';
+import ProfileRepository from '@src/profile/infrastructure/repository/profile.repository';
+import DeleteProfileMapper from '@src/profile/infrastructure/mapper/profile.mapper.delete';
+
+import DeleteProfileCommand from '@src/profile/application/command/implements/profile.command.delete';
+
+import Profile from '@src/profile/domain/model/profile.model';
 
 @CommandHandler(DeleteProfileCommand)
 export default class DeleteProfileCommandHandler implements ICommandHandler<DeleteProfileCommand> {
@@ -15,7 +18,7 @@ export default class DeleteProfileCommandHandler implements ICommandHandler<Dele
     private readonly publisher: EventPublisher,
   ) {}
 
-  async execute(command: DeleteProfileCommand): Promise<void> {
+  public async execute(command: DeleteProfileCommand): Promise<void> {
     const data = await this.repository
       .findOneOrFail({ where: { id: command.id, deletedAt: IsNull() } })
       .catch(() => {
