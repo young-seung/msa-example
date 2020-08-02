@@ -72,6 +72,9 @@
   },
   "jest": {
     "verbose": false,
+    "moduleNameMapper": {
+      "src/(.*)": "<rootDir>/$1"
+    },
     "moduleFileExtensions": [
       "js",
       "json",
@@ -97,7 +100,7 @@
   "scripts": {
     "prettier": "prettier --write --config .prettierrc \"./src/**/*.ts\"",
     "lint:fix": "eslint --fix",
-    "test": "jest",
+    "test": "jest --clearCache && jest",
     "build": "rimraf dist && tsc -p tsconfig.build.json",
     "start": "nodemon"
   }

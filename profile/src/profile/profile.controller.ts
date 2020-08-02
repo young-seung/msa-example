@@ -1,19 +1,22 @@
-import { Controller, Post, Body, Get, Query, Param, Put, Delete } from '@nestjs/common';
+import {
+  Controller, Post, Body, Get, Query, Param, Put, Delete,
+} from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ApiUseTags } from '@nestjs/swagger';
-import CreateProfileDTO from './dto/profile.dto.create';
-import CreateProfileCommand from './application/command/implements/profile.command.create';
-import ReadProfileListDTO from './dto/profile.dto.read.list';
-import Profile from './domain/model/profile.model';
-import ReadProfileListQuery from './application/query/implemenets/profile.query.list';
-import ReadProfileDTO from './dto/profile.dto.read';
-import ReadProfileQuery from './application/query/implemenets/profile.query';
-import UpdateProfileParamDTO from './dto/profile.dto.update.param';
-import UpdateProfileBodyDTO from './dto/profile.dto.update.body';
-import UpdateProfileCommand from './application/command/implements/profile.command.update';
-import UpdateProfileDTO from './dto/profile.dto.update';
-import DeleteProfileDTO from './dto/profile.dto.delete';
-import DeleteProfileCommand from './application/command/implements/profile.command.delete';
+
+import CreateProfileDTO from '@src/profile/dto/profile.dto.create';
+import CreateProfileCommand from '@src/profile/application/command/implements/profile.command.create';
+import ReadProfileListDTO from '@src/profile/dto/profile.dto.read.list';
+import Profile from '@src/profile/domain/model/profile.model';
+import ReadProfileListQuery from '@src/profile/application/query/implemenets/profile.query.list';
+import ReadProfileDTO from '@src/profile/dto/profile.dto.read';
+import ReadProfileQuery from '@src/profile/application/query/implemenets/profile.query';
+import UpdateProfileParamDTO from '@src/profile/dto/profile.dto.update.param';
+import UpdateProfileBodyDTO from '@src/profile/dto/profile.dto.update.body';
+import UpdateProfileCommand from '@src/profile/application/command/implements/profile.command.update';
+import UpdateProfileDTO from '@src/profile/dto/profile.dto.update';
+import DeleteProfileDTO from '@src/profile/dto/profile.dto.delete';
+import DeleteProfileCommand from '@src/profile/application/command/implements/profile.command.delete';
 
 @ApiUseTags('Profiles')
 @Controller('profiles')
@@ -38,7 +41,7 @@ export default class ProfileController {
   @Put(':id')
   updateProfile(
     @Param() param: UpdateProfileParamDTO,
-    @Body() body: UpdateProfileBodyDTO,
+      @Body() body: UpdateProfileBodyDTO,
   ): Promise<void> {
     return this.commandBus.execute(new UpdateProfileCommand(new UpdateProfileDTO(param, body)));
   }

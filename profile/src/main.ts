@@ -3,9 +3,10 @@ import helmet from 'helmet';
 import RateLimit from 'express-rate-limit';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import compression from 'compression';
-import ApplicationModule from './app.module';
-import AppConfiguration from './app.config';
-import Consumer from './profile/infrastructure/message/consumer';
+
+import ApplicationModule from '@src/app.module';
+import AppConfiguration from '@src/app.config';
+import Consumer from '@src/profile/infrastructure/message/consumer';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(ApplicationModule, { cors: true });
